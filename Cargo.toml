@@ -6,8 +6,4 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rsa = "0.2.0"
-rand = "0.7.0"
-hex = "0.4.0"
-num-bigint = "0.2.5"
-num-traits = "0.2.11"
+tiktoken-rs = "0.7.0"

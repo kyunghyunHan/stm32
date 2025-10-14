@@ -1,24 +1,10 @@
-extern crate rsa;
-use std::io::{BufReader,BufRead,BufWriter,Write,stdout,stdin};
-use rsa::{PublicKey,RSAPrivateKey,PaddingScheme};
-use rand::rngs::OsRng;
+use tiktoken_rs::get_bpe_from_model;
+
 fn main() {
+    // GPT-4 기준 토큰화기 불러오기
+    let bpe = get_bpe_from_model("gpt-4").unwrap();
+    let tokens = bpe.encode_with_special_tokens("안녕하세요, 토큰화 예제입니다.");
 
-    let mut reader= BufReader::new(stdin().lock());
-    let mut input= String::new();
-    reader.read_line(&mut input).unwrap();
-    let s= input.trim().to_string();
-    println!("Hello, world!");
+    println!("{:?}", tokens);
+    println!("토큰 개수: {}", tokens.len());
 }
-
-//N=PQ
-//Pub= (e,N)
-//Priv=(d,N)
-
-
-//Enc=M^e (mod N)
-
-
-//Dec=Enc^d (modN)
-
-
