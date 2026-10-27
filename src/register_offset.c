@@ -61,3 +61,8 @@ typedef struct
 } GPIO_TypeDef;
 
 #define GPIOD ((GPIO_TypeDef *)GPIOD_BASE)
+
+
+
+// *(volatile uint32_t *)0x1000 = 1;
+
