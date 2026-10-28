@@ -1,0 +1,83 @@
+{
+  "env": {
+    "stm32Sdk": "${env:HOME}/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.4"
+  },
+  "configurations": [
+    {
+      "name": "STM32F767 HAL ADC",
+      "compilerPath": "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.macosaarch64_1.0.0.202602081740/tools/bin/arm-none-eabi-gcc",
+      "compilerArgs": [
+        "-mcpu=cortex-m7",
+        "-mthumb",
+        "-mfpu=fpv5-d16",
+        "-mfloat-abi=hard"
+      ],
+      "intelliSenseMode": "macos-gcc-arm",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${stm32Sdk}/Drivers/CMSIS/Include",
+        "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+        "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
+        "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
+      ],
+      "defines": [
+        "STM32F767xx",
+        "USER_VECT_TAB_ADDRESS",
+        "USE_HAL_DRIVER",
+        "PROJECT_HAL_ADC"
+      ],
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    },
+    {
+      "name": "STM32F767 HAL LED",
+      "compilerPath": "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.macosaarch64_1.0.0.202602081740/tools/bin/arm-none-eabi-gcc",
+      "compilerArgs": [
+        "-mcpu=cortex-m7",
+        "-mthumb",
+        "-mfpu=fpv5-d16",
+        "-mfloat-abi=hard"
+      ],
+      "intelliSenseMode": "macos-gcc-arm",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${stm32Sdk}/Drivers/CMSIS/Include",
+        "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+        "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
+        "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
+      ],
+      "defines": [
+        "STM32F767xx",
+        "USER_VECT_TAB_ADDRESS",
+        "USE_HAL_DRIVER"
+      ],
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    },
+    {
+      "name": "STM32F767 Register",
+      "compilerPath": "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.macosaarch64_1.0.0.202602081740/tools/bin/arm-none-eabi-gcc",
+      "compilerArgs": [
+        "-mcpu=cortex-m7",
+        "-mthumb",
+        "-mfpu=fpv5-d16",
+        "-mfloat-abi=hard"
+      ],
+      "intelliSenseMode": "macos-gcc-arm",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${stm32Sdk}/Drivers/CMSIS/Include",
+        "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+        "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
+        "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
+      ],
+      "defines": [
+        "STM32F767xx",
+        "USER_VECT_TAB_ADDRESS"
+      ],
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}

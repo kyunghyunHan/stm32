@@ -1,1 +1,14 @@
 /target/
+# External SDK checkouts/downloads (not project sources)
+/STM32CubeF7/
+/STM32Cube_FW_F7_V*/
+/STM32CubeF7*.zip
+/sdk/
+/Drivers/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+.DS_Store

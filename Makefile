@@ -1,76 +1,82 @@
-# macOS에서는 newlib가 포함된 CubeIDE 툴체인을 우선 사용한다.
+# STM32F767VIT6: external STM32CubeF7 CMSIS/HAL, no CubeMX tree required.
+.DEFAULT_GOAL := stm32-build
 CUBE_GCC := $(lastword $(sort $(wildcard /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.*/tools/bin/arm-none-eabi-gcc)))
 CROSS_COMPILE ?= $(if $(CUBE_GCC),$(patsubst %gcc,%,$(CUBE_GCC)),arm-none-eabi-)
 CC := $(CROSS_COMPILE)gcc
 OBJCOPY := $(CROSS_COMPILE)objcopy
 SIZE := $(CROSS_COMPILE)size
-OPENOCD ?= openocd
-CLANG_FORMAT ?= clang-format
-
-# STM32F446xE: Flash 512 KiB, RAM 128 KiB
-CUBE_F4 ?= $(lastword $(sort $(wildcard $(HOME)/STM32Cube/Repository/STM32Cube_FW_F4_V*)))
-CMSIS := $(CUBE_F4)/Drivers/CMSIS
-DEVICE := $(CMSIS)/Device/ST/STM32F4xx
-STARTUP := $(DEVICE)/Source/Templates/gcc/startup_stm32f446xx.s
-SYSTEM := $(DEVICE)/Source/Templates/system_stm32f4xx.c
-LINKER_SCRIPT ?= $(CUBE_F4)/Projects/STM32F446ZE-Nucleo/Templates/STM32CubeIDE/STM32F446ZETX_FLASH.ld
-
-EXAMPLE ?= led
-EXAMPLES := led led_swicth can
-BUILD_DIR := target/$(EXAMPLE)
+SDK_SEARCH := $(sort $(wildcard $(HOME)/STM32Cube/Repository/STM32Cube_FW_F7_V* $(HOME)/STM32Cube/Repository/STM32CubeF7))
+CUBE_F7 ?= $(lastword $(SDK_SEARCH))
+DEVICE := $(CUBE_F7)/Drivers/CMSIS/Device/ST/STM32F7xx
+HAL_DIR := $(CUBE_F7)/Drivers/STM32F7xx_HAL_Driver
+STARTUP := $(DEVICE)/Source/Templates/gcc/startup_stm32f767xx.s
+LINKER_SCRIPT ?= STM32F767VI_FLASH.ld
+MODE ?= register
+EXAMPLE ?= adc
+MODES := register hal
+REGISTER_EXAMPLES := led adc interrupt timer_counter urtc
+HAL_EXAMPLES := led adc
+EXAMPLES := $(if $(filter register,$(MODE)),$(REGISTER_EXAMPLES),$(HAL_EXAMPLES))
+APP_SOURCE := src/$(MODE)/$(EXAMPLE).c
+SOURCES := $(APP_SOURCE) src/system/system_stm32f7xx.c src/system/runtime.c
+BUILD_DIR := target/$(MODE)/$(EXAMPLE)
 TARGET := $(BUILD_DIR)/$(EXAMPLE)
-ARCH_FLAGS := -mcpu=cortex-m4 -mthumb -mfloat-abi=soft
-CPPFLAGS := -DSTM32F446xx -I$(DEVICE)/Include -I$(CMSIS)/Include
-CFLAGS := $(ARCH_FLAGS) -std=c11 -Wall -Wextra -Wpedantic -Og -g3 -ffunction-sections -fdata-sections
-LDFLAGS := $(ARCH_FLAGS) -T$(LINKER_SCRIPT) --specs=nano.specs --specs=nosys.specs -Wl,--gc-sections -Wl,-Map=$(TARGET).map
-C_SOURCES := $(addprefix src/,$(addsuffix .c,$(EXAMPLES)))
-
-.DEFAULT_GOAL := stm32-build
-.PHONY: stm32-check stm32-build stm32-run check check-all check-config fmt fmt-check lint clean help
-
+ARCH_FLAGS := -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard
+PROJECT_CPPFLAGS += -DSTM32F767xx -DUSER_VECT_TAB_ADDRESS -Iinclude \
+ -I$(CUBE_F7)/Drivers/CMSIS/Include -I$(DEVICE)/Include
+PROJECT_CFLAGS += $(ARCH_FLAGS) -std=c11 -Wall -Wextra -Wpedantic -Og -g3 -ffunction-sections -fdata-sections
+HAL_MODULES := hal hal_cortex hal_gpio hal_rcc hal_rcc_ex hal_pwr hal_pwr_ex hal_flash hal_flash_ex
+ifeq ($(MODE),hal)
+PROJECT_CPPFLAGS += -DUSE_HAL_DRIVER -I$(HAL_DIR)/Inc -I$(HAL_DIR)/Inc/Legacy
+SOURCES += src/hal/stm32f7xx_it.c src/hal/stm32f7xx_hal_msp.c
+ifeq ($(EXAMPLE),adc)
+PROJECT_CPPFLAGS += -DPROJECT_HAL_ADC
+HAL_MODULES += hal_adc hal_adc_ex hal_dma hal_dma_ex
+endif
+SOURCES += $(addprefix $(HAL_DIR)/Src/stm32f7xx_,$(addsuffix .c,$(HAL_MODULES)))
+endif
+# SDK startup calls __libc_init_array; omit generic crt0 that assumes a hosted main.
+PROJECT_LDFLAGS += $(ARCH_FLAGS) -T$(LINKER_SCRIPT) -nostartfiles --specs=nano.specs --specs=nosys.specs \
+ -Wl,--gc-sections -Wl,--fatal-warnings -Wl,-Map=$(TARGET).map
+CLANG_FORMAT ?= clang-format
+FORMAT_SOURCES := $(shell find src include -name '*.c' -o -name '*.h')
+.PHONY: check-config stm32-check check stm32-build check-all build-all clean help lint fmt fmt-check check-snippets
 check-config:
-	@command -v $(CC) >/dev/null || { echo "$(CC)가 필요합니다."; exit 1; }
-	@test -f "$(DEVICE)/Include/stm32f446xx.h" || { echo "STM32CubeF4 SDK 경로를 지정하세요: make CUBE_F4=/path/to/STM32Cube_FW_F4_Vx"; exit 1; }
-	@case " $(EXAMPLES) " in *" $(EXAMPLE) "*) ;; *) echo "지원 예제: $(EXAMPLES)"; exit 1 ;; esac
-
+	@case " $(MODES) " in *" $(MODE) "*) ;; *) echo "ERROR: MODE must be one of: $(MODES)"; exit 1;; esac
+	@case " $(EXAMPLES) " in *" $(EXAMPLE) "*) ;; *) echo "ERROR: $(MODE) examples: $(EXAMPLES)"; exit 1;; esac
+	@command -v "$(CC)" >/dev/null || { echo "ERROR: ARM GCC not found: $(CC)"; exit 1; }
+	@for file in $(DEVICE)/Include/stm32f767xx.h $(CUBE_F7)/Drivers/CMSIS/Include/core_cm7.h $(STARTUP) $(LINKER_SCRIPT) $(SOURCES) include/stm32f7xx_hal_conf.h; do \
+	 test -f "$$file" || { echo "ERROR: missing $$file (check CUBE_F7=$(CUBE_F7))"; exit 1; }; done
 stm32-check: check-config
-	$(CC) $(CPPFLAGS) $(CFLAGS) -fsyntax-only src/$(EXAMPLE).c
-
+	$(CC) $(PROJECT_CPPFLAGS) $(CPPFLAGS) $(PROJECT_CFLAGS) $(CFLAGS) $(EXTRA_WARNINGS) -fsyntax-only $(SOURCES)
 check: stm32-check
-
-check-all:
-	@set -e; for example in $(EXAMPLES); do $(MAKE) stm32-check EXAMPLE=$$example; done
-
-# SDK/옵션 변경을 반영하도록 매번 링크한다. 각 예제는 main이 있어 별도로 빌드한다.
+# Deliberately rebuild each invocation so SDK, flags and header changes cannot leave stale binaries.
 stm32-build: check-config
-	@test -f "$(STARTUP)" -a -f "$(SYSTEM)" -a -f "$(LINKER_SCRIPT)" || { echo "SDK의 시작 코드, 시스템 코드, 링커 스크립트를 확인하세요."; exit 1; }
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) src/$(EXAMPLE).c $(SYSTEM) $(STARTUP) $(LDFLAGS) -o $(TARGET).elf
+	$(CC) $(PROJECT_CPPFLAGS) $(CPPFLAGS) $(PROJECT_CFLAGS) $(CFLAGS) $(EXTRA_WARNINGS) $(SOURCES) $(STARTUP) $(PROJECT_LDFLAGS) $(LDFLAGS) -o $(TARGET).elf
 	$(OBJCOPY) -O binary $(TARGET).elf $(TARGET).bin
 	$(SIZE) $(TARGET).elf
-
-stm32-run: stm32-build
-	$(OPENOCD) -f interface/stlink.cfg -f target/stm32f4x.cfg -c "program $(TARGET).elf verify reset exit"
-
+check-snippets: check-config
+	$(CC) $(PROJECT_CPPFLAGS) $(CPPFLAGS) $(PROJECT_CFLAGS) $(CFLAGS) $(EXTRA_WARNINGS) -include stm32f7xx.h -fsyntax-only src/register/clock.c
+	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(EXTRA_WARNINGS) -fsyntax-only src/register/register_offset.c
+check-all: check-snippets
+check-all build-all:
+	@set -e; for mode in $(MODES); do \
+	 if [ "$$mode" = register ]; then examples="$(REGISTER_EXAMPLES)"; else examples="$(HAL_EXAMPLES)"; fi; \
+	 for example in $$examples; do \
+	 echo "== $$mode/$$example =="; \
+	 $(MAKE) --no-print-directory $(if $(filter check-all,$@),stm32-check,stm32-build) MODE=$$mode EXAMPLE=$$example; \
+	 done; done
+lint:
+	$(MAKE) check-all EXTRA_WARNINGS=-Werror
 fmt:
-	$(CLANG_FORMAT) -i $(C_SOURCES)
-
+	$(CLANG_FORMAT) -i $(FORMAT_SOURCES)
 fmt-check:
-	$(CLANG_FORMAT) --dry-run --Werror $(C_SOURCES)
-
-lint: check-config
-	$(CC) $(CPPFLAGS) $(CFLAGS) -Werror -fsyntax-only $(C_SOURCES)
-
+	$(CLANG_FORMAT) --dry-run --Werror $(FORMAT_SOURCES)
 clean:
-	rm -rf $(addprefix target/,$(EXAMPLES))
-
+	rm -rf target
 help:
-	@echo "STM32F446xE C 예제: $(EXAMPLES) (기본: led)"
-	@echo "예제 선택: make <명령> EXAMPLE=can"
-	@echo "컴파일 검사: make stm32-check / check"
-	@echo "모든 F446 예제 검사: make check-all"
-	@echo "펌웨어 빌드: make stm32-build"
-	@echo "ST-LINK 업로드/실행: make stm32-run"
-	@echo "C 포맷 적용/검사: make fmt / fmt-check"
-	@echo "모든 F446 예제 경고 검사: make lint"
-	@echo "빌드 결과 정리: make clean"
+	@echo "make stm32-build MODE=register|hal EXAMPLE=led|adc"
+	@echo "Register also supports: interrupt timer_counter urtc"
+	@echo "make check-all | build-all | lint | clean"
+	@echo "SDK: CUBE_F7=$(CUBE_F7); toolchain: CROSS_COMPILE=$(CROSS_COMPILE)"
