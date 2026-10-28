@@ -1,4 +1,16 @@
 #include "stm32f7xx.h"
+#include <stdint.h>
+
+/*RCC
+STM32에서 Clock과 Reset를 관리하는 하드웨어 주변장치
+MCU내부의 GPIO, UART, SPI , TIMER등이 동작할수 있도록 클럭을 공급 ,제어
+
+Clock Control
+Reset Contrrol
+*/
+#define RCC_BASE 0x40023800UL
+
+
 
 void delay_ms(uint32_t ms)
 {
