@@ -1,8 +1,30 @@
 {
   "env": {
-    "stm32Sdk": "${env:HOME}/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.4"
+    "stm32Sdk": "${env:HOME}/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.4",
+    "stm32F4Sdk": "${env:HOME}/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3"
   },
   "configurations": [
+    {
+      "name": "STM32F446 Register",
+      "compilerPath": "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.macosaarch64_1.0.0.202602081740/tools/bin/arm-none-eabi-gcc",
+      "compilerArgs": [
+        "-mcpu=cortex-m4",
+        "-mthumb",
+        "-mfpu=fpv4-sp-d16",
+        "-mfloat-abi=hard"
+      ],
+      "intelliSenseMode": "macos-gcc-arm",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${stm32F4Sdk}/Drivers/CMSIS/Include",
+        "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
+      ],
+      "defines": [
+        "STM32F446xx"
+      ],
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    },
     {
       "name": "STM32F767 HAL ADC",
       "compilerPath": "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.macosaarch64_1.0.0.202602081740/tools/bin/arm-none-eabi-gcc",
@@ -17,6 +39,7 @@
         "${workspaceFolder}/include",
         "${stm32Sdk}/Drivers/CMSIS/Include",
         "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+        "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
       ],
@@ -43,6 +66,7 @@
         "${workspaceFolder}/include",
         "${stm32Sdk}/Drivers/CMSIS/Include",
         "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+        "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
       ],
@@ -68,6 +92,7 @@
         "${workspaceFolder}/include",
         "${stm32Sdk}/Drivers/CMSIS/Include",
         "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+        "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
       ],
