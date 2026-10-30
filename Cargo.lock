@@ -146,7 +146,22 @@ checksum = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
 name = "stm32"
 version = "0.1.0"
 dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "stm32f4",
  "stm32f7",
+]
+
+[[package]]
+name = "stm32f4"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c41bd8922df364cb7054cae71a95dcbb32cffd25b5c0f9c00272ef8c82279a65"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "critical-section",
+ "vcell",
 ]
 
 [[package]]

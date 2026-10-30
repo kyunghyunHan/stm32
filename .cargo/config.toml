@@ -1,0 +1,12 @@
+[build]
+target = "thumbv7em-none-eabihf"
+
+[target.thumbv7em-none-eabihf]
+rustflags = ["-C", "link-arg=-Tlink.x"]
+runner = "probe-rs run --chip STM32F446RE --protocol swd --speed 1000 --verify"
+
+[alias]
+f446 = "build --no-default-features --features f446 --target-dir target/rust-f446"
+f767 = "build --no-default-features --features f767 --target-dir target/rust-f767"
+run-f446 = "run --bin uart_led --no-default-features --features f446 --target-dir target/rust-f446"
+run-f767 = ["run", "--bin", "stm32", "--no-default-features", "--features", "f767", "--target-dir", "target/rust-f767", "--config", 'target.thumbv7em-none-eabihf.runner="probe-rs run --chip STM32F767VI --protocol swd --speed 1000 --verify"']

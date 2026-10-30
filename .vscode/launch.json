@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "STM32F446RE: UART LED",
+      "type": "probe-rs-debug",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "/opt/homebrew/bin/probe-rs",
+      "runtimeArgs": ["dap-server"],
+      "chip": "STM32F446RE",
+      "wireProtocol": "Swd",
+      "speed": 1000,
+      "preLaunchTask": "Rust: build F446",
+      "flashingConfig": { "flashingEnabled": true, "haltAfterReset": true },
+      "coreConfigs": [
+        {
+          "coreIndex": 0,
+          "programBinary": "${workspaceFolder}/target/rust-f446/thumbv7em-none-eabihf/debug/uart_led"
+        }
+      ]
+    },
+    {
+      "name": "STM32F767VI: Flash & Debug",
+      "type": "probe-rs-debug",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "/opt/homebrew/bin/probe-rs",
+      "runtimeArgs": ["dap-server"],
+      "chip": "STM32F767VI",
+      "wireProtocol": "Swd",
+      "speed": 1000,
+      "preLaunchTask": "Rust: build F767",
+      "flashingConfig": { "flashingEnabled": true, "haltAfterReset": true },
+      "coreConfigs": [
+        {
+          "coreIndex": 0,
+          "programBinary": "${workspaceFolder}/target/rust-f767/thumbv7em-none-eabihf/debug/stm32"
+        }
+      ]
+    }
+  ]
+}

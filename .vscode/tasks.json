@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Rust: build F446",
+      "type": "process",
+      "command": "cargo",
+      "args": ["f446"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$rustc"],
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Rust: build F767",
+      "type": "process",
+      "command": "cargo",
+      "args": ["f767"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$rustc"],
+      "group": "build"
+    }
+  ]
+}
