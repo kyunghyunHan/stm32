@@ -129,7 +129,7 @@ void UART2_Init(void)
     // PA2 = MODER bit 5:4
     // PA3 = MODER bit 7:6
     GPIOA_MODER &= ~((3U << 4) | (3U << 6));
-    GPIOA_MODER |= ((2U << 4) | (3U << 6));
+    GPIOA_MODER |= ((2U << 4) | (2U << 6));
     // PA2, PA3을 AF7로 설정
     // AFRL은 핀당 4비트
     // PA2 = bit 11:8
@@ -164,7 +164,7 @@ char UART2_ReceiveChar(void)
     // 27. RXNE 플래그가 1이 될 때까지 대기
     // SR bit 5
     // Polling 방식
-    while (USART2_SR & (1U << 5) == 0U)
+    while (USART2_SR & ((1U << 5) == 0U))
         ;
     return (char)(USART2_DR & (0xFFU));
 }
@@ -177,7 +177,7 @@ int main(void)
 {
     char received_char = 0;
 
-    USART_init();
+    UART2_Init();
 
     while (1)
     {
