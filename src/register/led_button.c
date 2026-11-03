@@ -169,3 +169,82 @@ int main(void)
     //     previous_button = button;
     // }
 }
+
+
+/*
+ * GPIO Push-Pull 출력 구조 (STM32)
+ *
+ *                  VDD (3.3V)
+ *                      |
+ *                  [ PMOS ]
+ *                      |
+ *                      +-------- GPIO PA5 ---- 외부 부하
+ *                      |
+ *                  [ NMOS ]
+ *                      |
+ *                     GND
+ *
+ * 1. ODR = 1 (HIGH 출력)
+ *
+ *    PMOS = ON
+ *    NMOS = OFF
+ *
+ *    VDD → PMOS → GPIO PA5
+ *
+ *    GPIO 핀이 VDD 쪽으로 연결되어
+ *    약 3.3V(HIGH)가 출력된다.
+ *
+ *
+ * 2. ODR = 0 (LOW 출력)
+ *
+ *    PMOS = OFF
+ *    NMOS = ON
+ *
+ *    GPIO PA5 → NMOS → GND
+ *
+ *    GPIO 핀이 GND 쪽으로 연결되어
+ *    약 0V(LOW)가 출력된다.
+ *
+ *    NMOS에도 작은 ON 저항이 존재한다.
+ *    단, 외부 전류 공급 경로가 없다면
+ *    LOW 출력이라고 큰 전류가 흐르지는 않는다.
+ *
+ *
+ * 3. PMOS와 NMOS가 동시에 ON이면?
+ *
+ *    VDD (3.3V)
+ *        |
+ *    PMOS ON
+ *        |
+ *    NMOS ON
+ *        |
+ *       GND
+ *
+ *    VDD와 GND 사이에 낮은 저항의 경로가 생겨
+ *    과전류(Shoot-through)가 발생할 수 있다.
+ *
+ *
+ * 4. STM32F446RE LD2 회로 (Active-High)
+ *
+ *    PA5 HIGH
+ *        |
+ *       LED
+ *        |
+ *      저항
+ *        |
+ *       GND
+ *
+ *    PA5 HIGH → LED ON
+ *    PA5 LOW  → LED OFF
+ *
+ *
+ * 핵심:
+ *
+ * ODR → Output Control → PMOS/NMOS → GPIO Pin
+ *
+ * PMOS ON → VDD 쪽으로 연결 → HIGH
+ * NMOS ON → GND 쪽으로 연결 → LOW
+ *
+ * MOSFET의 ON/OFF는 스위치 상태이고,
+ * GPIO의 HIGH/LOW는 핀의 논리 전압 상태이다.
+ */
