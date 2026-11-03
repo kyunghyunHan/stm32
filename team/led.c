@@ -120,7 +120,8 @@ void delay_ms(uint32_t ms)
 {
     /*
      * Reload 설정
-     * CPU Clock = 16MHz
+     * CPU Clock = 16MHz 기본 클럭 주파수
+     * 1초 동안 16,000,000번의 클럭 주기
      * 16,000,000 / 1000 = 16,000
      * LOAD = 16,000 - 1 = 15,999
      * SysTick이 1ms마다 0에 도달.
@@ -148,7 +149,7 @@ void delay_ms(uint32_t ms)
      *
      * 0000 0101 = 0x05
      */
-
+    //Polling방식
     SYSTICK_CTRL = (1U << 2) | (1U << 0);
 
     /*

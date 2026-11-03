@@ -37,7 +37,7 @@
  * RCC → MODER → IDR → ODR
  */
 
- /*
+/*
  * MCU 레지스터 기반 주변장치 제어 흐름
  *
  * 1. 주변장치 레지스터 주소 확인
@@ -103,8 +103,8 @@ int main(void)
     while (1)
     { // PC 13에 연결되어있고 IDR은 핀 하나당 1비트
         button = (GPIOC_IDR >> 13) & 1U;
-        //버튼을 눌럿을떄
-        //PC13이 GND에 연결되어 LOW(0)
+        // 버튼을 눌럿을떄
+        // PC13이 GND에 연결되어 LOW(0)
         if (button == 0U)
         {
             GPIOA_ODR |= (1U << 5);
@@ -114,4 +114,20 @@ int main(void)
             GPIOA_ODR &= ~(1U << 5);
         }
     }
+
+    // uint32_t previous_button = 1U;
+
+    // while (1)
+    // {
+    //     uint32_t button = (GPIOC_IDR >> 13) & 1U;
+
+    //     // 이전 HIGH → 현재 LOW인 순간만 감지
+    //     if (previous_button == 1U && button == 0U)
+    //     {
+    //         GPIOA_ODR ^= (1U << 5);
+    //     }
+
+    //     // 현재 버튼 상태를 다음 반복을 위해 저장
+    //     previous_button = button;
+    // }
 }
