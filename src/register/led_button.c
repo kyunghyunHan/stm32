@@ -101,16 +101,54 @@ int main(void)
     volatile uint32_t button = 0;
 
     while (1)
-    { // PC 13에 연결되어있고 IDR은 핀 하나당 1비트
+    {
+        /*
+         * B1 버튼: Active-Low (Pull-up 회로)
+         *
+         * [버튼을 누르지 않았을 때]
+         * 1. 버튼 스위치가 열려 있다.
+         * 2. Pull-up 저항을 통해 PC13이 3.3V 쪽으로 연결된다.
+         * 3. PC13 입력 전압이 약 3.3V가 된다.
+         * 4. 입력 슈미트 트리거가 HIGH로 판별한다.
+         * 5. GPIOC_IDR bit 13 = 1
+         *
+         * [버튼을 눌렀을 때]
+         * 1. 버튼 스위치가 닫힌다.
+         * 2. PC13이 GND에 연결된다.
+         * 3. PC13 입력 전압이 약 0V로 내려간다.
+         * 4. 입력 슈미트 트리거가 LOW로 판별한다.
+         * 5. GPIOC_IDR bit 13 = 0
+         */
+
+        // IDR의 13번 비트만 추출
         button = (GPIOC_IDR >> 13) & 1U;
-        // 버튼을 눌럿을떄
-        // PC13이 GND에 연결되어 LOW(0)
+
         if (button == 0U)
         {
+            /*
+             * 버튼 눌림
+             *
+             * PC13 LOW → IDR bit 13 = 0
+             *
+             * ODR bit 5를 1로 설정
+             * → PA5 Push-Pull 상단 PMOS ON
+             * → PA5 HIGH
+             * → LED ON
+             */
             GPIOA_ODR |= (1U << 5);
         }
         else
         {
+            /*
+             * 버튼 안 눌림
+             *
+             * PC13 HIGH → IDR bit 13 = 1
+             *
+             * ODR bit 5를 0으로 설정
+             * → PA5 Push-Pull 하단 NMOS ON
+             * → PA5 LOW
+             * → LED OFF
+             */
             GPIOA_ODR &= ~(1U << 5);
         }
     }
