@@ -987,3 +987,32 @@ F767 코드를 빌드하려면 다음 항목을 별도로 설정해야 합니다
 
 ## STM32 Env
 - [개발환경](./docs/stm32_env.md)
+
+
+## 관련 참조
+- [마이크로프로세서 STM32F4 기초 및 응용](https://wikidocs.net/book/11657)
+  - STM32F4 / Cortex-M4
+  - CPU 구조, GPIO, RCC, NVIC, UART, SPI, I2C, Timer
+  - STM32 기초 학습 추천
+
+- [ARM 프로그래밍 실무](https://wikidocs.net/book/7512)
+  - STM32 / ARM Cortex-M4
+  - 메모리, 버스, GPIO, 인터럽트, DMA, UART
+  - ADC, Timer, PWM, I2C, Flash, FreeRTOS
+  - 주변장치 및 드라이버 개발 학습 추천
+
+- [처음 배우는 Arm Cortex-M 마이크로컨트롤러: STM32F103](https://wikidocs.net/book/15637)
+  - ARM Cortex-M3 / STM32F103
+  - CPU 구조, 메모리, 주변장치, 마이크로컨트롤러 기초
+  - ARM과 MCU의 내부 구조 학습 추천
+
+- [STM32 HAL 시작하기](https://wikidocs.net/book/4002)
+  - STM32CubeMX, HAL, GPIO, ADC, Timer, UART, SPI, I2C
+  - STM32 실습 참고
+  - 주의: 2024년 작성 중단된 버전
+
+- [STM32 HAL 시작하기 — 2026년 개정](https://wikidocs.net/422109)
+  - STM32 HAL 개발환경 및 하드웨어
+  - GPIO, Timer, ADC, UART, I2C, SPI
+  - 개정 진행 중인 교재의 개별 장 링크
+ㄴ

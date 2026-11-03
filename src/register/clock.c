@@ -26,8 +26,14 @@
 void Initialize_MCU(void)
 {
     /* 1. Cortex-M7 캐시 활성화 */
-    SCB_EnableICache(); // 명령어 캐시: 명령어를 빠르게 가져오기
-    SCB_EnableDCache(); // 데이터 캐시: 데이터를 빠르게 읽고 쓰기
+/*
+ * CPU는 빠르게 동작하지만 메모리 접근에는 시간이 걸린다.
+ * 캐시는 자주 사용하는 명령어와 데이터를 저장하여
+ * CPU가 메모리에 접근하는 시간을 줄이는 역할을 한다.
+ */
+
+SCB_EnableICache(); // Instruction Cache: 명령어 접근 속도 개선
+SCB_EnableDCache(); // Data Cache: 데이터 접근 속도 개선
 
     /* 2. Flash 접근 설정 */
     // Flash 접근 지연: 7 wait states
