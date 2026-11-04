@@ -1,4 +1,5 @@
-# STM32F767VIT6: external STM32CubeF7 CMSIS/HAL, no CubeMX tree required.
+# MCU=f767 (default), f446 or f429. SDKs are installed by STM32CubeIDE.
+MCU ?= f767
 .DEFAULT_GOAL := stm32-build
 CUBE_GCC := $(lastword $(sort $(wildcard /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.*/tools/bin/arm-none-eabi-gcc)))
 CROSS_COMPILE ?= $(if $(CUBE_GCC),$(patsubst %gcc,%,$(CUBE_GCC)),arm-none-eabi-)
@@ -14,7 +15,7 @@ LINKER_SCRIPT ?= STM32F767VI_FLASH.ld
 MODE ?= register
 EXAMPLE ?= adc
 MODES := register hal
-REGISTER_EXAMPLES := led adc interrupt timer_counter urtc
+REGISTER_EXAMPLES := led led_button adc interrupt timer_counter urtc
 HAL_EXAMPLES := led adc
 EXAMPLES := $(if $(filter register,$(MODE)),$(REGISTER_EXAMPLES),$(HAL_EXAMPLES))
 APP_SOURCE := src/$(MODE)/$(EXAMPLE).c
@@ -24,6 +25,37 @@ TARGET := $(BUILD_DIR)/$(EXAMPLE)
 ARCH_FLAGS := -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard
 PROJECT_CPPFLAGS += -DSTM32F767xx -DUSER_VECT_TAB_ADDRESS -Iinclude \
  -I$(CUBE_F7)/Drivers/CMSIS/Include -I$(DEVICE)/Include
+CONFIG_FILES = $(DEVICE)/Include/stm32f767xx.h $(CUBE_F7)/Drivers/CMSIS/Include/core_cm7.h include/stm32f7xx_hal_conf.h
+ifeq ($(MCU),f446)
+CUBE_F4 ?= $(lastword $(sort $(wildcard $(HOME)/STM32Cube/Repository/STM32Cube_FW_F4_V*)))
+DEVICE := $(CUBE_F4)/Drivers/CMSIS/Device/ST/STM32F4xx
+STARTUP := $(DEVICE)/Source/Templates/gcc/startup_stm32f446xx.s
+LINKER_SCRIPT = STM32F446RE_FLASH.ld
+MODES := register
+REGISTER_EXAMPLES := led led_button
+EXAMPLES := $(REGISTER_EXAMPLES)
+SOURCES := $(APP_SOURCE) $(DEVICE)/Source/Templates/system_stm32f4xx.c src/system/runtime.c
+BUILD_DIR := target/f446/$(MODE)/$(EXAMPLE)
+TARGET := $(BUILD_DIR)/$(EXAMPLE)
+ARCH_FLAGS := -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+PROJECT_CPPFLAGS := -DSTM32F446xx -I$(CUBE_F4)/Drivers/CMSIS/Include -I$(DEVICE)/Include
+CONFIG_FILES = $(DEVICE)/Include/stm32f446xx.h $(CUBE_F4)/Drivers/CMSIS/Include/core_cm4.h
+endif
+ifeq ($(MCU),f429)
+CUBE_F4 ?= $(lastword $(sort $(wildcard $(HOME)/STM32Cube/Repository/STM32Cube_FW_F4_V*)))
+DEVICE := $(CUBE_F4)/Drivers/CMSIS/Device/ST/STM32F4xx
+STARTUP := $(DEVICE)/Source/Templates/gcc/startup_stm32f429xx.s
+LINKER_SCRIPT = STM32F429ZI_FLASH.ld
+MODES := team
+EXAMPLES := led_button
+APP_SOURCE := team/$(EXAMPLE).c
+SOURCES := $(APP_SOURCE) $(DEVICE)/Source/Templates/system_stm32f4xx.c src/system/runtime.c
+BUILD_DIR := target/f429/$(MODE)/$(EXAMPLE)
+TARGET := $(BUILD_DIR)/$(EXAMPLE)
+ARCH_FLAGS := -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+PROJECT_CPPFLAGS := -DSTM32F429xx -I$(CUBE_F4)/Drivers/CMSIS/Include -I$(DEVICE)/Include
+CONFIG_FILES = $(DEVICE)/Include/stm32f429xx.h $(CUBE_F4)/Drivers/CMSIS/Include/core_cm4.h
+endif
 PROJECT_CFLAGS += $(ARCH_FLAGS) -std=c11 -Wall -Wextra -Wpedantic -Og -g3 -ffunction-sections -fdata-sections
 HAL_MODULES := hal hal_cortex hal_gpio hal_rcc hal_rcc_ex hal_pwr hal_pwr_ex hal_flash hal_flash_ex
 ifeq ($(MODE),hal)
@@ -42,11 +74,12 @@ CLANG_FORMAT ?= clang-format
 FORMAT_SOURCES := $(shell find src include -name '*.c' -o -name '*.h')
 .PHONY: check-config stm32-check check stm32-build check-all build-all clean help lint fmt fmt-check check-snippets
 check-config:
+	@case "$(MCU)" in f446|f429|f767) ;; *) echo "ERROR: MCU must be f446, f429 or f767"; exit 1;; esac
 	@case " $(MODES) " in *" $(MODE) "*) ;; *) echo "ERROR: MODE must be one of: $(MODES)"; exit 1;; esac
 	@case " $(EXAMPLES) " in *" $(EXAMPLE) "*) ;; *) echo "ERROR: $(MODE) examples: $(EXAMPLES)"; exit 1;; esac
 	@command -v "$(CC)" >/dev/null || { echo "ERROR: ARM GCC not found: $(CC)"; exit 1; }
-	@for file in $(DEVICE)/Include/stm32f767xx.h $(CUBE_F7)/Drivers/CMSIS/Include/core_cm7.h $(STARTUP) $(LINKER_SCRIPT) $(SOURCES) include/stm32f7xx_hal_conf.h; do \
-	 test -f "$$file" || { echo "ERROR: missing $$file (check CUBE_F7=$(CUBE_F7))"; exit 1; }; done
+	@for file in $(CONFIG_FILES) $(STARTUP) $(LINKER_SCRIPT) $(SOURCES); do \
+	 test -f "$$file" || { echo "ERROR: missing $$file (check SDK for MCU=$(MCU))"; exit 1; }; done
 stm32-check: check-config
 	$(CC) $(PROJECT_CPPFLAGS) $(CPPFLAGS) $(PROJECT_CFLAGS) $(CFLAGS) $(EXTRA_WARNINGS) -fsyntax-only $(SOURCES)
 check: stm32-check
@@ -57,12 +90,14 @@ stm32-build: check-config
 	$(OBJCOPY) -O binary $(TARGET).elf $(TARGET).bin
 	$(SIZE) $(TARGET).elf
 check-snippets: check-config
+ifeq ($(MCU),f767)
 	$(CC) $(PROJECT_CPPFLAGS) $(CPPFLAGS) $(PROJECT_CFLAGS) $(CFLAGS) $(EXTRA_WARNINGS) -include stm32f7xx.h -fsyntax-only src/register/clock.c
 	$(CC) $(PROJECT_CFLAGS) $(CFLAGS) $(EXTRA_WARNINGS) -fsyntax-only src/register/register_offset.c
+endif
 check-all: check-snippets
 check-all build-all:
 	@set -e; for mode in $(MODES); do \
-	 if [ "$$mode" = register ]; then examples="$(REGISTER_EXAMPLES)"; else examples="$(HAL_EXAMPLES)"; fi; \
+	 if [ "$$mode" = team ]; then examples="$(EXAMPLES)"; elif [ "$$mode" = register ]; then examples="$(REGISTER_EXAMPLES)"; else examples="$(HAL_EXAMPLES)"; fi; \
 	 for example in $$examples; do \
 	 echo "== $$mode/$$example =="; \
 	 $(MAKE) --no-print-directory $(if $(filter check-all,$@),stm32-check,stm32-build) MODE=$$mode EXAMPLE=$$example; \
@@ -76,7 +111,10 @@ fmt-check:
 clean:
 	rm -rf target
 help:
+	@echo "F429ZI: make stm32-build MCU=f429 MODE=team EXAMPLE=led_button"
+	@echo "F446RE: make stm32-build MCU=f446 MODE=register EXAMPLE=led|led_button"
 	@echo "make stm32-build MODE=register|hal EXAMPLE=led|adc"
+	@echo "Register button example: MODE=register EXAMPLE=led_button"
 	@echo "Register also supports: interrupt timer_counter urtc"
 	@echo "make check-all | build-all | lint | clean"
 	@echo "SDK: CUBE_F7=$(CUBE_F7); toolchain: CROSS_COMPILE=$(CROSS_COMPILE)"

@@ -1,185 +1,6 @@
+# STM32 레지스터·MCU 학습
 
-# STM32 C - 레지스터 직접 제어 학습
-
-> 현재 VS Code/Make 설정은 **STM32F767VI** 기준입니다. 아래의 기존 F446 설명 대신 [F767 빌드 방법](docs/F767_BUILD.md)을 참고하세요. C 소스는 수정하지 않았으며, F446용 예제는 F767 빌드 대상에서 제외했습니다.
-
-STM32 마이크로컨트롤러(MCU)의 레지스터를 C언어로 직접 제어하는 학습용 프로젝트입니다.
-
-HAL 라이브러리 대신 레지스터 직접 접근 방식을 사용하여 GPIO, CLOCK, ADC, UART, CAN 등 MCU 주변장치의 동작 원리를 학습합니다.
-
----
-
-## 1. 개발 환경
-
-| 항목 | 내용 |
-|---|---|
-| MCU | STM32F446xE |
-| CPU | ARM Cortex-M4 |
-| Flash Memory | 512 KiB |
-| RAM | 128 KiB |
-| 프로그래밍 언어 | C |
-| 컴파일러 | arm-none-eabi-gcc |
-| SDK | STM32CubeF4 (CMSIS) |
-| 빌드 시스템 | Makefile |
-| 다운로드 및 디버깅 | ST-LINK, OpenOCD |
-
-현재 Makefile은 STM32F446xE를 대상으로 설정되어 있습니다.
-
-STM32F767 관련 학습 소스는 별도로 관리하며, 현재 F446 빌드 대상에는 포함되지 않습니다.
-
----
-
-## 2. 프로젝트 예제
-
-| 예제 | 기능 |
-|---|---|
-| `led` | PA5 LED를 약 3초마다 반전 (16 MHz 기준) |
-| `led_swicth` | PC13 스위치 입력으로 PA5 LED 제어 |
-| `can` | CAN1 내부 루프백 통신 테스트 |
-
-### LED 예제
-
-- PA5를 GPIO 출력으로 설정합니다.
-- 약 3초 간격으로 LED 상태를 반전시킵니다.
-- GPIO 클럭 설정과 출력 레지스터 제어를 학습합니다.
-
-### LED + SWITCH 예제
-
-- PC13을 GPIO 입력으로 설정합니다.
-- PA5를 GPIO 출력으로 설정합니다.
-- PC13이 LOW이면 LED ON, HIGH이면 LED OFF로 동작합니다.
-- GPIO 입력 레지스터와 출력 레지스터 사용법을 학습합니다.
-
-> `led_swicth`는 기존 파일 이름을 그대로 사용합니다. 실제 LED 및 버튼의 극성과 배선은 보드 회로도를 확인해야 합니다.
-
-### CAN 예제
-
-- CAN1 내부 루프백(Loopback) 모드로 통신합니다.
-- 송신한 CAN 메시지를 내부적으로 수신합니다.
-- 디버거에서 수신 데이터와 상태를 확인합니다.
-
----
-
-## 3. 개발 환경 준비
-
-### 필요한 프로그램
-
-- Arm GNU Toolchain
-  - `arm-none-eabi-gcc`
-  - `arm-none-eabi-objcopy`
-  - `arm-none-eabi-size`
-- STM32CubeF4 SDK
-- OpenOCD
-- ST-LINK
-- clang-format
-
-macOS 환경에서는 `/Applications/STM32CubeIDE.app`에 포함된 툴체인을 우선 사용합니다.
-
-해당 툴체인이 없으면 시스템 PATH에 등록된 `arm-none-eabi-*`를 사용합니다.
-
-직접 경로를 지정할 수도 있습니다.
-
-```bash
-make stm32-build CROSS_COMPILE=/path/to/bin/arm-none-eabi-
-```
-
-### STM32CubeF4 SDK
-
-기본 SDK 탐색 경로:
-
-```bash
-~/STM32Cube/Repository/STM32Cube_FW_F4_V*
-```
-
-다른 위치에 설치되어 있다면 직접 지정합니다.
-
-```bash
-make stm32-build CUBE_F4=/path/to/STM32Cube_FW_F4_V1.28.3
-```
-
-링커 스크립트는 STM32F446xE와 동일한 Flash/RAM 용량을 가진 F446ZE 템플릿을 사용합니다.
-
-필요한 경우 다음과 같이 지정합니다.
-
-```bash
-make stm32-build LINKER_SCRIPT=/path/to/board.ld
-```
-
----
-
-## 4. Makefile 사용 방법
-
-### 기본 빌드
-
-```bash
-make stm32-build
-```
-
-기본 예제인 `led`를 빌드합니다.
-
-### 컴파일 검사
-
-```bash
-make stm32-check
-```
-
-또는
-
-```bash
-make check
-```
-
-선택한 예제의 C 컴파일을 검사합니다.
-
-### 보드에 프로그램 다운로드
-
-```bash
-make stm32-run
-```
-
-ST-LINK를 이용하여 MCU Flash Memory에 프로그램을 기록하고 실행합니다.
-
-### 예제 선택
-
-```bash
-make stm32-build EXAMPLE=led
-make stm32-build EXAMPLE=led_swicth
-make stm32-build EXAMPLE=can
-```
-
-### 전체 명령어
-
-| 명령어 | 설명 |
-|---|---|
-| `make stm32-check` | 선택한 예제 컴파일 검사 |
-| `make stm32-build` | ELF/BIN 빌드 및 링크 |
-| `make stm32-run` | ST-LINK로 다운로드 및 실행 |
-| `make check-all` | 세 가지 F446 예제 컴파일 검사 |
-| `make lint` | 컴파일 경고를 오류로 검사 |
-| `make fmt` | C 소스코드 포맷 정리 |
-| `make fmt-check` | C 소스코드 포맷 검사 |
-| `make clean` | 빌드 결과 삭제 |
-| `make help` | 명령어 안내 |
-
-### 빌드 결과
-
-빌드 결과는 다음 경로에 생성됩니다.
-
-```text
-target/
- ├── led/
- │   ├── *.elf
- │   ├── *.bin
- │   └── *.map
- ├── led_swicth/
- └── can/
-```
-
-- ELF : 실행 코드와 디버깅 정보 등을 포함하는 파일
-- BIN : MCU Flash에 기록할 수 있는 바이너리 파일
-- MAP : 메모리 및 심볼 배치 정보를 확인하는 파일
-
----
+빌드와 보드 실행 명령은 [Rust·C 빌드 및 실행](BUILD_RUN.md)을 참고하세요.
 
 # STM32 핵심 개념 정리
 
@@ -998,19 +819,12 @@ STM32 주변장치를 제어할 때 일반적으로 다음 순서를 따릅니�
 | `interrupt.c` | 인터럽트 학습 |
 | `timer_counter.c` | 타이머 및 카운터 학습 |
 | `urtc.c` | F767 관련 학습 소스 |
-| `throttle.c` | 스로틀 관련 초기화 코드 |
 | `clock.c` | 클럭 초기화 코드 |
 | `register_offset.c` | 레지스터 주소 및 구조체 정의 |
 
-`clock.c`와 `throttle.c`는 독립적인 `main()` 함수가 없는 초기화 코드입니다.
+`clock.c`는 독립적인 `main()` 함수가 없는 초기화 코드입니다.
 
-F767 코드를 빌드하려면 다음 항목을 별도로 설정해야 합니다.
-
-- STM32CubeF7 CMSIS 헤더
-- Cortex-M7 컴파일 옵션
-- STM32F767 Startup Code
-- F767 메모리 구성에 맞는 Linker Script
-- 해당 보드에 맞는 GPIO 및 주변장치 설정
+F767 빌드 설정은 Makefile에 포함되어 있습니다. 명령은 [빌드 및 실행](BUILD_RUN.md)을 참고하세요.
 
 > STM32F446과 STM32F767은 CPU 코어, 클럭 구조, 주변장치 레지스터 및 메모리 구성이 다르므로 소스코드를 그대로 호환된다고 가정하면 안 됩니다.
 
@@ -1031,4 +845,32 @@ F767 코드를 빌드하려면 다음 항목을 별도로 설정해야 합니다
 
 
 ## STM32 Env
-- [개발환경](./docs/stm32_env.md)
+- [개발환경](stm32_env.md)
+
+## 관련 참조
+- [마이크로프로세서 STM32F4 기초 및 응용](https://wikidocs.net/book/11657)
+  - STM32F4 / Cortex-M4
+  - CPU 구조, GPIO, RCC, NVIC, UART, SPI, I2C, Timer
+  - STM32 기초 학습 추천
+
+- [ARM 프로그래밍 실무](https://wikidocs.net/book/7512)
+  - STM32 / ARM Cortex-M4
+  - 메모리, 버스, GPIO, 인터럽트, DMA, UART
+  - ADC, Timer, PWM, I2C, Flash, FreeRTOS
+  - 주변장치 및 드라이버 개발 학습 추천
+
+- [처음 배우는 Arm Cortex-M 마이크로컨트롤러: STM32F103](https://wikidocs.net/book/15637)
+  - ARM Cortex-M3 / STM32F103
+  - CPU 구조, 메모리, 주변장치, 마이크로컨트롤러 기초
+  - ARM과 MCU의 내부 구조 학습 추천
+
+- [STM32 HAL 시작하기](https://wikidocs.net/book/4002)
+  - STM32CubeMX, HAL, GPIO, ADC, Timer, UART, SPI, I2C
+  - STM32 실습 참고
+  - 주의: 2024년 작성 중단된 버전
+
+- [STM32 HAL 시작하기 — 2026년 개정](https://wikidocs.net/422109)
+  - STM32 HAL 개발환경 및 하드웨어
+  - GPIO, Timer, ADC, UART, I2C, SPI
+  - 개정 진행 중인 교재의 개별 장 링크
+ㄴ

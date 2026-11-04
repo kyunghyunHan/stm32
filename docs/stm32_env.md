@@ -137,32 +137,10 @@ STM32 MCU
 5. **디버깅**: SWD로 MCU를 제어하며 중단점·메모리·레지스터 등을 점검한다.
 6. **UART 로그**: UART 기능을 구성하고 USB-UART 연결/보드의 가상 COM 포트(VCP) 구성을 확인한 후 별도 터미널에서 출력값을 본다. UART는 다운로드·디버깅과 다른 통신 경로다.
 
-## 7. Mac에서 설치/연결 상태 확인
+## 7. 빌드와 연결 확인
 
-```bash
-# ARM C 툴체인
-arm-none-eabi-gcc --version
-
-# OpenOCD 설치 및 경로
-which openocd
-openocd --version
-
-# Homebrew로 설치되었는지 확인
-brew list --versions open-ocd
-
-# probe-rs 도구(설치한 경우)
-probe-rs --version
-```
-
-OpenOCD로 ST-Link/STM32 연결을 점검하는 **예시**:
-
-```bash
-openocd -f interface/stlink.cfg -f target/stm32f4x.cfg
-```
-
-- ST-Link 펌웨어/설치 방식에 따라 인터페이스 설정 파일 이름이나 경로가 다를 수 있다.
-- OpenOCD 실행 중 별도 터미널에서 GDB를 연결하거나, OpenOCD 명령으로 펌웨어를 기록할 수 있다.
-- 동시에 둘 이상의 프로그램이 같은 ST-Link를 독점적으로 제어하려 하면 연결이 실패할 수 있다.
+프로젝트 명령은 [Rust·C 빌드 및 실행](BUILD_RUN.md)에 정리되어 있습니다.
+ST-Link는 한 번에 하나의 다운로드·디버깅 도구에서 사용합니다.
 
 ## 8. 무엇을 선택하면 좋을까?
 
