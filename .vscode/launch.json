@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "STM32F446RE: UART LED",
+      "name": "STM32F446RE: Current Rust File",
       "type": "probe-rs-debug",
       "request": "launch",
       "cwd": "${workspaceFolder}",
@@ -11,12 +11,12 @@
       "chip": "STM32F446RE",
       "wireProtocol": "Swd",
       "speed": 1000,
-      "preLaunchTask": "Rust: build F446",
+      "preLaunchTask": "Rust: build active F446 file",
       "flashingConfig": { "flashingEnabled": true, "haltAfterReset": true },
       "coreConfigs": [
         {
           "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/rust-f446/thumbv7em-none-eabihf/debug/uart_led"
+          "programBinary": "${workspaceFolder}/target/rust-f446/thumbv7em-none-eabihf/debug/active-f446"
         }
       ]
     },

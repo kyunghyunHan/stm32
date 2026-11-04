@@ -12,6 +12,13 @@ test = false
 bench = false
 
 [[bin]]
+name = "led_button"
+path = "src/register/led_button.rs"
+required-features = ["f446"]
+test = false
+bench = false
+
+[[bin]]
 name = "uart_led"
 path = "src/register/uart_led.rs"
 required-features = ["f446"]

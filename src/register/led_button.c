@@ -121,6 +121,9 @@ int main(void)
          */
 
         // IDR의 13번 비트만 추출
+        //PULL up방식으로 연결대어있음
+        //0이면 High
+        //1이면 LOW
         button = (GPIOC_IDR >> 13) & 1U;
 
         if (button == 0U)
@@ -135,6 +138,7 @@ int main(void)
              * → PA5 HIGH
              * → LED ON
              */
+    
             GPIOA_ODR |= (1U << 5);
         }
         else
