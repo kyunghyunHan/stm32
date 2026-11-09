@@ -25,6 +25,13 @@ required-features = ["f446"]
 test = false
 bench = false
 
+[[bin]]
+name = "uart"
+path = "src/register/uart.rs"
+required-features = ["f446"]
+test = false
+bench = false
+
 [features]
 default = ["f446"]
 f446 = ["dep:stm32f4"]
