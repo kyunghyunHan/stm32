@@ -44,25 +44,17 @@
 #define SYST_RVR       (*(volatile uint32_t *)(SYSTICK_BASE + 0x04UL))
 #define SYST_CVR       (*(volatile uint32_t *)(SYSTICK_BASE + 0x08UL))
 
-// =====================================
-// 1. Shared Variables
-// =====================================
-
 // Exception Handler에서 증가
+// 프로그램 시작 후 경과한 시간을 ms 단위로 기록
 volatile uint32_t systick_ms = 0;
-
-// Exception에서 발생한 '*' 이벤트 개수
-volatile uint32_t star_events = 0;
-
-// =====================================
-// 2. Clock Initialization
-// =====================================
 
 void Clock_Init(void)
 {
     // HSI Enable
+    // 내부 고속 오실레이터(HSI) 활성화
     RCC_CR |= (1U << 0);
 
+    // HSI 클럭이 준비될 때까지 대기
     while ((RCC_CR & (1U << 1)) == 0U)
     {
     }
@@ -75,7 +67,20 @@ void Clock_Init(void)
     }
 
     // AHB = /1
+    // SYSCLK
     RCC_CFGR &= ~(0xFU << 4);
+
+    // APB1과 APB2 버스의 클럭 분주비를 1로 설정
+    // CPU에서 사용하는 클럭을 주변장치에 몇 분의 1 속도로 전달할지 설정
+
+    /*
+     * 설정 비트   분주비   HCLK 16MHz 기준
+     * 0xx         /1       16MHz
+     * 100         /2       8MHz
+     * 101         /4       4MHz
+     * 110         /8       2MHz
+     * 111         /16      1MHz
+     */
 
     // APB1 = /1
     RCC_CFGR &= ~(7U << 10);
@@ -83,10 +88,6 @@ void Clock_Init(void)
     // APB2 = /1
     RCC_CFGR &= ~(7U << 13);
 }
-
-// =====================================
-// 3. USART3 Initialization
-// =====================================
 
 void USART3_Init(void)
 {
@@ -96,20 +97,27 @@ void USART3_Init(void)
     // USART3 Clock Enable
     RCC_APB1ENR |= (1U << 18);
 
-    // PD8 Alternate Function
+    // PD8 Alternate Function (주변장치 활성화)
     GPIOD_MODER &= ~(3U << 16);
     GPIOD_MODER |=  (2U << 16);
 
     // Push-Pull
     GPIOD_OTYPER &= ~(1U << 8);
 
-    // AF7
+    // AF7: GPIOD 포트의 상위 핀(PD8~PD15) 부가 기능 설정
     GPIOD_AFRH &= ~(0xFU << 0);
     GPIOD_AFRH |=  (7U << 0);
 
-    // USART Configuration
+    // USART3_CR1: USART 비활성화, TX/RX 비활성화, 8비트 데이터,
+    // 패리티 없음, USART 인터럽트 비활성화
     USART3_CR1 = 0U;
+
+    // USART3_CR2: Stop Bit 1개, 동기식 클럭 비활성화,
+    // LIN 및 특수 통신 모드 비활성화
     USART3_CR2 = 0U;
+
+    // USART3_CR3: RTS/CTS 흐름 제어 비활성화, DMA 비활성화,
+    // Half-Duplex, Smartcard, IrDA 등 특수 모드 비활성화
     USART3_CR3 = 0U;
 
     // PCLK1 = 16MHz, Baud = 115200
@@ -118,10 +126,6 @@ void USART3_Init(void)
     // USART Enable + TX Enable
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
-
-// =====================================
-// 4. UART Transmit
-// =====================================
 
 void USART3_SendChar(char c)
 {
@@ -132,32 +136,25 @@ void USART3_SendChar(char c)
     USART3_DR = (uint8_t)c;
 }
 
-// =====================================
-// 5. SysTick Initialization
-// =====================================
-
 void SysTick_Init(void)
 {
-    // Disable
+    // SysTick 제어 레지스터 초기화 (타이머 및 인터럽트 비활성화)
     SYST_CSR = 0U;
 
-    // 16MHz / 1000 = 16000
-    // SysTick 1ms
+    // Reload 설정: 16MHz / 1000 = 16,000클럭 → 1ms
+    // LOAD는 실제 카운트 횟수보다 1 작게 설정
     SYST_RVR = 16000U - 1U;
 
+    // 현재 카운터 값 초기화 (카운터 및 COUNTFLAG 초기화)
     SYST_CVR = 0U;
 
-    // CLKSOURCE = 1
-    // TICKINT   = 1
-    // ENABLE    = 1
+    // CLKSOURCE(Bit 2) = 1 : CPU 클럭(HCLK) 사용
+    // TICKINT  (Bit 1) = 1 : SysTick Exception 활성화
+    // ENABLE   (Bit 0) = 1 : SysTick 카운터 시작
     SYST_CSR = (1U << 2) |
                (1U << 1) |
                (1U << 0);
 }
-
-// =====================================
-// 6. Exception User Function
-// =====================================
 
 // stm32f4xx_it.c에서 호출
 void SysTick_UserHandler(void)
@@ -173,10 +170,6 @@ void SysTick_UserHandler(void)
         USART3_SendChar('*');
     }
 }
-
-// =====================================
-// 7. Main - Polling
-// =====================================
 
 int main(void)
 {
