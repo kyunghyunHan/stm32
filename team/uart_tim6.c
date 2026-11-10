@@ -17,43 +17,44 @@
  * HAL 사용 안 함
  * TIM2 / TIM7 사용 안 함
  * TIM6 하나만 사용
+ *
+ * up counter
  */
 
-#define RCC_BASE       0x40023800UL
-#define GPIOD_BASE     0x40020C00UL
-#define USART3_BASE    0x40004800UL
-#define TIM6_BASE      0x40001000UL
+#define RCC_BASE 0x40023800UL
+#define GPIOD_BASE 0x40020C00UL
+#define USART3_BASE 0x40004800UL
+#define TIM6_BASE 0x40001000UL
 
-#define NVIC_ISER1     (*(volatile uint32_t *)0xE000E104UL)
+#define NVIC_ISER1 (*(volatile uint32_t *)0xE000E104UL) // CPU가 TIM6 인터럽트를 받을 수 있도록 활성화
 
 // RCC
-#define RCC_CR         (*(volatile uint32_t *)(RCC_BASE + 0x00UL))
-#define RCC_CFGR       (*(volatile uint32_t *)(RCC_BASE + 0x08UL))
-#define RCC_AHB1ENR    (*(volatile uint32_t *)(RCC_BASE + 0x30UL))
-#define RCC_APB1ENR    (*(volatile uint32_t *)(RCC_BASE + 0x40UL))
+#define RCC_CR (*(volatile uint32_t *)(RCC_BASE + 0x00UL))
+#define RCC_CFGR (*(volatile uint32_t *)(RCC_BASE + 0x08UL))
+#define RCC_AHB1ENR (*(volatile uint32_t *)(RCC_BASE + 0x30UL))
+#define RCC_APB1ENR (*(volatile uint32_t *)(RCC_BASE + 0x40UL))
 
 // GPIOD
-#define GPIOD_MODER    (*(volatile uint32_t *)(GPIOD_BASE + 0x00UL))
-#define GPIOD_OTYPER   (*(volatile uint32_t *)(GPIOD_BASE + 0x04UL))
-#define GPIOD_AFRH     (*(volatile uint32_t *)(GPIOD_BASE + 0x24UL))
+#define GPIOD_MODER (*(volatile uint32_t *)(GPIOD_BASE + 0x00UL))
+#define GPIOD_OTYPER (*(volatile uint32_t *)(GPIOD_BASE + 0x04UL))
+#define GPIOD_AFRH (*(volatile uint32_t *)(GPIOD_BASE + 0x24UL))
 
 // USART3
-#define USART3_SR      (*(volatile uint32_t *)(USART3_BASE + 0x00UL))
-#define USART3_DR      (*(volatile uint32_t *)(USART3_BASE + 0x04UL))
-#define USART3_BRR     (*(volatile uint32_t *)(USART3_BASE + 0x08UL))
-#define USART3_CR1     (*(volatile uint32_t *)(USART3_BASE + 0x0CUL))
-#define USART3_CR2     (*(volatile uint32_t *)(USART3_BASE + 0x10UL))
-#define USART3_CR3     (*(volatile uint32_t *)(USART3_BASE + 0x14UL))
+#define USART3_SR (*(volatile uint32_t *)(USART3_BASE + 0x00UL))
+#define USART3_DR (*(volatile uint32_t *)(USART3_BASE + 0x04UL))
+#define USART3_BRR (*(volatile uint32_t *)(USART3_BASE + 0x08UL))
+#define USART3_CR1 (*(volatile uint32_t *)(USART3_BASE + 0x0CUL))
+#define USART3_CR2 (*(volatile uint32_t *)(USART3_BASE + 0x10UL))
+#define USART3_CR3 (*(volatile uint32_t *)(USART3_BASE + 0x14UL))
 
 // TIM6
-#define TIM6_CR1       (*(volatile uint32_t *)(TIM6_BASE + 0x00UL))
-#define TIM6_DIER      (*(volatile uint32_t *)(TIM6_BASE + 0x0CUL))
-#define TIM6_SR        (*(volatile uint32_t *)(TIM6_BASE + 0x10UL))
-#define TIM6_EGR       (*(volatile uint32_t *)(TIM6_BASE + 0x14UL))
-#define TIM6_CNT       (*(volatile uint32_t *)(TIM6_BASE + 0x24UL))
-#define TIM6_PSC       (*(volatile uint32_t *)(TIM6_BASE + 0x28UL))
-#define TIM6_ARR       (*(volatile uint32_t *)(TIM6_BASE + 0x2CUL))
-
+#define TIM6_CR1 (*(volatile uint32_t *)(TIM6_BASE + 0x00UL))  // 타이머 시작 및 정지
+#define TIM6_DIER (*(volatile uint32_t *)(TIM6_BASE + 0x0CUL)) // 타이머 인터럽트 활성화
+#define TIM6_SR (*(volatile uint32_t *)(TIM6_BASE + 0x10UL))   // 타이머 상태 확인 (UIF)
+#define TIM6_EGR (*(volatile uint32_t *)(TIM6_BASE + 0x14UL))  // 강제로 Update Event 발생
+#define TIM6_CNT (*(volatile uint32_t *)(TIM6_BASE + 0x24UL))  // 현재 카운터 값
+#define TIM6_PSC (*(volatile uint32_t *)(TIM6_BASE + 0x28UL))  // 타이머 입력 클럭 분주
+#define TIM6_ARR (*(volatile uint32_t *)(TIM6_BASE + 0x2CUL))  //	카운터의 주기 설정
 
 /* 1. Clock 초기화 */
 void Clock_Init(void)
@@ -83,7 +84,6 @@ void Clock_Init(void)
     RCC_CFGR &= ~(7U << 13);
 }
 
-
 /* 2. USART3 초기화 */
 void USART3_Init(void)
 {
@@ -95,14 +95,14 @@ void USART3_Init(void)
 
     // PD8 Alternate Function
     GPIOD_MODER &= ~(3U << 16);
-    GPIOD_MODER |=  (2U << 16);
+    GPIOD_MODER |= (2U << 16);
 
     // PD8 Push-Pull
     GPIOD_OTYPER &= ~(1U << 8);
 
     // PD8 AF7 = USART3_TX
     GPIOD_AFRH &= ~(0xFU << 0);
-    GPIOD_AFRH |=  (7U << 0);
+    GPIOD_AFRH |= (7U << 0);
 
     // USART 설정
     USART3_CR1 = 0U;
@@ -116,7 +116,6 @@ void USART3_Init(void)
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
 
-
 /* 3. UART 문자 전송 */
 void USART3_SendChar(char c)
 {
@@ -127,7 +126,6 @@ void USART3_SendChar(char c)
 
     USART3_DR = (uint8_t)c;
 }
-
 
 /* 4. TIM6 초기화: 500ms */
 void TIM6_Init(void)
@@ -140,6 +138,7 @@ void TIM6_Init(void)
     TIM6_DIER = 0U;
 
     /*
+
      * TIM6CLK = 16MHz
      *
      * PSC = 15999
@@ -149,16 +148,28 @@ void TIM6_Init(void)
      *
      * ARR = 499
      * 500카운트 = 500ms
+     * 1000Hz는 1초에 1000번
+     * TIM6_CNT가 1 증가하는 데 1ms
+     * 그러면 499하는데 500ms
+     * CNT가 0부터 499까지 총 500번 카운트하는 데 500ms
      */
-
+    // PSC (Prescaler): 타이머가 카운트하는 속도를 조절
+    // TIM6가 500ms마다 Update Event를 발생시키도록 설정
     TIM6_PSC = 15999U;
+    // ARR (Auto-Reload Register): 몇 번 카운트하면 다시 처음으로 돌아갈지 결정
     TIM6_ARR = 499U;
     TIM6_CNT = 0U;
 
     // Prescaler 적용
+    // TIM6_EGR — 설정 적용
+    // EGR: Event Generation Register
+    // UG: Update Generation (bit 0)
     TIM6_EGR = (1U << 0);
 
     // 초기 UIF 제거
+    // SR: Status Register
+
+    // UIF:Update Interrupt Flag(bit 0)
     TIM6_SR = 0U;
 
     // TIM6 Update Interrupt Enable
@@ -166,17 +177,18 @@ void TIM6_Init(void)
 
     // TIM6_DAC_IRQn = 54
     // NVIC_ISER1 bit 22
+    // CPU에서 TIM6 인터럽트 허용
     NVIC_ISER1 = (1U << 22);
 
     // TIM6 Counter 시작
     TIM6_CR1 |= (1U << 0);
 }
 
-
 /* 5. TIM6 Interrupt: 500ms마다 '@' */
 void TIM6_UserHandler(void)
 {
     // TIM6 Update Interrupt 확인
+    // ① TIM6 Update Interrupt 발생 여부 확인
     if (TIM6_SR & (1U << 0))
     {
         // UIF Clear
@@ -186,7 +198,6 @@ void TIM6_UserHandler(void)
         USART3_SendChar('@');
     }
 }
-
 
 /* 6. Main: 순수 TIM6 CNT Polling */
 int main(void)
@@ -203,6 +214,8 @@ int main(void)
         uint32_t current_cnt = TIM6_CNT;
 
         // CNT가 499 -> 0으로 돌아왔는지 확인
+        // current_cnt가 0 이전값이 더 크면 보냄
+        // 499 0
         if (current_cnt < previous_cnt)
         {
             // 500ms마다 '!'
