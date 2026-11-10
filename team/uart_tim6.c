@@ -73,7 +73,46 @@ void Clock_Init(void)
     while ((RCC_CFGR & (3U << 2)) != 0U)
     {
     }
+    /*
+    SYSCLK = 16MHz
+    │
+    ▼
+AHB /1
+    │
+    ▼
+HCLK = 16MHz
+    │
+    ▼
+APB1 /2
+    │
+    ▼
+PCLK1 = 8MHz
+    │
+    ├── USART3 = 8MHz
+    │
+    └── TIM6 = 8MHz × 2
+                   │
+                   ▼
+              TIM6CLK = 16MHz
 
+                           SYSCLK 16MHz
+                  │
+                  ▼
+         ① AHB Prescaler /1
+                  │
+                  ▼
+              HCLK(Advanced High-performance Bus Clock) 16MHz
+                  │
+          ┌───────┴───────┐
+          │               │
+          ▼               ▼
+  ② APB1 /2         ③ APB2 /4
+          │               │
+          ▼               ▼
+     PCLK1(APB1 Peripheral Clock) 8MHz       PCLK2 4MHz
+          │               │
+        USART3           USART1
+    */
     // AHB /1
     RCC_CFGR &= ~(0xFU << 4);
 
@@ -153,6 +192,34 @@ void TIM6_Init(void)
      * 그러면 499하는데 500ms
      * CNT가 0부터 499까지 총 500번 카운트하는 데 500ms
      */
+    /*
+
+    HSI 16MHz
+    │
+    ▼
+SYSCLK 16MHz
+    │
+    ▼
+AHB /1 → HCLK 16MHz
+    │
+    ▼
+APB1 /1 → PCLK1 16MHz
+    │
+    ▼
+TIM6CLK = 16MHz  ← 이게 TIM_CLK
+    │
+    ▼
+PSC = 15999
+    │
+    ▼
+1000Hz (1ms마다 카운트)
+    │
+    ▼
+ARR = 499
+    │
+    ▼
+500ms마다 Update Event 발생
+    */
     // PSC (Prescaler): 타이머가 카운트하는 속도를 조절
     // TIM6가 500ms마다 Update Event를 발생시키도록 설정
     TIM6_PSC = 15999U;
