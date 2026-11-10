@@ -2,16 +2,23 @@
 #include <stdint.h>
 
 /*
- * STM32F429ZI - SysTick Polling
+ * STM32F429ZI - SysTick Polling (16MHz)
  *
- * Clock   : HSI 16MHz
- * USART3  : 115200bps, 8N1
- * TX      : PD8 (AF7, ST-LINK VCP)
- * SysTick : 500ms
+ * HSI     : 16MHz
+ * SYSCLK  : 16MHz
+ * HCLK    : 16MHz
+ * PCLK1   : 16MHz
+ * PCLK2   : 16MHz
  *
- * Output  : '.' every 500ms
+ * SysTick Clock : HCLK / 8 = 2MHz
+ * SysTick       : 1000ms
  *
- * HAL / Interrupt 사용 안 함
+ * USART3 : 115200bps, 8N1
+ * TX     : PD8, AF7, ST-LINK VCP
+ *
+ * Output : '.' every 1000ms
+ *
+ * HAL / SysTick Interrupt 사용 안 함
  */
 
 #define RCC_BASE       0x40023800UL
@@ -44,7 +51,7 @@
 #define SYST_CVR       (*(volatile uint32_t *)(SYSTICK_BASE + 0x08UL))
 
 #define CPU_CLOCK_HZ   16000000UL
-#define SYSTICK_MS     500U
+#define SYSTICK_MS     1000U
 
 // =====================================
 // 1. Clock Initialization
@@ -52,10 +59,10 @@
 
 void Clock_Init(void)
 {
-    // HSI Enable
+    // HSI 16MHz Enable
     RCC_CR |= (1U << 0);
 
-    // HSI Ready
+    // HSIRDY 확인
     while ((RCC_CR & (1U << 1)) == 0U)
     {
     }
@@ -63,18 +70,18 @@ void Clock_Init(void)
     // SYSCLK = HSI
     RCC_CFGR &= ~(3U << 0);
 
-    // Wait SYSCLK Source = HSI
+    // SYSCLK 전환 완료 확인
     while ((RCC_CFGR & (3U << 2)) != 0U)
     {
     }
 
-    // AHB = /1
+    // AHB /1 -> HCLK = 16MHz
     RCC_CFGR &= ~(0xFU << 4);
 
-    // APB1 = /1
+    // APB1 /1 -> PCLK1 = 16MHz
     RCC_CFGR &= ~(7U << 10);
 
-    // APB2 = /1
+    // APB2 /1 -> PCLK2 = 16MHz
     RCC_CFGR &= ~(7U << 13);
 }
 
@@ -90,7 +97,7 @@ void USART3_Init(void)
     // USART3 Clock Enable
     RCC_APB1ENR |= (1U << 18);
 
-    // PD8 Alternate Function Mode (10)
+    // PD8 Alternate Function Mode
     GPIOD_MODER &= ~(3U << 16);
     GPIOD_MODER |=  (2U << 16);
 
@@ -101,12 +108,13 @@ void USART3_Init(void)
     GPIOD_AFRH &= ~(0xFU << 0);
     GPIOD_AFRH |=  (7U << 0);
 
-    // USART Disable
+    // USART Configuration Reset
     USART3_CR1 = 0U;
     USART3_CR2 = 0U;
     USART3_CR3 = 0U;
 
-    // PCLK1 = 16MHz, Baud = 115200
+    // PCLK1 = 16MHz
+    // Baud = 115200bps
     USART3_BRR = 0x008BU;
 
     // UE = 1, TE = 1
@@ -138,20 +146,28 @@ void SysTick_Init(void)
 
     /*
      * HCLK = 16MHz
+     * SysTick Clock = HCLK / 8 = 2MHz
      *
-     * 500ms = 8,000,000 clocks
-     * LOAD  = 7,999,999
+     * 500ms  = 1,000,000 clocks
+     * 1000ms = 2,000,000 clocks
+     *
+     * 24-bit Maximum LOAD = 16,777,215
      */
+
+    // 기존 500ms 설정
+    // SYST_RVR = 1000000U - 1U;
+
+    // 변경: 1000ms 설정
     SYST_RVR =
-        (CPU_CLOCK_HZ / 1000U * SYSTICK_MS) - 1U;
+        (CPU_CLOCK_HZ / 8U / 1000U * SYSTICK_MS) - 1U;
 
     // Current Value Clear
     SYST_CVR = 0U;
 
-    // CLKSOURCE = 1 : Processor Clock
+    // CLKSOURCE = 0 : HCLK/8
     // TICKINT   = 0 : Interrupt Disable
     // ENABLE    = 1 : Counter Enable
-    SYST_CSR = (1U << 2) | (1U << 0);
+    SYST_CSR = (1U << 0);
 }
 
 // =====================================
@@ -166,7 +182,7 @@ int main(void)
 
     while (1)
     {
-        // COUNTFLAG = 1이면 500ms 경과
+        // COUNTFLAG = 1 -> 1000ms 경과
         if (SYST_CSR & (1U << 16))
         {
             USART3_SendChar('.');

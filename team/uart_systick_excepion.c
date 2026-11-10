@@ -7,24 +7,48 @@
  * SysTick Polling   : 1000ms마다 '.'
  * SysTick Exception : 500ms마다 '*'
  *
- * SysTick : 1ms
- * USART3  : 115200bps, 8N1
- * TX      : PD8, AF7, ST-LINK VCP
- * Clock   : HSI 16MHz
+ * HSI     : 16MHz
+ * PLL     : 168MHz
+ * SYSCLK  : 168MHz
+ * HCLK    : 168MHz
+ * PCLK1   : 42MHz
+ * PCLK2   : 84MHz
+ *
+ * SysTick Clock : HCLK / 8 = 21MHz
+ * SysTick Tick  : 1ms
+ *
+ * USART3 : 115200bps, 8N1
+ * TX     : PD8, AF7, ST-LINK VCP
  *
  * HAL 함수 사용 안 함
+ * TIM2 / TIM6 사용 안 함
+ *
+ * 3.3V 전원 환경 기준
  */
+
+// =====================================
+// 1. Base Address
+// =====================================
 
 #define RCC_BASE       0x40023800UL
 #define GPIOD_BASE     0x40020C00UL
 #define USART3_BASE    0x40004800UL
 #define SYSTICK_BASE   0xE000E010UL
+#define PWR_BASE       0x40007000UL
+#define FLASH_REG_BASE 0x40023C00UL
 
 // RCC
 #define RCC_CR         (*(volatile uint32_t *)(RCC_BASE + 0x00UL))
+#define RCC_PLLCFGR    (*(volatile uint32_t *)(RCC_BASE + 0x04UL))
 #define RCC_CFGR       (*(volatile uint32_t *)(RCC_BASE + 0x08UL))
 #define RCC_AHB1ENR    (*(volatile uint32_t *)(RCC_BASE + 0x30UL))
 #define RCC_APB1ENR    (*(volatile uint32_t *)(RCC_BASE + 0x40UL))
+
+// PWR
+#define PWR_CR         (*(volatile uint32_t *)(PWR_BASE + 0x00UL))
+
+// FLASH
+#define FLASH_ACR      (*(volatile uint32_t *)(FLASH_REG_BASE + 0x00UL))
 
 // GPIOD
 #define GPIOD_MODER    (*(volatile uint32_t *)(GPIOD_BASE + 0x00UL))
@@ -44,50 +68,108 @@
 #define STK_LOAD       (*(volatile uint32_t *)(SYSTICK_BASE + 0x04UL))
 #define STK_VAL        (*(volatile uint32_t *)(SYSTICK_BASE + 0x08UL))
 
-// Exception Handler에서 증가
-// 프로그램 시작 후 경과한 시간을 ms 단위로 기록
-volatile uint32_t systick_ms = 0;
+// Clock
+#define CPU_CLOCK_HZ   168000000UL
+#define SYSTICK_HZ     (CPU_CLOCK_HZ / 8U)
+
+// SysTick Exception에서 1ms마다 증가
+volatile uint32_t systick_ms = 0U;
+
+
+// =====================================
+// 2. Clock Initialization - 168MHz
+// =====================================
 
 void Clock_Init(void)
 {
-    // HSI Enable
-    // 내부 고속 오실레이터(HSI) 활성화
+    // 1. HSI 16MHz 활성화
     RCC_CR |= (1U << 0);
 
-    // HSI 클럭이 준비될 때까지 대기
+    // HSIRDY 확인
     while ((RCC_CR & (1U << 1)) == 0U)
     {
     }
 
-    // SYSCLK = HSI
+    // 2. SYSCLK = HSI로 우선 전환
     RCC_CFGR &= ~(3U << 0);
 
     while ((RCC_CFGR & (3U << 2)) != 0U)
     {
     }
 
-    // AHB = /1
-    // SYSCLK
-    RCC_CFGR &= ~(0xFU << 4);
+    // 3. 기존 PLL 비활성화
+    RCC_CR &= ~(1U << 24);
 
-    // APB1과 APB2 버스의 클럭 분주비를 1로 설정
-    // CPU에서 사용하는 클럭을 주변장치에 몇 분의 1 속도로 전달할지 설정
+    // PLL 완전히 정지할 때까지 대기
+    while ((RCC_CR & (1U << 25)) != 0U)
+    {
+    }
 
-    /*
-     * 설정 비트   분주비   HCLK 16MHz 기준
-     * 0xx         /1       16MHz
-     * 100         /2       8MHz
-     * 101         /4       4MHz
-     * 110         /8       2MHz
-     * 111         /16      1MHz
-     */
+    // 4. PWR Clock Enable
+    RCC_APB1ENR |= (1U << 28);
 
-    // APB1 = /1
-    RCC_CFGR &= ~(7U << 10);
+    // Voltage Scale 1
+    PWR_CR = (PWR_CR & ~(3U << 14))
+           | (3U << 14);
 
-    // APB2 = /1
-    RCC_CFGR &= ~(7U << 13);
+    // 5. FLASH Wait State = 5
+    // Prefetch + Instruction Cache + Data Cache
+    FLASH_ACR = (FLASH_ACR & ~0xFU)
+              | (1U << 8)
+              | (1U << 9)
+              | (1U << 10)
+              | 5U;
+
+    while ((FLASH_ACR & 0xFU) != 5U)
+    {
+    }
+
+    // 6. Bus Prescaler
+    // AHB  /1 -> HCLK  = 168MHz
+    // APB1 /4 -> PCLK1 = 42MHz
+    // APB2 /2 -> PCLK2 = 84MHz
+    RCC_CFGR =
+        (RCC_CFGR & ~((0xFU << 4) |
+                      (7U << 10) |
+                      (7U << 13)))
+        | (5U << 10)
+        | (4U << 13);
+
+    // 7. PLL Configuration
+    //
+    // PLLM = 16
+    // PLLN = 336
+    // PLLP = 2
+    //
+    // 16MHz / 16 * 336 / 2 = 168MHz
+    RCC_PLLCFGR =
+          (16U  << 0)
+        | (336U << 6)
+        | (0U   << 16)
+        | (0U   << 22)
+        | (7U   << 24);
+
+    // 8. PLL 활성화
+    RCC_CR |= (1U << 24);
+
+    while ((RCC_CR & (1U << 25)) == 0U)
+    {
+    }
+
+    // 9. SYSCLK = PLL
+    RCC_CFGR =
+        (RCC_CFGR & ~(3U << 0)) | (2U << 0);
+
+    // 10. SYSCLK 전환 완료 확인
+    while ((RCC_CFGR & (3U << 2)) != (2U << 2))
+    {
+    }
 }
+
+
+// =====================================
+// 3. USART3 Initialization
+// =====================================
 
 void USART3_Init(void)
 {
@@ -97,38 +179,38 @@ void USART3_Init(void)
     // USART3 Clock Enable
     RCC_APB1ENR |= (1U << 18);
 
-    // PD8 Alternate Function (주변장치 활성화)
+    // PD8 Alternate Function Mode (10)
     GPIOD_MODER &= ~(3U << 16);
     GPIOD_MODER |=  (2U << 16);
 
-    // Push-Pull
+    // PD8 Push-Pull
     GPIOD_OTYPER &= ~(1U << 8);
 
-    // AF7: GPIOD 포트의 상위 핀(PD8~PD15) 부가 기능 설정
+    // PD8 AF7 = USART3_TX
     GPIOD_AFRH &= ~(0xFU << 0);
     GPIOD_AFRH |=  (7U << 0);
 
-    // USART3_CR1: USART 비활성화, TX/RX 비활성화, 8비트 데이터,
-    // 패리티 없음, USART 인터럽트 비활성화
+    // USART Configuration Reset
     USART3_CR1 = 0U;
-
-    // USART3_CR2: Stop Bit 1개, 동기식 클럭 비활성화,
-    // LIN 및 특수 통신 모드 비활성화
     USART3_CR2 = 0U;
-
-    // USART3_CR3: RTS/CTS 흐름 제어 비활성화, DMA 비활성화,
-    // Half-Duplex, Smartcard, IrDA 등 특수 모드 비활성화
     USART3_CR3 = 0U;
 
-    // PCLK1 = 16MHz, Baud = 115200
-    USART3_BRR = 0x008BU;
+    // PCLK1 = 42MHz
+    // Baud = 115200bps
+    USART3_BRR = 0x016DU;
 
-    // USART Enable + TX Enable
+    // UE = 1, TE = 1
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
 
+
+// =====================================
+// 4. UART Transmit
+// =====================================
+
 void USART3_SendChar(char c)
 {
+    // TXE = 1 대기
     while ((USART3_SR & (1U << 7)) == 0U)
     {
     }
@@ -136,40 +218,68 @@ void USART3_SendChar(char c)
     USART3_DR = (uint8_t)c;
 }
 
+
+// =====================================
+// 5. SysTick Initialization
+// =====================================
+
 void SysTick_Init(void)
 {
-    // STK_CTRL: SysTick 제어 레지스터 초기화
+    // SysTick Disable
     STK_CTRL = 0U;
 
-    // STK_LOAD: 16MHz / 1000 = 16,000클럭 → 1ms
-    // LOAD는 실제 카운트 횟수보다 1 작게 설정
-    STK_LOAD = 16000U - 1U;
+    /*
+     * HCLK = 168MHz
+     *
+     * CLKSOURCE = 0 : HCLK / 8
+     * 168MHz / 8 = 21MHz
+     *
+     * 21,000,000 / 1000 = 21,000 clocks
+     *
+     * 1ms = 21,000 clocks
+     *
+     * LOAD = 21,000 - 1
+     */
 
-    // STK_VAL: 현재 카운터 값 및 COUNTFLAG 초기화
+    STK_LOAD = (SYSTICK_HZ / 1000U) - 1U;
+
+    // Current Value Clear
     STK_VAL = 0U;
 
-    // CLKSOURCE(Bit 2) = 1 : CPU 클럭(HCLK) 사용
-    // TICKINT  (Bit 1) = 1 : SysTick Exception 활성화
-    // ENABLE   (Bit 0) = 1 : SysTick 카운터 시작
-    STK_CTRL = (1U << 2) |
-               (1U << 1) |
+    // CLKSOURCE(Bit 2) = 0 : HCLK/8
+    // TICKINT  (Bit 1) = 1 : Exception Enable
+    // ENABLE   (Bit 0) = 1 : Counter Enable
+    STK_CTRL = (1U << 1) |
                (1U << 0);
 }
 
-// stm32f4xx_it.c에서 호출
+
+// =====================================
+// 6. SysTick Exception User Handler
+// =====================================
+
+// stm32f4xx_it.c의 SysTick_Handler에서 호출
 void SysTick_UserHandler(void)
 {
     static uint32_t exception_count = 0U;
 
+    // 1ms 경과
     systick_ms++;
+
     exception_count++;
 
+    // 500ms마다 '*' 출력
     if (exception_count >= 500U)
     {
         exception_count = 0U;
         USART3_SendChar('*');
     }
 }
+
+
+// =====================================
+// 7. Main - Polling
+// =====================================
 
 int main(void)
 {
