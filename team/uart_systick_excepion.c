@@ -40,9 +40,9 @@
 #define USART3_CR3     (*(volatile uint32_t *)(USART3_BASE + 0x14UL))
 
 // SysTick
-#define SYST_CSR       (*(volatile uint32_t *)(SYSTICK_BASE + 0x00UL))
-#define SYST_RVR       (*(volatile uint32_t *)(SYSTICK_BASE + 0x04UL))
-#define SYST_CVR       (*(volatile uint32_t *)(SYSTICK_BASE + 0x08UL))
+#define STK_CTRL       (*(volatile uint32_t *)(SYSTICK_BASE + 0x00UL))
+#define STK_LOAD       (*(volatile uint32_t *)(SYSTICK_BASE + 0x04UL))
+#define STK_VAL        (*(volatile uint32_t *)(SYSTICK_BASE + 0x08UL))
 
 // Exception Handler에서 증가
 // 프로그램 시작 후 경과한 시간을 ms 단위로 기록
@@ -138,20 +138,20 @@ void USART3_SendChar(char c)
 
 void SysTick_Init(void)
 {
-    // SysTick 제어 레지스터 초기화 (타이머 및 인터럽트 비활성화)
-    SYST_CSR = 0U;
+    // STK_CTRL: SysTick 제어 레지스터 초기화
+    STK_CTRL = 0U;
 
-    // Reload 설정: 16MHz / 1000 = 16,000클럭 → 1ms
+    // STK_LOAD: 16MHz / 1000 = 16,000클럭 → 1ms
     // LOAD는 실제 카운트 횟수보다 1 작게 설정
-    SYST_RVR = 16000U - 1U;
+    STK_LOAD = 16000U - 1U;
 
-    // 현재 카운터 값 초기화 (카운터 및 COUNTFLAG 초기화)
-    SYST_CVR = 0U;
+    // STK_VAL: 현재 카운터 값 및 COUNTFLAG 초기화
+    STK_VAL = 0U;
 
     // CLKSOURCE(Bit 2) = 1 : CPU 클럭(HCLK) 사용
     // TICKINT  (Bit 1) = 1 : SysTick Exception 활성화
     // ENABLE   (Bit 0) = 1 : SysTick 카운터 시작
-    SYST_CSR = (1U << 2) |
+    STK_CTRL = (1U << 2) |
                (1U << 1) |
                (1U << 0);
 }
