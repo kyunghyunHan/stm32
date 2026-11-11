@@ -1,0 +1,1387 @@
+[
+  {
+    "old": "src/register/led.c",
+    "path": "src/f446re/register/gpio_led_blink.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "SysTick 폴링으로 3초마다 PA5 반전",
+    "pins": "PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "기존 F767 빌드도 이 소스를 사용함. 사용한 RCC/GPIO 주소는 F767 CMSIS와도 일치; PA5 실제 LED 배선 확인 필요",
+    "sha256": "7567230c0355b86796f4469e13fe8e026f310224c46e018dde9ebcea728e8465",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "gpio_led_blink"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "led"
+      },
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "led"
+      }
+    ]
+  },
+  {
+    "old": "src/register/led_button.c",
+    "path": "src/f429zi/register/gpio_button_toggle.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 하강 에지에서 PF15 반전, 디바운스 없음",
+    "pins": "PC13, PF15",
+    "clock": "HSI 16 MHz 가정",
+    "note": "기존 F446/F767 빌드 보존; F446RE에 PF15 없음. F767의 사용한 GPIO 주소는 CMSIS와 일치하지만 PF15 패키지/배선 확인 필요",
+    "sha256": "0fbbc73d97821c758d13a19144ffba0460010807b89e5fad4f21766ef9b3b402",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_button_toggle"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "led_button"
+      },
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "led_button"
+      }
+    ]
+  },
+  {
+    "old": "src/register/adc.c",
+    "path": "src/f767vi/register/adc_polling.c",
+    "board": "f767vi",
+    "implementation": "register",
+    "language": "C",
+    "function": "ADC1 채널7 단발 변환 및 전압 환산",
+    "pins": "PA7",
+    "clock": "HSE/PLL, M=8 N=216 P=2; HSE 16 MHz일 때 SYSCLK 216 MHz; APB2=108 MHz, ADC /6=18 MHz (HSE 16 MHz 조건)",
+    "note": "소스 주석은 F767VG, 기존 빌드는 VI; 외부 발진기와 전압 조건 확인 필요",
+    "sha256": "1a60cbf96660acc44a13a70ad94b72059107e0ede56558c00eadfdda7b71782c",
+    "includes": [
+      "stm32f7xx.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "adc_polling"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "adc"
+      }
+    ]
+  },
+  {
+    "old": "src/register/interrupt.c",
+    "path": "src/f767vi/register/exti_button_led_toggle.c",
+    "board": "f767vi",
+    "implementation": "register",
+    "language": "C",
+    "function": "EXTI4 하강 에지마다 PC6 반전",
+    "pins": "PD4, PC6",
+    "clock": "HSE/PLL, M=8 N=216 P=2; HSE 16 MHz일 때 SYSCLK 216 MHz",
+    "note": "소스 주석은 F767VG, 기존 빌드는 VI; 외부 발진기와 전압 조건 확인 필요",
+    "sha256": "6d549bd80b1a38ece95f0faf9b6a10cf7ac6a11337811d4bb62af7fbb764af2b",
+    "includes": [
+      "stm32f7xx.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "exti_button_led_toggle"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "interrupt"
+      }
+    ]
+  },
+  {
+    "old": "src/register/timer_counter.c",
+    "path": "src/f767vi/register/timer_interrupt_led_toggle.c",
+    "board": "f767vi",
+    "implementation": "register",
+    "language": "C",
+    "function": "TIM1 update 인터럽트마다 PC6 반전",
+    "pins": "PC6",
+    "clock": "HSE/PLL, M=8 N=216 P=2; HSE 16 MHz일 때 SYSCLK 216 MHz",
+    "note": "소스 주석은 F767VG, 기존 빌드는 VI; 외부 발진기와 전압 조건 확인 필요",
+    "sha256": "2962399a42932a3a1fccfde1dbec7eb5d8aee31fda757737dfe674b67c9771c3",
+    "includes": [
+      "stm32f7xx.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "timer_interrupt_led_toggle"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "timer_counter"
+      }
+    ]
+  },
+  {
+    "old": "src/register/urtc.c",
+    "path": "src/f767vi/register/uart_rx_increment_tx_polling.c",
+    "board": "f767vi",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART2 수신 바이트+1 송신",
+    "pins": "PD5 TX / PD6 RX AF7",
+    "clock": "HSE/PLL, M=8 N=216 P=2; HSE 16 MHz일 때 SYSCLK 216 MHz; APB1=54 MHz, BRR=5625 → 9600 baud (HSE 16 MHz 조건)",
+    "note": "소스 주석은 F767VG, 기존 빌드는 VI; 외부 발진기와 전압 조건 확인 필요",
+    "sha256": "af64cefe28520faf7aa092abb87cc25514c4676223fb6572e3120a6c9d4f8945",
+    "includes": [
+      "stm32f7xx.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "uart_rx_increment_tx_polling"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "register",
+        "name": "urtc"
+      }
+    ]
+  },
+  {
+    "old": "src/register/clock.c",
+    "path": "src/f767vi/register/clock_pll_init.c",
+    "board": "f767vi",
+    "implementation": "register",
+    "language": "C",
+    "function": "Initialize_MCU 초기화 함수, main 없음",
+    "pins": "GPIO 없음",
+    "clock": "HSE/PLL M=8 N=216 P=2",
+    "note": "헤더 강제 include가 필요한 학습 조각",
+    "sha256": "639ba391925aba67e36b65ae3468fed7365534c14c140b63cf93819828c5e2a2",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/register_offset.c",
+    "path": "src/f429zi/register/gpio_register_layout.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "주소 매크로 및 GPIO 구조체 정의; main 없음",
+    "pins": "GPIOD (핀 사용 없음)",
+    "clock": "HSI 16 MHz 가정",
+    "note": "RCC_AHB1ENR_OFFSET 정의 누락; 매크로 미사용이라 구문 검사로 검출 안 됨",
+    "sha256": "6ae08ff17514cc0c084a8e06adc389a9df9e04ea957d18bce7aad28f42679330",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/ext_led_ext_button.c",
+    "path": "src/f429zi/register/gpio_external_button_led.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PA10 LOW이면 PA8 HIGH",
+    "pins": "PA10 pull-up / PA8",
+    "clock": "HSI 16 MHz 가정",
+    "note": "사용자 확인에 따라 F429ZI로 분류; 실제 배선 확인 필요",
+    "sha256": "912fbdf081dd071138607b1ddc3bc20f0e21904999c859225b2ef9364f4ef644",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_external_button_led"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/ext_led_int_button.c",
+    "path": "src/f429zi/register/gpio_pc13_external_led.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 LOW이면 PA8 HIGH",
+    "pins": "PC13 / PA8",
+    "clock": "HSI 16 MHz 가정",
+    "note": "사용자 확인에 따라 F429ZI로 분류; 실제 배선 확인 필요",
+    "sha256": "3fbaa16d5cda07f378dd1bf255bb66396e4ce0ee02634231cbc412ae052ddedc",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_pc13_external_led"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/inpiut.c",
+    "path": "src/f429zi/register/gpio_button_toggle_open_drain.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PF14 하강 에지마다 PF15 open-drain 반전",
+    "pins": "PF14 pull-up / PF15",
+    "clock": "HSI 16 MHz 가정",
+    "note": "사용자 확인에 따라 F429ZI로 분류; 실제 배선 확인 필요",
+    "sha256": "8e3865ed0594f62749e2b494261a634717a9fd11e382367e1b8f30dce264a197",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_button_toggle_open_drain"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/led_button_ot.c",
+    "path": "src/f429zi/register/gpio_pc13_toggle_open_drain.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 하강 에지마다 PF15 open-drain 반전",
+    "pins": "PC13 / PF15",
+    "clock": "HSI 16 MHz 가정",
+    "note": "사용자 확인에 따라 F429ZI로 분류; 실제 배선 확인 필요",
+    "sha256": "be519ab68ad82b25dee4050a399b7edf81cc053ed2ebfc61291c802e2acb814d",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_pc13_toggle_open_drain"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/3led_button.c",
+    "path": "src/f429zi/register/gpio_button_event_counter.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "버튼 이벤트 큐, 3비트 LED 카운터 및 외부 입력 출력",
+    "pins": "PC13, PB0/PB7/PB14, PF15 입력 / PF13 출력",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "a673893cc21b079207b80a90110c41780ef72abcb24bd1194652667b067dc102",
+    "includes": [
+      "stdint.h",
+      "stdbool.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_button_event_counter"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/test.c",
+    "path": "src/f429zi/register/gpio_button_event_counter_variant.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "버튼 이벤트 큐, 3비트 LED 카운터 및 외부 입력 출력 별도 실습",
+    "pins": "PC13, PB0/PB7/PB14, PF15 입력 / PF13 출력",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "a673893cc21b079207b80a90110c41780ef72abcb24bd1194652667b067dc102",
+    "includes": [
+      "stdint.h",
+      "stdbool.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_button_event_counter_variant"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/exti_button_edge.c",
+    "path": "src/f429zi/register/exti_both_edges_led.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 양 에지 인터럽트에서 PB7이 입력 상태를 반영",
+    "pins": "PC13 / PB7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "59cb09e2b2a598d4580b8d2242433d04c96181470627c8d97a29f93aa7cfd77b",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "exti_both_edges_led"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/interrupt_int_led.c",
+    "path": "src/f429zi/register/exti_rising_led_toggle.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 상승 인터럽트에서 PB7 반전",
+    "pins": "PC13 / PB7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "F429ZI의 PC13 상승 에지/PB7 반전 실습",
+    "sha256": "5845a344232b9171dd1b97272f2da114e58bbfa70316538a5f536b606d4a2eb2",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "exti_rising_led_toggle"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/sos_led.c",
+    "path": "src/f429zi/register/gpio_led_morse_sos.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PB7 LED로 SOS 반복",
+    "pins": "PB7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "d21177c3477e042a349e6db61961c343446bbdb43c79771d1267468047c4c8ef",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_led_morse_sos"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/tim_poling_int_led.c",
+    "path": "src/f429zi/register/timer_polling_uart_tx.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "TIM2 1초 폴링마다 USART3 점 송신",
+    "pins": "PD8 TX AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "USART3 BRR=139, APB1 16 MHz에서 약 115108 baud (115200 설정용)",
+    "sha256": "cb0c77cbee118df03a6eac240e1885814eb8a6f395abe0d9d8ca8340e1eaa153",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "timer_polling_uart_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_print.c",
+    "path": "src/f429zi/register/uart_heap_memory_dump.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "calloc/free 주소와 고정 RAM 덤프를 USART3로 출력",
+    "pins": "PD8 TX / PD9 RX AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "6f9bc63910e73562ab96a1bee13ab2c3a02fd8bbf1bcb2bc3b2890e20537d54a",
+    "includes": [
+      "stdint.h",
+      "stdlib.h",
+      "stdio.h",
+      "stdarg.h",
+      "inttypes.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart_heap_memory_dump"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/led_interrupt.c",
+    "path": "src/f446re/register/systick_interrupt_led_blink.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "SysTick 1ms IRQ 누적, 3초마다 PA5 반전",
+    "pins": "PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "f874ab03104156ea5fb2088f13a6dd62fc3c9a6fac767f60a70d4c9fa10e8c87",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "systick_interrupt_led_blink"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/timer_led.c",
+    "path": "src/f446re/register/timer_polling_led_blink.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "TIM2 PSC=15999 ARR=999; 1초 update마다 PA5 반전",
+    "pins": "PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "7e2afc1d78c6d4213d96301fdc4df91c2522c270396ce934a886cd2b706338f2",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "timer_polling_led_blink"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/oled_hello.c",
+    "path": "src/f446re/register/i2c_oled_hello.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "SSD1306 주소 0x3c, HELLO STM32 표시 및 UART 진단",
+    "pins": "PB8 SCL / PB9 SDA AF4, PA2 TX AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "bca4f91388c4a1359233dabf852be7a92e1fd1cd3eeff0babd809d31dd8556f2",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "i2c_oled_hello"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_ext_led.c",
+    "path": "src/f446re/register/uart_rx_external_led.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART2 1/0 명령으로 외부 LED 제어",
+    "pins": "PA2/PA3 AF7 / PA8",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "aefadf142f2ec3fe10459a7967c2a71adaae2b2ee4adad3a7584731389a73073",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_rx_external_led"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_gpio_input.c",
+    "path": "src/f446re/register/uart_button_level_tx.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 변화 시 0/1 CRLF 송신",
+    "pins": "PC13 / PA2 TX AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "afe2319a4d2d5ad80a139a4c9993006939450f154ccd4017df6a81c2dd736843",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_button_level_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/urtc2.c",
+    "path": "src/f446re/register/uart_rx_increment_tx_polling.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART2 수신 바이트+1 송신",
+    "pins": "PA2 TX / PA3 RX AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "c06ff3f1ccf7a85c72b57771aad43aeb09d2a37d8eee93d3896cb57fb8309a73",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_rx_increment_tx_polling"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_led.c",
+    "path": "src/f446re/register/uart_rx_led_control.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART2 1/0 명령으로 PA5 제어 의도",
+    "pins": "PA2/PA3 AF7 / PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "RXNE 대기 괄호 오류 유지; APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "d485cbda44efd76441db3c5c2b0b8e90349e4d66e9561e79771d0203a4d65f40",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_rx_led_control"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_systick.c",
+    "path": "src/f446re/register/uart_rx_led_control_variant.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "uart_led.c와 동일한 학습 소스",
+    "pins": "PA2/PA3 AF7 / PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "RXNE 대기 괄호 오류 유지; APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "d485cbda44efd76441db3c5c2b0b8e90349e4d66e9561e79771d0203a4d65f40",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_rx_led_control_variant"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_ext_3led.c",
+    "path": "src/f429zi/register/uart_rx_three_led_select.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "0/1/2 선택 출력, 3 전체 끄기",
+    "pins": "PA3 RX AF7, PA8/PA9/PC7 LED",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "a6a82d731d06e12f6ff0a66f1345ebd1ccf2c3e754674d55c0f9ea50bc53cf6a",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart_rx_three_led_select"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_ext_button.c",
+    "path": "src/f429zi/register/uart_external_button_tx.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PA10 상승 에지에서 Button Pressed 송신",
+    "pins": "PA10 pull-down / PA2 TX AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "10475fb6eb95e1e14004cf9ba1dd7b8fd2424481ad3eec79e8ecbbba8211d0d4",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart_external_button_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_ext_led_ext_button.c",
+    "path": "src/f429zi/register/uart_button_led_report.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "버튼 상태를 LED에 출력, 상승 시 UART 보고",
+    "pins": "PA10 pull-down / PA8 LED / PA2 TX AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "2432018bb7f1f17ba2363f8a259be1e3916890d6253eb14c1c8004e9eb101900",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart_button_led_report"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/ii.c",
+    "path": "notes/gpio_pullup_open_drain_circuits.c",
+    "board": "f429zi (주석)",
+    "implementation": "Register draft",
+    "language": "C",
+    "function": "전체가 주석인 GPIO pull-up/pull-down, push-pull/open-drain 회로 학습 메모",
+    "pins": "주석 예시: PF14/PF15",
+    "clock": "미설정",
+    "note": "독립 실행 불가",
+    "sha256": "1393d376b51004eb5056db497c6d9173377885836f83cc10ac1f51b0acf55b8e",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/throttle.c",
+    "path": "notes/adc_throttle_draft.c",
+    "board": "unassigned",
+    "implementation": "Register draft",
+    "language": "C",
+    "function": "RCC_BASE 빈 매크로만 존재",
+    "pins": "해당 없음",
+    "clock": "미설정",
+    "note": "독립 실행 불가",
+    "sha256": "76373bb4371713d186cb1a39b56ec38c689a22f2f4e974b0759076ab915aa6b8",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/hal/led.c",
+    "path": "src/f767vi/hal/gpio_led_blink.c",
+    "board": "f767vi",
+    "implementation": "hal",
+    "language": "C",
+    "function": "HAL_Delay 3초마다 PA5 반전",
+    "pins": "PA5",
+    "clock": "HSI 16 MHz",
+    "note": "",
+    "sha256": "43b847d2e591f4c2e95ac151f102ec381cc17314e0aceb45f48eb0965ee70bcf",
+    "includes": [
+      "stm32f7xx_hal.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f767",
+        "mode": "hal",
+        "name": "gpio_led_blink"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "hal",
+        "name": "led"
+      }
+    ]
+  },
+  {
+    "old": "src/hal/adc.c",
+    "path": "src/f767vi/hal/adc_polling.c",
+    "board": "f767vi",
+    "implementation": "hal",
+    "language": "C",
+    "function": "ADC1 채널7 56 cycles 샘플링, 전압 환산",
+    "pins": "PA7",
+    "clock": "HSI 16 MHz; ADC clock 8 MHz",
+    "note": "",
+    "sha256": "861261d3dcdb59558bc9a62f9b14b6e1058231bf426873400536272831741d16",
+    "includes": [
+      "stm32f7xx_hal.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f767",
+        "mode": "hal",
+        "name": "adc_polling"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f767",
+        "mode": "hal",
+        "name": "adc"
+      }
+    ]
+  },
+  {
+    "old": "src/register/uart_led_error.c",
+    "path": "src/f446re/register/uart_command_error_counters.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "라인 명령으로 LED 3개 제어, 버튼 디바운스 및 UART 오류 카운터",
+    "pins": "PA2/PA3 AF7, PA5/PB0/PB1, PC13",
+    "clock": "HSI 16 MHz",
+    "note": "UART 9600 8N1; PC13 active-high 해석은 실제 회로 확인 필요; APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "3ac125c65bcc330dd62244d20d541a3d6163717327c8df6955f1c8abf09937fc",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_command_error_counters"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/hal/uart_led_error.c",
+    "path": "src/f446re/hal/uart_command_error_counters.c",
+    "board": "f446re",
+    "implementation": "hal",
+    "language": "C",
+    "function": "라인 명령으로 LED 3개 제어, 버튼 디바운스 및 UART 오류 카운터",
+    "pins": "PA2/PA3 AF7, PA5/PB0/PB1, PC13",
+    "clock": "HSI 16 MHz",
+    "note": "UART 9600 8N1; PC13 active-high 해석은 실제 회로 확인 필요",
+    "sha256": "9ef42e221620f02b9b15a0f15390bc62d2186256bbe73f259435fe750bfb12f1",
+    "includes": [
+      "stm32f4xx_hal.h",
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "hal",
+        "name": "uart_command_error_counters"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/u_to_u/STM32F446RE_LED.c",
+    "path": "src/f446re/register/uart_button_led_sync.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART1으로 버튼 상태 교환, 20ms 표본 디바운스",
+    "pins": "PA9 TX / PA10 RX AF7, PC13 / PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "b002ac2a2b48fa5818b5086ccc565cd2e0dcfed3d609a681cec9d5f2f860c2db",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_button_led_sync"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/u_to_u/STM32F439ZI_LED.c",
+    "path": "src/f429zi/register/uart_button_led_sync.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART1으로 버튼 상태 교환, 20ms 표본 디바운스",
+    "pins": "PA9 TX / PA10 RX AF7, PC13 / PB7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "사용자 확인에 따라 F429ZI로 정정; APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "e00bc3999eefb5b8f9c8f9c47d07cad645b27533ae3d75c33fdbb0c0d35c0e7c",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart_button_led_sync"
+      }
+    ],
+    "legacy_targets": [],
+    "original_sha256": "290bf4821732f1d2b59e1c6b7199d8a215b02262868badd412a6a0f2da8fa08f"
+  },
+  {
+    "old": "src/register/u_to_u/stm32_uart.c",
+    "path": "src/f446re/register/uart_button_led_sync_blocking.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART1 버튼 전송 / LED 수신, blocking 20ms 디바운스",
+    "pins": "PA9 TX / PA10 RX AF7, PC13 / PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "e90c68959a054177e77cb2c047e57f7540ea3fb98faf105407aa52561c010090",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_button_led_sync_blocking"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/u_to_u/stm32_uart2.c",
+    "path": "src/f429zi/register/uart6_button_led_sync.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART6 버튼 전송 / LED 수신",
+    "pins": "PG14 TX / PG9 RX AF8, PC13 / PB7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "4a6034a3ca0cddf36dfbd96da6011913059091014727dc08aa2369e1f1202094",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart6_button_led_sync"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/u_to_u3/test.c",
+    "path": "src/f446re/register/uart_three_node_hub.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "F429/ESP32 상태 OR 결합; 20ms debounce / 200ms 재전송",
+    "pins": "PA9/PA10 AF7 USART1, PA0/PA1 AF8 UART4, PC13 / PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "2eda82892c30fd69a3057011e9254d7e24560f738e92801015dd6a20fd5537c0",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "uart_three_node_hub"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/can_int_led.c",
+    "path": "src/f429zi/register/can_loopback_led.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "CAN 내부 loopback ID 0x123, 데이터 일치 시 PB7 HIGH",
+    "pins": "PB7; CAN 외부 핀 없음",
+    "clock": "HSI 16 MHz 가정",
+    "note": "CAN sleep 해제 확인 필요; timeout 없음",
+    "sha256": "a02293ba87833b048353345df6687c3e73660527839a67db30e0894bf2067e5a",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "can_loopback_led"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/can_f446.c",
+    "path": "src/f446re/register/can_silent_loopback.c",
+    "board": "f446re",
+    "implementation": "register",
+    "language": "C",
+    "function": "CAN silent loopback ID 0x100, SOC=70 TEMP=30, debugger 변수 확인",
+    "pins": "외부 CAN 핀 없음",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "3dec3f94858e2dc5d9238a2baf7be5ce426e75b39bc14a2b292ad7330c89f132",
+    "includes": [
+      "stm32f446xx.h",
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f446",
+        "mode": "register",
+        "name": "can_silent_loopback"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/led.rs",
+    "path": "src/f446re/rust/gpio_led_blink.rs",
+    "board": "f446re",
+    "implementation": "Rust/Register",
+    "language": "Rust",
+    "function": "SysTick 폴링 3초 PA5 반전",
+    "pins": "PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "Cargo 미등록; panic_halt 의존성 없음",
+    "sha256": "20c8e421ddee04490fb62637228a4408e3a905f3004bbdeb19307ceabd8393db",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/led_button.rs",
+    "path": "src/f446re/rust/gpio_button_led_level.rs",
+    "board": "f446re",
+    "implementation": "Rust/Register",
+    "language": "Rust",
+    "function": "PC13 LOW이면 PA5 HIGH",
+    "pins": "PC13 / PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "4f67fdee7e619ca837522b0770845ee5dfdb8655e5570de2afd8f7a04f5fb2cc",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart_led.rs",
+    "path": "src/f446re/rust/uart_rx_led_control.rs",
+    "board": "f446re",
+    "implementation": "Rust/Register",
+    "language": "Rust",
+    "function": "USART2 1/0로 PA5 출력",
+    "pins": "PA2/PA3 AF7 / PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "",
+    "sha256": "b15b514dd5595460fc2c0cb728c9a37e374a55fc3fdf354418c44138387a94c3",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/register/uart.rs",
+    "path": "src/f446re/rust/uart_echo_greeting.rs",
+    "board": "f446re",
+    "implementation": "Rust/Register",
+    "language": "Rust",
+    "function": "USART3 Hello World 후 echo",
+    "pins": "PD8/PD9 AF7",
+    "clock": "HSI 16 MHz 가정",
+    "note": "주석 F429ZI와 Cargo F446 feature 불일치",
+    "sha256": "f5ec346a1b5c9bc7d438e02ecfd5dfbdd0d4e6c4c04b2f292d992d9a864f3d3b",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/hal/led.rs",
+    "path": "src/f767vi/rust/rust_hal_gpio_led_blink.rs",
+    "board": "f767vi",
+    "implementation": "Rust/HAL",
+    "language": "Rust",
+    "function": "HAL GPIO PA5 blink 의도",
+    "pins": "PA5",
+    "clock": "HSI 16 MHz 가정",
+    "note": "Cargo 미등록; stm32f7xx_hal/panic_halt 의존성 없음",
+    "sha256": "b3c20a0b14c5fb167b718a7f24b6479debf341e180278bf6c4e9f2450986c4d0",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "src/firmware.rs",
+    "path": "src/firmware.rs",
+    "board": "f446re/f767vi",
+    "implementation": "Rust/PAC",
+    "language": "Rust",
+    "function": "PAC take 후 nop 무한 루프; 주변장치 예제 아님",
+    "pins": "없음",
+    "clock": "리셋 클럭",
+    "note": "",
+    "sha256": "8693267d819419098f0f32bd7fb71262c6b4de52ce840b8af9e2f7d6e5b016c0",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/led.c",
+    "path": "src/f429zi/register/gpio_led_blink.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PB7 1초 blink",
+    "pins": "PB7",
+    "clock": "HSI 16 MHz",
+    "note": "",
+    "sha256": "2e1010653674f7e51372e5eefa014841c821387c6c01196425da32d15c29f718",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_led_blink"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/led_button.c",
+    "path": "src/f429zi/register/gpio_button_toggle_debounce.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 active-low 20ms debounce로 PA10 toggle",
+    "pins": "PC13 pull-up / PA10",
+    "clock": "HSI 16 MHz",
+    "note": "",
+    "sha256": "af06e889eb3345802c1b3e4920bf045e0734968cba63cfdaec919c58a58ec6d7",
+    "includes": [
+      "stm32f429xx.h",
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_button_toggle_debounce"
+      }
+    ],
+    "legacy_targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "led_button"
+      }
+    ]
+  },
+  {
+    "old": "team/led_button_3.c",
+    "path": "src/f429zi/register/gpio_button_toggle_raw.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "PC13 하강 에지 PA10 반전; debounce 없음",
+    "pins": "PC13 / PA10",
+    "clock": "HSI 16 MHz",
+    "note": "",
+    "sha256": "1b98d68c1e130c3fa0999753297e4483cc7512b2b98474d110246a28bf1714d2",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "gpio_button_toggle_raw"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart1.c",
+    "path": "src/f429zi/register/uart_echo_greeting.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART3 인사 후 echo",
+    "pins": "PD8/PD9 AF7",
+    "clock": "HSI 16 MHz",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "c69804c0caea4e1a15168ec60eb233f03bf2d199b606ffcd74850b2102a55384",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart_echo_greeting"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart2.c",
+    "path": "src/f429zi/register/uart_echo.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "USART3 echo",
+    "pins": "PD8/PD9 AF7",
+    "clock": "HSI 16 MHz",
+    "note": "APB 16 MHz, BRR=1667 → 약 9598 baud (9600 설정용)",
+    "sha256": "565955622b4b65afa9665ea9722a7069fd2f1208b55772ec70af7efccca0b99d",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "uart_echo"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart3.c",
+    "path": "src/f429zi/register/uart_dual_init_draft.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "uart3_init/uart1_init 호출만 존재; 정의 없음",
+    "pins": "미설정",
+    "clock": "HSI 16 MHz",
+    "note": "",
+    "sha256": "7b7e2539c51927813f9a76ecde1e9fa3958bb477374b9badd62f0505d19861b8",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart_excepion.c",
+    "path": "src/f429zi/register/systick_interrupt_uart_tx.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "500ms SysTick_UserHandler에서 별표 송신 의도",
+    "pins": "PD8 AF7",
+    "clock": "HSI 16 MHz",
+    "note": "SDK vector와 UserHandler 이름 불일치; USART3 BRR=139, APB1 16 MHz에서 약 115108 baud (115200 설정용)",
+    "sha256": "5b044a371f1efba09a6899ed9f7005fea111c9057e4eac8ba366711aa25c3ec6",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "systick_interrupt_uart_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart_systick.c",
+    "path": "src/f429zi/register/systick_polling_uart_tx.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "HCLK/8 SysTick 1초 폴링 점 출력",
+    "pins": "PD8 AF7",
+    "clock": "HSI 16 MHz",
+    "note": "USART3 BRR=139, APB1 16 MHz에서 약 115108 baud (115200 설정용)",
+    "sha256": "6539e0a6f7a71dc3088692f913da041e96f6e796a5e8b0cf4ab8819d40914437",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "systick_polling_uart_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart_systick2.c",
+    "path": "src/f429zi/register/systick_pll_polling_uart_tx.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "168MHz PLL, 500ms count 2회로 점 출력",
+    "pins": "PD8 AF7",
+    "clock": "HSI→PLL 168 MHz; APB1 42 MHz",
+    "note": "USART3 BRR=365, APB1 42 MHz에서 약 115068 baud (115200 설정용)",
+    "sha256": "594f5ef49d5ea814c4f11f7c8d5d1a6423b1a7cb9bef4a3ccb930e3d8c30a595",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "systick_pll_polling_uart_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart_systick_excepion.c",
+    "path": "src/f429zi/register/systick_pll_interrupt_uart_tx.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "1ms SysTick_UserHandler, 별표/점 출력 의도",
+    "pins": "PD8 AF7",
+    "clock": "HSI→PLL 168 MHz; APB1 42 MHz",
+    "note": "SDK vector와 UserHandler 이름 불일치; USART3 BRR=365, APB1 42 MHz에서 약 115068 baud (115200 설정용)",
+    "sha256": "543e448ed4f4b91135d972538a27cf3fa25605bbe416fe3d61ab0de2f5e26740",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "systick_pll_interrupt_uart_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/uart_tim6.c",
+    "path": "src/f429zi/register/timer_interrupt_polling_uart_tx.c",
+    "board": "f429zi",
+    "implementation": "register",
+    "language": "C",
+    "function": "TIM6_UserHandler @ 및 CNT rollover ! 출력 의도",
+    "pins": "PD8 AF7",
+    "clock": "HSI 16 MHz",
+    "note": "SDK vector와 UserHandler 이름 불일치; USART3 BRR=139, APB1 16 MHz에서 약 115108 baud (115200 설정용)",
+    "sha256": "258a7630f9c96fcfa0c86eeff49e6543c1066828ae5290d4d7326af1e9d001d4",
+    "includes": [
+      "stdint.h"
+    ],
+    "targets": [
+      {
+        "mcu": "f429",
+        "mode": "register",
+        "name": "timer_interrupt_polling_uart_tx"
+      }
+    ],
+    "legacy_targets": []
+  },
+  {
+    "old": "team/bit.c",
+    "path": "notes/gpio_pullup_open_drain_notes.c",
+    "board": "unassigned",
+    "implementation": "notes",
+    "language": "C",
+    "function": "풀업/오픈드레인/LED 관련 한국어 메모",
+    "pins": "없음",
+    "clock": "없음",
+    "note": "C 구문 아님; 파일 내용 그대로 유지",
+    "sha256": "af12bb20bfc22afe2981490d5185d7e511de4b80da74992acfb3d24f01ce2493",
+    "includes": [],
+    "targets": [],
+    "legacy_targets": []
+  }
+]

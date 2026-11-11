@@ -1,0 +1,454 @@
+[
+  {
+    "old": ".cargo/config.toml",
+    "path": ".cargo/config.toml",
+    "sha256": "a07822f6e33a8e1e7ddd8a208b029b08eb62ab263ee94391488170a2ad2575a2"
+  },
+  {
+    "old": ".gitignore",
+    "path": ".gitignore",
+    "sha256": "23fbaa9588885ed44b0e3032f469bac5315a66e65011d25248f9664d45e0aae1"
+  },
+  {
+    "old": ".vscode/c_cpp_properties.json",
+    "path": ".vscode/c_cpp_properties.json",
+    "sha256": "745e3f6fcb7ec71d0b1e20767203f9219c526f9e53531732e23efa8c202f8bf5"
+  },
+  {
+    "old": ".vscode/extensions.json",
+    "path": ".vscode/extensions.json",
+    "sha256": "f47eafd0f40df45a88c2284b852f21f9a8941a783ea78fc58015cb9169d052ef"
+  },
+  {
+    "old": ".vscode/launch.json",
+    "path": ".vscode/launch.json",
+    "sha256": "b4b79bf4f8bfd77e5c43bcf567c8199cb93295d2bbf5bef5d96adf2ff4a66a3c"
+  },
+  {
+    "old": ".vscode/tasks.json",
+    "path": ".vscode/tasks.json",
+    "sha256": "7a10a93709fada87c25a9492c647c53508d03cce8f01d56423753cee92ee57d7"
+  },
+  {
+    "old": "Cargo.lock",
+    "path": "Cargo.lock",
+    "sha256": "c289a818cd61b5b9f37863c3b99f30572e3b53adf7d9b0ebca46c20c081b5466"
+  },
+  {
+    "old": "Cargo.toml",
+    "path": "Cargo.toml",
+    "sha256": "84fb3c6dfbc07e9bc69dcc2d9090a0dd07e4ec41d6b895568f10bb939a40de88"
+  },
+  {
+    "old": "Makefile",
+    "path": "Makefile",
+    "sha256": "fc910b0062d1d7b742dc78304aaba71ec66f6e1acfbce0fa13130ea26462216e"
+  },
+  {
+    "old": "README.md",
+    "path": "README.md",
+    "sha256": "fa48a3d72a9ab8a80d3eee42b93a7abaf2036f5466b30afbe207d7cd5831990d"
+  },
+  {
+    "old": "STM32F429ZI_FLASH.ld",
+    "path": "system/STM32F429ZI_FLASH.ld",
+    "sha256": "819b729167af35180efd7437a9eec8252807b57cd4bfc7654b0f016b80211233"
+  },
+  {
+    "old": "STM32F446RE_FLASH.ld",
+    "path": "system/STM32F446RE_FLASH.ld",
+    "sha256": "65481c2f72cf724451b9c312dbaaec8d47018147581d3f7c3f4d8672e1e6c40d"
+  },
+  {
+    "old": "STM32F767VI_FLASH.ld",
+    "path": "system/STM32F767VI_FLASH.ld",
+    "sha256": "45fda3fe16997278d85fbac1d8abdc1edab800ecc1010bd2a07b10df5dc563fb"
+  },
+  {
+    "old": "build.rs",
+    "path": "build.rs",
+    "sha256": "961661a22d937c78406d1666030d1498f2f149fc84a4871cd1e0b211a9237c3f"
+  },
+  {
+    "old": "cache.md",
+    "path": "notes/cache.md",
+    "sha256": "d327a13c88cb2c2a1cb0458a5b906538a90aab223e80df5af92f84ee8d92dbdf"
+  },
+  {
+    "old": "docs/BUILD_RUN.md",
+    "path": "docs/BUILD_RUN.md",
+    "sha256": "ffe5646b46107f339b9afca22fb8aad78e5387d07db0721384d3038ad1701295"
+  },
+  {
+    "old": "docs/REGISTER_LEARNING.md",
+    "path": "docs/REGISTER_LEARNING.md",
+    "sha256": "66820d3ba7b560b04fc4745dcffa4d9ca2e75d90b0f723ec19d5a023b892e4e1"
+  },
+  {
+    "old": "docs/register.md",
+    "path": "docs/register.md",
+    "sha256": "91b8577868abe1f873da2b87474bb39255da7bc2a2cfbf99c908601059979503"
+  },
+  {
+    "old": "docs/stm32_env.md",
+    "path": "docs/stm32_env.md",
+    "sha256": "35fbe221331347959fdb263257da7c6862b29de1edb8563f8a15e012b19304e0"
+  },
+  {
+    "old": "include/stm32f7xx_hal_conf.h",
+    "path": "system/stm32f7xx_hal_conf.h",
+    "sha256": "237800fe7097f65c03ed26dbb887111af2c57d228d60bf4458cbe93967f2c872"
+  },
+  {
+    "old": "memory/f446.x",
+    "path": "system/f446.x",
+    "sha256": "74ef62273eebeaba854fbe896b98157d3b7ec1c6514136462c46cde2a50baa95"
+  },
+  {
+    "old": "memory/f767.x",
+    "path": "system/f767.x",
+    "sha256": "76b18985f069d82aa2cd3473d078e6d6de4bab62330d27b1c2dcc1e0c2d33946"
+  },
+  {
+    "old": "src/can_int_led.c",
+    "path": "src/f429zi/register/can_loopback_led.c",
+    "sha256": "a02293ba87833b048353345df6687c3e73660527839a67db30e0894bf2067e5a"
+  },
+  {
+    "old": "src/firmware.rs",
+    "path": "src/firmware.rs",
+    "sha256": "8693267d819419098f0f32bd7fb71262c6b4de52ce840b8af9e2f7d6e5b016c0"
+  },
+  {
+    "old": "src/hal/adc.c",
+    "path": "src/f767vi/hal/adc_polling.c",
+    "sha256": "861261d3dcdb59558bc9a62f9b14b6e1058231bf426873400536272831741d16"
+  },
+  {
+    "old": "src/hal/led.c",
+    "path": "src/f767vi/hal/gpio_led_blink.c",
+    "sha256": "43b847d2e591f4c2e95ac151f102ec381cc17314e0aceb45f48eb0965ee70bcf"
+  },
+  {
+    "old": "src/hal/led.rs",
+    "path": "src/f767vi/rust/rust_hal_gpio_led_blink.rs",
+    "sha256": "b3c20a0b14c5fb167b718a7f24b6479debf341e180278bf6c4e9f2450986c4d0"
+  },
+  {
+    "old": "src/hal/stm32f7xx_hal_msp.c",
+    "path": "system/stm32f7xx_hal_msp.c",
+    "sha256": "35758949581f68a1bcd0d32b79a3e7f233a65d88526a1952252f6049dc221eea"
+  },
+  {
+    "old": "src/hal/stm32f7xx_it.c",
+    "path": "system/stm32f7xx_it.c",
+    "sha256": "89afdde6cfa17d190f55cfaf2544c3b8e32142e09d69663d38c26465274bc898"
+  },
+  {
+    "old": "src/hal/uart_led_error.c",
+    "path": "src/f446re/hal/uart_command_error_counters.c",
+    "sha256": "9ef42e221620f02b9b15a0f15390bc62d2186256bbe73f259435fe750bfb12f1"
+  },
+  {
+    "old": "src/register/3led_button.c",
+    "path": "src/f429zi/register/gpio_button_event_counter.c",
+    "sha256": "a673893cc21b079207b80a90110c41780ef72abcb24bd1194652667b067dc102"
+  },
+  {
+    "old": "src/register/adc.c",
+    "path": "src/f767vi/register/adc_polling.c",
+    "sha256": "1a60cbf96660acc44a13a70ad94b72059107e0ede56558c00eadfdda7b71782c"
+  },
+  {
+    "old": "src/register/can_f446.c",
+    "path": "src/f446re/register/can_silent_loopback.c",
+    "sha256": "3dec3f94858e2dc5d9238a2baf7be5ce426e75b39bc14a2b292ad7330c89f132"
+  },
+  {
+    "old": "src/register/clock.c",
+    "path": "src/f767vi/register/clock_pll_init.c",
+    "sha256": "639ba391925aba67e36b65ae3468fed7365534c14c140b63cf93819828c5e2a2"
+  },
+  {
+    "old": "src/register/ext_led_ext_button.c",
+    "path": "src/f429zi/register/gpio_external_button_led.c",
+    "sha256": "912fbdf081dd071138607b1ddc3bc20f0e21904999c859225b2ef9364f4ef644"
+  },
+  {
+    "old": "src/register/ext_led_int_button.c",
+    "path": "src/f429zi/register/gpio_pc13_external_led.c",
+    "sha256": "3fbaa16d5cda07f378dd1bf255bb66396e4ce0ee02634231cbc412ae052ddedc"
+  },
+  {
+    "old": "src/register/exti_button_edge.c",
+    "path": "src/f429zi/register/exti_both_edges_led.c",
+    "sha256": "59cb09e2b2a598d4580b8d2242433d04c96181470627c8d97a29f93aa7cfd77b"
+  },
+  {
+    "old": "src/register/ii.c",
+    "path": "notes/gpio_pullup_open_drain_circuits.c",
+    "sha256": "1393d376b51004eb5056db497c6d9173377885836f83cc10ac1f51b0acf55b8e"
+  },
+  {
+    "old": "src/register/inpiut.c",
+    "path": "src/f429zi/register/gpio_button_toggle_open_drain.c",
+    "sha256": "8e3865ed0594f62749e2b494261a634717a9fd11e382367e1b8f30dce264a197"
+  },
+  {
+    "old": "src/register/interrupt.c",
+    "path": "src/f767vi/register/exti_button_led_toggle.c",
+    "sha256": "6d549bd80b1a38ece95f0faf9b6a10cf7ac6a11337811d4bb62af7fbb764af2b"
+  },
+  {
+    "old": "src/register/interrupt_int_led.c",
+    "path": "src/f429zi/register/exti_rising_led_toggle.c",
+    "sha256": "5845a344232b9171dd1b97272f2da114e58bbfa70316538a5f536b606d4a2eb2"
+  },
+  {
+    "old": "src/register/led.c",
+    "path": "src/f446re/register/gpio_led_blink.c",
+    "sha256": "7567230c0355b86796f4469e13fe8e026f310224c46e018dde9ebcea728e8465"
+  },
+  {
+    "old": "src/register/led.rs",
+    "path": "src/f446re/rust/gpio_led_blink.rs",
+    "sha256": "20c8e421ddee04490fb62637228a4408e3a905f3004bbdeb19307ceabd8393db"
+  },
+  {
+    "old": "src/register/led_button.c",
+    "path": "src/f429zi/register/gpio_button_toggle.c",
+    "sha256": "0fbbc73d97821c758d13a19144ffba0460010807b89e5fad4f21766ef9b3b402"
+  },
+  {
+    "old": "src/register/led_button.rs",
+    "path": "src/f446re/rust/gpio_button_led_level.rs",
+    "sha256": "4f67fdee7e619ca837522b0770845ee5dfdb8655e5570de2afd8f7a04f5fb2cc"
+  },
+  {
+    "old": "src/register/led_button_ot.c",
+    "path": "src/f429zi/register/gpio_pc13_toggle_open_drain.c",
+    "sha256": "be519ab68ad82b25dee4050a399b7edf81cc053ed2ebfc61291c802e2acb814d"
+  },
+  {
+    "old": "src/register/led_interrupt.c",
+    "path": "src/f446re/register/systick_interrupt_led_blink.c",
+    "sha256": "f874ab03104156ea5fb2088f13a6dd62fc3c9a6fac767f60a70d4c9fa10e8c87"
+  },
+  {
+    "old": "src/register/oled_hello.c",
+    "path": "src/f446re/register/i2c_oled_hello.c",
+    "sha256": "bca4f91388c4a1359233dabf852be7a92e1fd1cd3eeff0babd809d31dd8556f2"
+  },
+  {
+    "old": "src/register/register_offset.c",
+    "path": "src/f429zi/register/gpio_register_layout.c",
+    "sha256": "6ae08ff17514cc0c084a8e06adc389a9df9e04ea957d18bce7aad28f42679330"
+  },
+  {
+    "old": "src/register/sos_led.c",
+    "path": "src/f429zi/register/gpio_led_morse_sos.c",
+    "sha256": "d21177c3477e042a349e6db61961c343446bbdb43c79771d1267468047c4c8ef"
+  },
+  {
+    "old": "src/register/test.c",
+    "path": "src/f429zi/register/gpio_button_event_counter_variant.c",
+    "sha256": "a673893cc21b079207b80a90110c41780ef72abcb24bd1194652667b067dc102"
+  },
+  {
+    "old": "src/register/throttle.c",
+    "path": "notes/adc_throttle_draft.c",
+    "sha256": "76373bb4371713d186cb1a39b56ec38c689a22f2f4e974b0759076ab915aa6b8"
+  },
+  {
+    "old": "src/register/tim_poling_int_led.c",
+    "path": "src/f429zi/register/timer_polling_uart_tx.c",
+    "sha256": "cb0c77cbee118df03a6eac240e1885814eb8a6f395abe0d9d8ca8340e1eaa153"
+  },
+  {
+    "old": "src/register/timer_counter.c",
+    "path": "src/f767vi/register/timer_interrupt_led_toggle.c",
+    "sha256": "2962399a42932a3a1fccfde1dbec7eb5d8aee31fda757737dfe674b67c9771c3"
+  },
+  {
+    "old": "src/register/timer_led.c",
+    "path": "src/f446re/register/timer_polling_led_blink.c",
+    "sha256": "7e2afc1d78c6d4213d96301fdc4df91c2522c270396ce934a886cd2b706338f2"
+  },
+  {
+    "old": "src/register/u_to_u/STM32F439ZI_LED.c",
+    "path": "src/f429zi/register/uart_button_led_sync.c",
+    "sha256": "290bf4821732f1d2b59e1c6b7199d8a215b02262868badd412a6a0f2da8fa08f",
+    "change": "사용자 확인에 따라 MCU 주석 STM32F439ZI → STM32F429ZI 정정; 실행 코드 동일"
+  },
+  {
+    "old": "src/register/u_to_u/STM32F446RE_LED.c",
+    "path": "src/f446re/register/uart_button_led_sync.c",
+    "sha256": "b002ac2a2b48fa5818b5086ccc565cd2e0dcfed3d609a681cec9d5f2f860c2db"
+  },
+  {
+    "old": "src/register/u_to_u/stm32_uart.c",
+    "path": "src/f446re/register/uart_button_led_sync_blocking.c",
+    "sha256": "e90c68959a054177e77cb2c047e57f7540ea3fb98faf105407aa52561c010090"
+  },
+  {
+    "old": "src/register/u_to_u/stm32_uart2.c",
+    "path": "src/f429zi/register/uart6_button_led_sync.c",
+    "sha256": "4a6034a3ca0cddf36dfbd96da6011913059091014727dc08aa2369e1f1202094"
+  },
+  {
+    "old": "src/register/u_to_u3/test.c",
+    "path": "src/f446re/register/uart_three_node_hub.c",
+    "sha256": "2eda82892c30fd69a3057011e9254d7e24560f738e92801015dd6a20fd5537c0"
+  },
+  {
+    "old": "src/register/uart.rs",
+    "path": "src/f446re/rust/uart_echo_greeting.rs",
+    "sha256": "f5ec346a1b5c9bc7d438e02ecfd5dfbdd0d4e6c4c04b2f292d992d9a864f3d3b"
+  },
+  {
+    "old": "src/register/uart_ext_3led.c",
+    "path": "src/f429zi/register/uart_rx_three_led_select.c",
+    "sha256": "a6a82d731d06e12f6ff0a66f1345ebd1ccf2c3e754674d55c0f9ea50bc53cf6a"
+  },
+  {
+    "old": "src/register/uart_ext_button.c",
+    "path": "src/f429zi/register/uart_external_button_tx.c",
+    "sha256": "10475fb6eb95e1e14004cf9ba1dd7b8fd2424481ad3eec79e8ecbbba8211d0d4"
+  },
+  {
+    "old": "src/register/uart_ext_led.c",
+    "path": "src/f446re/register/uart_rx_external_led.c",
+    "sha256": "aefadf142f2ec3fe10459a7967c2a71adaae2b2ee4adad3a7584731389a73073"
+  },
+  {
+    "old": "src/register/uart_ext_led_ext_button.c",
+    "path": "src/f429zi/register/uart_button_led_report.c",
+    "sha256": "2432018bb7f1f17ba2363f8a259be1e3916890d6253eb14c1c8004e9eb101900"
+  },
+  {
+    "old": "src/register/uart_gpio_input.c",
+    "path": "src/f446re/register/uart_button_level_tx.c",
+    "sha256": "afe2319a4d2d5ad80a139a4c9993006939450f154ccd4017df6a81c2dd736843"
+  },
+  {
+    "old": "src/register/uart_led.c",
+    "path": "src/f446re/register/uart_rx_led_control.c",
+    "sha256": "d485cbda44efd76441db3c5c2b0b8e90349e4d66e9561e79771d0203a4d65f40"
+  },
+  {
+    "old": "src/register/uart_led.rs",
+    "path": "src/f446re/rust/uart_rx_led_control.rs",
+    "sha256": "b15b514dd5595460fc2c0cb728c9a37e374a55fc3fdf354418c44138387a94c3"
+  },
+  {
+    "old": "src/register/uart_led_error.c",
+    "path": "src/f446re/register/uart_command_error_counters.c",
+    "sha256": "3ac125c65bcc330dd62244d20d541a3d6163717327c8df6955f1c8abf09937fc"
+  },
+  {
+    "old": "src/register/uart_print.c",
+    "path": "src/f429zi/register/uart_heap_memory_dump.c",
+    "sha256": "6f9bc63910e73562ab96a1bee13ab2c3a02fd8bbf1bcb2bc3b2890e20537d54a"
+  },
+  {
+    "old": "src/register/uart_systick.c",
+    "path": "src/f446re/register/uart_rx_led_control_variant.c",
+    "sha256": "d485cbda44efd76441db3c5c2b0b8e90349e4d66e9561e79771d0203a4d65f40"
+  },
+  {
+    "old": "src/register/urtc.c",
+    "path": "src/f767vi/register/uart_rx_increment_tx_polling.c",
+    "sha256": "af64cefe28520faf7aa092abb87cc25514c4676223fb6572e3120a6c9d4f8945"
+  },
+  {
+    "old": "src/register/urtc2.c",
+    "path": "src/f446re/register/uart_rx_increment_tx_polling.c",
+    "sha256": "c06ff3f1ccf7a85c72b57771aad43aeb09d2a37d8eee93d3896cb57fb8309a73"
+  },
+  {
+    "old": "src/stm32.md",
+    "path": "docs/gpio_register_notes.md",
+    "sha256": "fa18115929ea1cf3ea3aa42f8717f4bbe54d6b54d2693a8372d29b74f106adb9"
+  },
+  {
+    "old": "src/system/CMSIS_DEVICE_LICENSE.md",
+    "path": "system/CMSIS_DEVICE_LICENSE.md",
+    "sha256": "44fd163ed2e04fe99f519f1093c2c39b21d9cc9371071de902ff0c2c8c3c57dc"
+  },
+  {
+    "old": "src/system/runtime.c",
+    "path": "system/runtime.c",
+    "sha256": "d1588196fc0fcae818c933f8c7f1aaa65668add7b1c34528d5259e97558946c1"
+  },
+  {
+    "old": "src/system/system_stm32f7xx.c",
+    "path": "system/system_stm32f7xx.c",
+    "sha256": "496f2869fc809b58983740cc855707ec07b77903865d6a72ff1197cadd3ef281"
+  },
+  {
+    "old": "team/bit.c",
+    "path": "notes/gpio_pullup_open_drain_notes.c",
+    "sha256": "af12bb20bfc22afe2981490d5185d7e511de4b80da74992acfb3d24f01ce2493"
+  },
+  {
+    "old": "team/led.c",
+    "path": "src/f429zi/register/gpio_led_blink.c",
+    "sha256": "2e1010653674f7e51372e5eefa014841c821387c6c01196425da32d15c29f718"
+  },
+  {
+    "old": "team/led_button.c",
+    "path": "src/f429zi/register/gpio_button_toggle_debounce.c",
+    "sha256": "af06e889eb3345802c1b3e4920bf045e0734968cba63cfdaec919c58a58ec6d7"
+  },
+  {
+    "old": "team/led_button_3.c",
+    "path": "src/f429zi/register/gpio_button_toggle_raw.c",
+    "sha256": "1b98d68c1e130c3fa0999753297e4483cc7512b2b98474d110246a28bf1714d2"
+  },
+  {
+    "old": "team/uart1.c",
+    "path": "src/f429zi/register/uart_echo_greeting.c",
+    "sha256": "c69804c0caea4e1a15168ec60eb233f03bf2d199b606ffcd74850b2102a55384"
+  },
+  {
+    "old": "team/uart2.c",
+    "path": "src/f429zi/register/uart_echo.c",
+    "sha256": "565955622b4b65afa9665ea9722a7069fd2f1208b55772ec70af7efccca0b99d"
+  },
+  {
+    "old": "team/uart3.c",
+    "path": "src/f429zi/register/uart_dual_init_draft.c",
+    "sha256": "7b7e2539c51927813f9a76ecde1e9fa3958bb477374b9badd62f0505d19861b8"
+  },
+  {
+    "old": "team/uart_excepion.c",
+    "path": "src/f429zi/register/systick_interrupt_uart_tx.c",
+    "sha256": "5b044a371f1efba09a6899ed9f7005fea111c9057e4eac8ba366711aa25c3ec6"
+  },
+  {
+    "old": "team/uart_systick.c",
+    "path": "src/f429zi/register/systick_polling_uart_tx.c",
+    "sha256": "6539e0a6f7a71dc3088692f913da041e96f6e796a5e8b0cf4ab8819d40914437"
+  },
+  {
+    "old": "team/uart_systick2.c",
+    "path": "src/f429zi/register/systick_pll_polling_uart_tx.c",
+    "sha256": "594f5ef49d5ea814c4f11f7c8d5d1a6423b1a7cb9bef4a3ccb930e3d8c30a595"
+  },
+  {
+    "old": "team/uart_systick_excepion.c",
+    "path": "src/f429zi/register/systick_pll_interrupt_uart_tx.c",
+    "sha256": "543e448ed4f4b91135d972538a27cf3fa25605bbe416fe3d61ab0de2f5e26740"
+  },
+  {
+    "old": "team/uart_tim6.c",
+    "path": "src/f429zi/register/timer_interrupt_polling_uart_tx.c",
+    "sha256": "258a7630f9c96fcfa0c86eeff49e6543c1066828ae5290d4d7326af1e9d001d4"
+  },
+  {
+    "old": "scripts/build_active_f446.py",
+    "path": null,
+    "sha256": "ac0afff05f75c4e98249efdc94f26c4f7b44d1a3f63f68c8020fc39eab30adea",
+    "status": "removed_by_user_request"
+  }
+]

@@ -816,13 +816,13 @@ STM32 주변장치를 제어할 때 일반적으로 다음 순서를 따릅니�
 
 | 파일 | 설명 |
 |---|---|
-| `interrupt.c` | 인터럽트 학습 |
-| `timer_counter.c` | 타이머 및 카운터 학습 |
-| `urtc.c` | F767 관련 학습 소스 |
-| `clock.c` | 클럭 초기화 코드 |
-| `register_offset.c` | 레지스터 주소 및 구조체 정의 |
+| `src/f767vi/register/exti_button_led_toggle.c` | 인터럽트 학습 |
+| `src/f767vi/register/timer_interrupt_led_toggle.c` | 타이머 및 카운터 학습 |
+| `src/f767vi/register/uart_rx_increment_tx_polling.c` | F767 관련 학습 소스 |
+| `src/f767vi/register/clock_pll_init.c` | 클럭 초기화 코드 |
+| `src/f429zi/register/gpio_register_layout.c` | 레지스터 주소 및 구조체 정의 |
 
-`clock.c`는 독립적인 `main()` 함수가 없는 초기화 코드입니다.
+`src/f767vi/register/clock_pll_init.c`는 독립적인 `main()` 함수가 없는 초기화 코드입니다.
 
 F767 빌드 설정은 Makefile에 포함되어 있습니다. 명령은 [빌드 및 실행](BUILD_RUN.md)을 참고하세요.
 

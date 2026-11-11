@@ -15,7 +15,7 @@
       ],
       "intelliSenseMode": "macos-gcc-arm",
       "includePath": [
-        "${workspaceFolder}/include",
+        "${workspaceFolder}/system",
         "${stm32F4Sdk}/Drivers/CMSIS/Include",
         "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
       ],
@@ -36,10 +36,9 @@
       ],
       "intelliSenseMode": "macos-gcc-arm",
       "includePath": [
-        "${workspaceFolder}/include",
+        "${workspaceFolder}/system",
         "${stm32Sdk}/Drivers/CMSIS/Include",
         "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
-        "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
       ],
@@ -63,10 +62,9 @@
       ],
       "intelliSenseMode": "macos-gcc-arm",
       "includePath": [
-        "${workspaceFolder}/include",
+        "${workspaceFolder}/system",
         "${stm32Sdk}/Drivers/CMSIS/Include",
         "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
-        "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
       ],
@@ -89,10 +87,9 @@
       ],
       "intelliSenseMode": "macos-gcc-arm",
       "includePath": [
-        "${workspaceFolder}/include",
+        "${workspaceFolder}/system",
         "${stm32Sdk}/Drivers/CMSIS/Include",
         "${stm32Sdk}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
-        "${stm32F4Sdk}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc",
         "${stm32Sdk}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"
       ],

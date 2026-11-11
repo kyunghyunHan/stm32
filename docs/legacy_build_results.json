@@ -1,0 +1,123 @@
+[
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=register",
+      "EXAMPLE=led"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f446",
+      "MODE=register",
+      "EXAMPLE=led"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=register",
+      "EXAMPLE=led_button"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f446",
+      "MODE=register",
+      "EXAMPLE=led_button"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=register",
+      "EXAMPLE=adc"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=register",
+      "EXAMPLE=interrupt"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=register",
+      "EXAMPLE=timer_counter"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=register",
+      "EXAMPLE=urtc"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=hal",
+      "EXAMPLE=led"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f767",
+      "MODE=hal",
+      "EXAMPLE=adc"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  },
+  {
+    "command": [
+      "make",
+      "stm32-build",
+      "MCU=f429",
+      "MODE=team",
+      "EXAMPLE=led_button"
+    ],
+    "status": "PASS",
+    "binary_equal_before": true
+  }
+]

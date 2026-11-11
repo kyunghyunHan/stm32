@@ -2,29 +2,52 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Rust: build active F446 file",
+      "label": "Rust: build active F446 target",
       "type": "process",
-      "command": "python3",
-      "args": ["${workspaceFolder}/scripts/build_active_f446.py", "${file}"],
-      "options": { "cwd": "${workspaceFolder}" },
-      "problemMatcher": ["$rustc"]
+      "command": "cargo",
+      "args": [
+        "f446",
+        "--bin",
+        "active-f446"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$rustc"
+      ]
     },
     {
       "label": "Rust: build F446",
       "type": "process",
       "command": "cargo",
-      "args": ["f446"],
-      "options": { "cwd": "${workspaceFolder}" },
-      "problemMatcher": ["$rustc"],
-      "group": { "kind": "build", "isDefault": true }
+      "args": [
+        "f446"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$rustc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "label": "Rust: build F767",
       "type": "process",
       "command": "cargo",
-      "args": ["f767"],
-      "options": { "cwd": "${workspaceFolder}" },
-      "problemMatcher": ["$rustc"],
+      "args": [
+        "f767"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$rustc"
+      ],
       "group": "build"
     }
   ]

@@ -1,62 +1,27 @@
-# Rust·C 빌드 및 실행 명령
+# Rust·C 직접 다운로드 및 실행
 
-프로젝트 루트에서 실행합니다. **코드 저장 → 빌드 성공 확인 → 보드 실행** 순서입니다.
-Rust는 `probe-rs`, C는 `OpenOCD`로 올립니다. 두 실행 도구는 소스를 빌드하지 않습니다.
-ST-LINK USB 포트에 연결하고 다른 디버그 세션은 종료하세요.
+프로젝트 루트에서 실행합니다. `probe-rs run`과 `openocd`는 소스를 컴파일하지 않고 빌드된 펌웨어를 다운로드합니다. 코드 수정 뒤에는 먼저 다시 빌드하세요. ST-LINK에 연결하고 다른 디버그 세션은 종료합니다.
 
-## 1. Rust — F446RE
+## Rust — STM32F446RE
 
-### LED 버튼: src/register/led_button.rs
+Rust 소스는 `src/f446re/rust/`에 있습니다.
 
-빌드:
+| Cargo binary | 소스 파일 | 기능 |
+|---|---|---|
+| led_button | gpio_button_led_level.rs | PC13 입력에 따라 PA5 출력 |
+| uart_led | uart_rx_led_control.rs | USART2에서 1/0 수신, PA5 제어 |
+| uart | uart_echo_greeting.rs | USART3 인사 및 echo; 원본 주석의 F429 표기와 Cargo F446 설정은 다름 |
+| active-f446 | uart_rx_led_control.rs | 위 uart_led와 동일한 소스를 출력 이름만 유지해 빌드 |
 
-```sh
-cargo f446 --bin led_button
-```
+### active-f446
 
-보드 실행:
-
-```sh
-probe-rs run \
-  --chip STM32F446RE \
-  --protocol swd \
-  --speed 1000 \
-  --verify \
-  target/rust-f446/thumbv7em-none-eabihf/debug/led_button
-```
-
-### UART LED: src/register/uart_led.rs
-
-빌드:
+Python은 사용하지 않습니다. 실행할 F446 소스를 바꾸려면 `Cargo.toml`에서 `name = "active-f446"` 아래 `path`를 원하는 `.rs` 파일로 수정합니다. 현재는 `src/f446re/rust/uart_rx_led_control.rs`입니다.
 
 ```sh
-cargo f446 --bin uart_led
+cargo f446 --bin active-f446
 ```
 
-보드 실행:
-
-```sh
-probe-rs run \
-  --chip STM32F446RE \
-  --protocol swd \
-  --speed 1000 \
-  --verify \
-  target/rust-f446/thumbv7em-none-eabihf/debug/uart_led
-```
-
-시리얼 터미널은 9600 baud, 8N1, 흐름 제어 없음으로 설정합니다.
-문자 `1`은 LED 켜기, `0`은 끄기입니다. 수신 응답은 출력하지 않습니다.
-
-### 새 Rust 파일을 Cargo.toml에 등록하지 않고 실행
-
-빌드 명령의 파일 경로를 원하는 독립 펌웨어 `.rs` 파일로 바꿉니다.
-파일에는 `#![no_std]`, `#![no_main]`, `#[entry]` 진입점과 패닉 핸들러가 필요합니다.
-
-```sh
-python3 scripts/build_active_f446.py src/register/uart_led.rs
-```
-
-이 방식의 출력 이름은 항상 `active-f446`입니다.
+빌드한 파일을 보드에 다운로드·실행:
 
 ```sh
 probe-rs run \
@@ -67,21 +32,27 @@ probe-rs run \
   target/rust-f446/thumbv7em-none-eabihf/debug/active-f446
 ```
 
-VS Code에서는 실행할 파일을 열고 저장한 뒤,
-`STM32F446RE: Current Rust File`을 선택하고 F5를 누르면 빌드와 다운로드를 수행합니다.
-오류가 나면 수정한 뒤 다시 실행하세요.
+`active-f446`과 기존 `uart_led`를 같은 소스에 연결했으므로 Cargo에서 같은 파일이 두 target에 있다는 경고가 나올 수 있습니다. 펌웨어 코드는 같습니다.
 
-## 2. C — F446RE
+### 다른 binary
 
-### LED 버튼: src/register/led_button.c
-
-빌드:
+예를 들어 PC13/PA5 버튼 LED 실습은 다음과 같습니다.
 
 ```sh
-make stm32-build MCU=f446 MODE=register EXAMPLE=led_button
+cargo f446 --bin led_button
+probe-rs run \
+  --chip STM32F446RE \
+  --protocol swd \
+  --speed 1000 \
+  --verify \
+  target/rust-f446/thumbv7em-none-eabihf/debug/led_button
 ```
 
-보드 실행:
+`uart_led`는 USART2 PA2 TX / PA3 RX AF7, 9600 baud / 8N1입니다. `1`은 PA5 켜기, `0`은 끄기입니다. 입력한 문자에 대한 응답은 없습니다.
+
+## C — 기존 F446 출력 경로
+
+기존 빌드 결과 경로와 다운로드 명령을 유지했습니다.
 
 ```sh
 openocd \
@@ -91,15 +62,7 @@ openocd \
   -c "program target/f446/register/led_button/led_button.elf verify reset exit"
 ```
 
-### LED: src/register/led.c
-
-빌드:
-
-```sh
-make stm32-build MCU=f446 MODE=register EXAMPLE=led
-```
-
-보드 실행:
+주의: 이 기존 `led_button.c`의 내용은 PC13/PF15이고 F446RE에는 PF15가 없습니다. 경로 보존과 하드웨어 적합성은 별개입니다. 코드를 PA5로 임의 변경하지 않았습니다. PA5만 반전하는 C 예제는 `src/f446re/register/gpio_led_blink.c`이고 기존 별칭으로 빌드하면 출력은 `target/f446/register/led/led.elf`입니다.
 
 ```sh
 openocd \
@@ -109,22 +72,41 @@ openocd \
   -c "program target/f446/register/led/led.elf verify reset exit"
 ```
 
-현재 F446 C 빌드는 `MODE=register`, `EXAMPLE=led|led_button`을 지원합니다.
-새 C 예제는 Makefile의 F446용 `REGISTER_EXAMPLES` 목록에 추가해야 합니다.
+## C — F446 UART 명령 예제
 
-## 3. Rust — F767VI 보드 사용 시
+대상: `src/f446re/register/uart_command_error_counters.c`. USART2 PA2 TX / PA3 RX, 9600 baud / 8N1. PA5는 led2, PB0/PB1은 led1/led3이며 외부 배선이 필요합니다.
 
-대상 소스는 `src/firmware.rs`입니다.
+```sh
+openocd \
+  -f interface/stlink.cfg \
+  -f target/stm32f4x.cfg \
+  -c "adapter speed 1000" \
+  -c "program target/f446/register/uart_command_error_counters/uart_command_error_counters.elf verify reset exit"
+```
 
-빌드:
+시리얼 터미널에서 `led2 on`, `status`, `led2 off`, `errors`를 입력하고 Enter를 누릅니다.
+HAL 버전은 소스의 `register`를 `hal`로, ELF 출력 경로의 `register`도 `hal`로 바꿉니다.
+
+## C — F429 UART echo
+
+대상: `src/f429zi/register/uart_echo.c`. USART3 PD8 TX / PD9 RX AF7, HSI 16 MHz 가정, 9600 baud / 8N1.
+
+```sh
+openocd \
+  -f interface/stlink.cfg \
+  -f target/stm32f4x.cfg \
+  -c "adapter speed 1000" \
+  -c "program target/f429/register/uart_echo/uart_echo.elf verify reset exit"
+```
+
+기존 F429 LED 버튼 출력도 `target/f429/team/led_button/led_button.elf`로 유지합니다.
+
+## F767
+
+Rust의 `src/firmware.rs`는 주변장치 설정 없는 시작 템플릿입니다.
 
 ```sh
 cargo f767 --bin stm32
-```
-
-보드 실행:
-
-```sh
 probe-rs run \
   --chip STM32F767VI \
   --protocol swd \
@@ -133,73 +115,32 @@ probe-rs run \
   target/rust-f767/thumbv7em-none-eabihf/debug/stm32
 ```
 
-## 4. C — F767VI 보드 사용 시
-
-빌드:
-
-```sh
-make stm32-build MCU=f767 MODE=register EXAMPLE=led
-```
-
-보드 실행:
+C는 `stm32f7x.cfg`와 해당 F767 ELF를 사용합니다.
 
 ```sh
 openocd \
   -f interface/stlink.cfg \
   -f target/stm32f7x.cfg \
   -c "adapter speed 1000" \
-  -c "program target/register/led/led.elf verify reset exit"
+  -c "program target/hal/adc/adc.elf verify reset exit"
 ```
 
-| MODE | EXAMPLE |
-|---|---|
-| register | led, led_button, adc, interrupt, timer_counter, urtc |
-| hal | led, adc |
+## 소스 수정 뒤 C 재빌드
 
-다른 예제를 실행하려면 `MODE`와 `EXAMPLE`을 바꾸고, 실행 경로도 `target/<MODE>/<EXAMPLE>/<EXAMPLE>.elf`로 맞춥니다.
-
-## 5. C — STM32F429ZITx 외부 LED·버튼
-
-대상은 `team/led_button.c`입니다. PA10 → 저항 → LED → GND,
-PC13 → 버튼 → GND로 연결합니다. PC13은 내부 풀업을 사용합니다.
-버튼을 누를 때마다 LED가 켜지거나 꺼지며, 20ms 디바운스를 적용합니다.
-
-빌드:
+기존 C 빌드용 Makefile을 유지했으며, 다운로드 도구와 구분합니다. 기존 compiler 명령을 직접 사용해도 됩니다. 아래는 기존 빌드 설정을 이용하는 방법입니다.
 
 ```sh
-make stm32-build MCU=f429 MODE=team EXAMPLE=led_button
+make MCU=f446 MODE=register EXAMPLE=led
+make MCU=f446 MODE=register EXAMPLE=led_button
+make MCU=f446 MODE=register EXAMPLE=uart_command_error_counters
+make MCU=f429 MODE=register EXAMPLE=uart_echo
+make MCU=f767 MODE=hal EXAMPLE=adc
 ```
 
-F429 보드에 다운로드·실행:
+F446/F429 출력은 `target/<MCU>/<MODE>/<EXAMPLE>/<EXAMPLE>.elf`, F767은 `target/<MODE>/<EXAMPLE>/<EXAMPLE>.elf`입니다. 소스 이동 후에도 기존 이름의 출력 위치는 유지합니다.
 
-```sh
-openocd \
-  -f interface/stlink.cfg \
-  -f target/stm32f4x.cfg \
-  -c "adapter speed 1000" \
-  -c "program target/f429/team/led_button/led_button.elf verify reset exit"
-```
+## 개발 환경 및 확인 범위
 
-F429 전용 시작 코드와 2 MiB Flash / 192 KiB SRAM을 사용합니다.
-64 KiB CCM은 이 예제에서 사용하지 않습니다.
+Rust ARM target이 없다면 `rustup target add thumbv7em-none-eabihf`로 설치합니다. C 빌드에는 Arm GCC 및 STM32CubeF4/F7 SDK가 필요합니다. `system/`에는 직접 삭제하면 링크나 HAL 빌드가 깨지는 메모리 배치·runtime·system·HAL 지원 파일이 들어 있습니다.
 
-## 6. 최초 설정과 연결 오류
-
-Rust의 ARM 타깃이 설치되지 않았다면 한 번 실행합니다.
-
-```sh
-rustup target add thumbv7em-none-eabihf
-```
-
-C 컴파일러는 STM32CubeIDE 안의 Arm GNU Toolchain을 우선 사용합니다.
-SDK는 `~/STM32Cube/Repository/STM32Cube_FW_F4_V*` / `STM32Cube_FW_F7_V*`에서 찾습니다.
-다른 위치라면 `make` 명령에 `CUBE_F4=/path/to/SDK` 또는 `CUBE_F7=/path/to/SDK`를 추가합니다.
-
-| 증상 | 확인할 내용 |
-|---|---|
-| `open failed` | ST-LINK 포트·USB 케이블·다른 디버거 사용 여부 |
-| `UNEXPECTED idcode` | F446·F429는 `stm32f4x.cfg`, F767은 `stm32f7x.cfg`. ELF도 같은 MCU용으로 빌드 |
-| 빌드 실패 | 수정 후 빌드 성공을 확인하고 실행 |
-
-`probe-rs run`은 Ctrl+C로 종료합니다.
-OpenOCD의 `verify reset exit`는 기록 검증 후 리셋해 실행하고 OpenOCD를 종료합니다.
+이번에는 파일 경로와 빌드를 확인했으며 Flash/Debug 또는 실제 MCU 동작은 검증하지 않았습니다. `probe-rs run`은 Ctrl+C로 종료합니다. OpenOCD의 `verify reset exit`는 기록 검증 후 리셋하고 종료합니다.

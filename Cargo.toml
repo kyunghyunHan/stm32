@@ -13,21 +13,30 @@ bench = false
 
 [[bin]]
 name = "led_button"
-path = "src/register/led_button.rs"
+path = "src/f446re/rust/gpio_button_led_level.rs"
 required-features = ["f446"]
 test = false
 bench = false
 
 [[bin]]
 name = "uart_led"
-path = "src/register/uart_led.rs"
+path = "src/f446re/rust/uart_rx_led_control.rs"
 required-features = ["f446"]
 test = false
 bench = false
 
 [[bin]]
 name = "uart"
-path = "src/register/uart.rs"
+path = "src/f446re/rust/uart_echo_greeting.rs"
+required-features = ["f446"]
+test = false
+bench = false
+
+# Python 없이 active-f446 출력 이름을 유지합니다.
+# 실행할 F446 Rust 소스를 바꾸려면 아래 path를 수정하세요.
+[[bin]]
+name = "active-f446"
+path = "src/f446re/rust/uart_rx_led_control.rs"
 required-features = ["f446"]
 test = false
 bench = false

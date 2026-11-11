@@ -1,7 +1,7 @@
 
 #include <stdint.h>
 
-// STM32F439ZI
+// STM32F429ZI
 // USART1: PA9(TX), PA10(RX)
 // Button: PC13 (Active High)
 // LED: PB7 (LD2 Blue)

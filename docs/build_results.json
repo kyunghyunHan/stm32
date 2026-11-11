@@ -1,0 +1,1035 @@
+{
+  "date": "2026-11-11",
+  "scope": "Compilation/linking only; no flash or hardware execution",
+  "results": [
+    {
+      "path": "src/f446re/register/gpio_led_blink.c",
+      "old": "src/register/led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=gpio_led_blink"
+      ],
+      "bin_sha256": "2d394b0f736d2d2efad41a571e0a4b179a61e77c46cbdb3c158df7560ce2bc77",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/gpio_button_toggle.c",
+      "old": "src/register/led_button.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_button_toggle"
+      ],
+      "bin_sha256": "b30c0dcb2a4870c312d85d4c423f66a2d74ecf6006ea0139e15b972d627d6883"
+    },
+    {
+      "path": "src/f767vi/register/adc_polling.c",
+      "old": "src/register/adc.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f767",
+        "MODE=register",
+        "EXAMPLE=adc_polling"
+      ],
+      "bin_sha256": "aa9ff996b6c5dcd0ea31a7f473fadaf45e141321e5d9336c461a58f8d35ad13a",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f767vi/register/exti_button_led_toggle.c",
+      "old": "src/register/interrupt.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f767",
+        "MODE=register",
+        "EXAMPLE=exti_button_led_toggle"
+      ],
+      "bin_sha256": "ac7074033ddb1fb676a385e68892e3a7f008855f2325bd6a124868ebdf09bbd6",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f767vi/register/timer_interrupt_led_toggle.c",
+      "old": "src/register/timer_counter.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f767",
+        "MODE=register",
+        "EXAMPLE=timer_interrupt_led_toggle"
+      ],
+      "bin_sha256": "8ec028ff09044a496fc67621afc7131ba9d09463aff577d79237d5645b3bace9",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f767vi/register/uart_rx_increment_tx_polling.c",
+      "old": "src/register/urtc.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f767",
+        "MODE=register",
+        "EXAMPLE=uart_rx_increment_tx_polling"
+      ],
+      "bin_sha256": "43066a6d7a8f521c769f20f38882a7756572709ad8267e1561c960a48227a38d",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f767vi/register/clock_pll_init.c",
+      "old": "src/register/clock.c",
+      "before": "NOT TESTED",
+      "after": "NOT TESTED",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": null
+    },
+    {
+      "path": "src/f429zi/register/gpio_register_layout.c",
+      "old": "src/register/register_offset.c",
+      "before": "NOT TESTED",
+      "after": "NOT TESTED",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": null,
+      "syntax_check": "PASS (F429 CMSIS settings); main 없음, firmware link 미실행"
+    },
+    {
+      "path": "src/f429zi/register/gpio_external_button_led.c",
+      "old": "src/register/ext_led_ext_button.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_external_button_led"
+      ],
+      "bin_sha256": "f97f5644c890fa606522807efb23bf146c7215e4b3c61698f6781ccbb1b5dcc0"
+    },
+    {
+      "path": "src/f429zi/register/gpio_pc13_external_led.c",
+      "old": "src/register/ext_led_int_button.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_pc13_external_led"
+      ],
+      "bin_sha256": "4e6a199bb17ab398274fd8f66de2db4dbaa9d201d7fcbf93e5265cde7fe38cfd"
+    },
+    {
+      "path": "src/f429zi/register/gpio_button_toggle_open_drain.c",
+      "old": "src/register/inpiut.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_button_toggle_open_drain"
+      ],
+      "bin_sha256": "54a32b0396a0f179503bc364130d87dc69113977000ebe8fa12de6fdddd21eb5"
+    },
+    {
+      "path": "src/f429zi/register/gpio_pc13_toggle_open_drain.c",
+      "old": "src/register/led_button_ot.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_pc13_toggle_open_drain"
+      ],
+      "bin_sha256": "52e3b0fbc27600d4933e07dcd8c4c9d69dab7d01f4ef3f827b7612384825f137"
+    },
+    {
+      "path": "src/f429zi/register/gpio_button_event_counter.c",
+      "old": "src/register/3led_button.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_button_event_counter"
+      ],
+      "bin_sha256": "c5c8ff59eb577a1b12ddad72c83a0a4957d1f78977f7327273cd3f1dbe426d74",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/gpio_button_event_counter_variant.c",
+      "old": "src/register/test.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_button_event_counter_variant"
+      ],
+      "bin_sha256": "c5c8ff59eb577a1b12ddad72c83a0a4957d1f78977f7327273cd3f1dbe426d74",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/exti_both_edges_led.c",
+      "old": "src/register/exti_button_edge.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=exti_both_edges_led"
+      ],
+      "bin_sha256": "c870141d95a0207b8306119882615d5325a9e2d2fbcd3a21075ac2f288df837a",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/exti_rising_led_toggle.c",
+      "old": "src/register/interrupt_int_led.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=exti_rising_led_toggle"
+      ],
+      "bin_sha256": "e4b011af28cccb2c46b86193077e6fdd8ab840a9338e5a48746eb86eeb66a86d"
+    },
+    {
+      "path": "src/f429zi/register/gpio_led_morse_sos.c",
+      "old": "src/register/sos_led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_led_morse_sos"
+      ],
+      "bin_sha256": "22d62cb9ce5f912a8e6258126506935b15f3842e2250b8fdde69187c8ff86b51",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/timer_polling_uart_tx.c",
+      "old": "src/register/tim_poling_int_led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=timer_polling_uart_tx"
+      ],
+      "bin_sha256": "c6b0cf8bae3f5010ee849d06b987d2d923595f807f90663fced69c65fb98b88a",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/uart_heap_memory_dump.c",
+      "old": "src/register/uart_print.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_heap_memory_dump"
+      ],
+      "bin_sha256": "1fb3b968f3d30a1fb1d800d11d2789e25d98ed0de89d9d49e28cfc620d327a22",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/systick_interrupt_led_blink.c",
+      "old": "src/register/led_interrupt.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=systick_interrupt_led_blink"
+      ],
+      "bin_sha256": "c32c5772fb63ddee1ed01056a529122f7a14b5bd2a4dca2f37728dd9c8203b26",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/timer_polling_led_blink.c",
+      "old": "src/register/timer_led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=timer_polling_led_blink"
+      ],
+      "bin_sha256": "fdfbe9b44fd0b9590d1fc80fb1b1b77d8086219425bc37b5969c51270d046b7d",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/i2c_oled_hello.c",
+      "old": "src/register/oled_hello.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=i2c_oled_hello"
+      ],
+      "bin_sha256": "e444973996c63d3591298aa1704f49b7e61b771c1e5d0da41f279ca242b211ea",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/uart_rx_external_led.c",
+      "old": "src/register/uart_ext_led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_rx_external_led"
+      ],
+      "bin_sha256": "27c54a91a24e25ae6312afd00e7a0fa9f256383dba630f9d378b9237cb342c06",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/uart_button_level_tx.c",
+      "old": "src/register/uart_gpio_input.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_button_level_tx"
+      ],
+      "bin_sha256": "9b06731100cc3a0794512fcd9841c7cb9654f9c3223052635ca57daa83bb0a4b",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/uart_rx_increment_tx_polling.c",
+      "old": "src/register/urtc2.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_rx_increment_tx_polling"
+      ],
+      "bin_sha256": "437fca4f50c04a88d29d64bf264ebd85b220ccfa36152ec823a6ad630604eb9d",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/uart_rx_led_control.c",
+      "old": "src/register/uart_led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [
+        "src/f446re/register/uart_rx_led_control.c:186:10: warning: unused variable 'received_char' [-Wunused-variable]"
+      ],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_rx_led_control"
+      ],
+      "bin_sha256": "20c94e2e9070e1530c3b534d5de73cdeb4ef0fb96dc0b277ea7afd50d09f0960",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/uart_rx_led_control_variant.c",
+      "old": "src/register/uart_systick.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [
+        "src/f446re/register/uart_rx_led_control_variant.c:186:10: warning: unused variable 'received_char' [-Wunused-variable]"
+      ],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_rx_led_control_variant"
+      ],
+      "bin_sha256": "20c94e2e9070e1530c3b534d5de73cdeb4ef0fb96dc0b277ea7afd50d09f0960",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/uart_rx_three_led_select.c",
+      "old": "src/register/uart_ext_3led.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_rx_three_led_select"
+      ],
+      "bin_sha256": "50382cec1b8f8fee7aac0f8652f6e028e636ba62a2a20717fd206823fa17a512"
+    },
+    {
+      "path": "src/f429zi/register/uart_external_button_tx.c",
+      "old": "src/register/uart_ext_button.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_external_button_tx"
+      ],
+      "bin_sha256": "9dc4d3c612452516c5266101f7177b4c9a7e52b279d079559768558fce6607b7"
+    },
+    {
+      "path": "src/f429zi/register/uart_button_led_report.c",
+      "old": "src/register/uart_ext_led_ext_button.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_button_led_report"
+      ],
+      "bin_sha256": "09f5fd3c8592e4517772d52c215f0384884cffacc5fed10904ca7d15b810b68e"
+    },
+    {
+      "path": "notes/gpio_pullup_open_drain_circuits.c",
+      "old": "src/register/ii.c",
+      "before": "NOT TESTED",
+      "after": "NOT TESTED",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": null
+    },
+    {
+      "path": "notes/adc_throttle_draft.c",
+      "old": "src/register/throttle.c",
+      "before": "NOT TESTED",
+      "after": "NOT TESTED",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": null
+    },
+    {
+      "path": "src/f767vi/hal/gpio_led_blink.c",
+      "old": "src/hal/led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f767",
+        "MODE=hal",
+        "EXAMPLE=gpio_led_blink"
+      ],
+      "bin_sha256": "d63de305f9024841e6c491db9895fe2be6c237db55259ebd760f42d3eab3b796",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f767vi/hal/adc_polling.c",
+      "old": "src/hal/adc.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f767",
+        "MODE=hal",
+        "EXAMPLE=adc_polling"
+      ],
+      "bin_sha256": "02b79bfa9ad248a837075c9efd09eaae9dad830f9b5a354fbe7216b38d9e5717",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/uart_command_error_counters.c",
+      "old": "src/register/uart_led_error.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_command_error_counters"
+      ],
+      "bin_sha256": "39d9a11fb20780e8b10a875fa41635f3848cf12e98a88b929257990abe5d1806",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/hal/uart_command_error_counters.c",
+      "old": "src/hal/uart_led_error.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [
+        "/Users/hangyeonghyeon/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c:948:60: warning: unused parameter 'Banks' [-Wunused-parameter]",
+        "/Users/hangyeonghyeon/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c:1027:74: warning: unused parameter 'Banks' [-Wunused-parameter]",
+        "/Users/hangyeonghyeon/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c:1063:75: warning: unused parameter 'Banks' [-Wunused-parameter]"
+      ],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=hal",
+        "EXAMPLE=uart_command_error_counters"
+      ],
+      "bin_sha256": "e28e106c2476785ad3bd7f993e14ca3ca3bc21b18b212e83d962112920527651",
+      "binary_equal_before": null
+    },
+    {
+      "path": "src/f446re/register/uart_button_led_sync.c",
+      "old": "src/register/u_to_u/STM32F446RE_LED.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_button_led_sync"
+      ],
+      "bin_sha256": "2c476c5e96f0a47531ecde8fab711b987b0e376e6a1779a70c9af55dd75660a7",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/uart_button_led_sync.c",
+      "old": "src/register/u_to_u/STM32F439ZI_LED.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_button_led_sync"
+      ],
+      "bin_sha256": "86a109de0e3b524106f922bdbbd61db64b77d8bac998c95b72285b9d5e655288"
+    },
+    {
+      "path": "src/f446re/register/uart_button_led_sync_blocking.c",
+      "old": "src/register/u_to_u/stm32_uart.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_button_led_sync_blocking"
+      ],
+      "bin_sha256": "f6417f34020fbbe6a564a7512c9e317179dd9b52efa7f040fe15589ed5c268a6",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/uart6_button_led_sync.c",
+      "old": "src/register/u_to_u/stm32_uart2.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart6_button_led_sync"
+      ],
+      "bin_sha256": "b3e38d802b26f4a502f4841babe3e7ea79409e2838381349659f6ed1b2d6ec29",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/register/uart_three_node_hub.c",
+      "old": "src/register/u_to_u3/test.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=uart_three_node_hub"
+      ],
+      "bin_sha256": "8da069eabf0203f63f6dcdc1f170b97c677b94d5cfa5ddf25bb63794b2147de4",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/can_loopback_led.c",
+      "old": "src/can_int_led.c",
+      "before": "NOT TESTED",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=can_loopback_led"
+      ],
+      "bin_sha256": "5423a2a6ed847315f8f2e38e2448c50d235f97a8167f646ec9aac3941afd6bdf"
+    },
+    {
+      "path": "src/f446re/register/can_silent_loopback.c",
+      "old": "src/register/can_f446.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f446",
+        "MODE=register",
+        "EXAMPLE=can_silent_loopback"
+      ],
+      "bin_sha256": "4a7ee4c5499b73d691f4c7d47c33f4599979e4b5e42a6f5fed6aa10f15aaefb2",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f446re/rust/gpio_led_blink.rs",
+      "old": "src/register/led.rs",
+      "before": "NOT TESTED",
+      "after": "NOT TESTED",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": null
+    },
+    {
+      "path": "src/f446re/rust/gpio_button_led_level.rs",
+      "old": "src/register/led_button.rs",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "cargo",
+        "f446",
+        "--bin",
+        "led_button",
+        "--offline"
+      ]
+    },
+    {
+      "path": "src/f446re/rust/uart_rx_led_control.rs",
+      "old": "src/register/uart_led.rs",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "cargo",
+        "f446",
+        "--bin",
+        "uart_led",
+        "--offline"
+      ]
+    },
+    {
+      "path": "src/f446re/rust/uart_echo_greeting.rs",
+      "old": "src/register/uart.rs",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "cargo",
+        "f446",
+        "--bin",
+        "uart",
+        "--offline"
+      ]
+    },
+    {
+      "path": "src/f767vi/rust/rust_hal_gpio_led_blink.rs",
+      "old": "src/hal/led.rs",
+      "before": "NOT TESTED",
+      "after": "NOT TESTED",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": null
+    },
+    {
+      "path": "src/firmware.rs",
+      "old": "src/firmware.rs",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "cargo",
+        "f446",
+        "--bin",
+        "stm32",
+        "--offline"
+      ]
+    },
+    {
+      "path": "src/f429zi/register/gpio_led_blink.c",
+      "old": "team/led.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_led_blink"
+      ],
+      "bin_sha256": "087f17c0dc90996b0f88904d4eaa553486b2828c89502025c0563cc9e53e41ad",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/gpio_button_toggle_debounce.c",
+      "old": "team/led_button.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_button_toggle_debounce"
+      ],
+      "bin_sha256": "2761a2848206edddfd5d70cd15bed0b064adadc2e9ea1a6e13ea53f6b2699c23",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/gpio_button_toggle_raw.c",
+      "old": "team/led_button_3.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [
+        "src/f429zi/register/gpio_button_toggle_raw.c:104:23: warning: unused variable 'button' [-Wunused-variable]"
+      ],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=gpio_button_toggle_raw"
+      ],
+      "bin_sha256": "3a1543dd6b8d935b5e4debeffc411eacefa4ffcb0485e180d4e7f2c4f6689745",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/uart_echo_greeting.c",
+      "old": "team/uart1.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_echo_greeting"
+      ],
+      "bin_sha256": "63f809871bad50f36288d46d77e76fecbbce6818b47e5ae2861cfe116ae84523",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/uart_echo.c",
+      "old": "team/uart2.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_echo"
+      ],
+      "bin_sha256": "aa745a9f3f7bcb48d025be83c9407ba905bd164e19e2a0cbd6486b921a564614",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/uart_dual_init_draft.c",
+      "old": "team/uart3.c",
+      "before": "FAIL",
+      "after": "FAIL",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [
+        "src/f429zi/register/uart_dual_init_draft.c:13:5: error: implicit declaration of function 'uart3_init' [-Wimplicit-function-declaration]",
+        "src/f429zi/register/uart_dual_init_draft.c:14:5: error: implicit declaration of function 'uart1_init' [-Wimplicit-function-declaration]"
+      ],
+      "command": [
+        "make",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=uart_echo",
+        "APP_SOURCE=src/f429zi/register/uart_dual_init_draft.c",
+        "BUILD_DIR=target/audit/uart_dual_init_draft"
+      ]
+    },
+    {
+      "path": "src/f429zi/register/systick_interrupt_uart_tx.c",
+      "old": "team/uart_excepion.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=systick_interrupt_uart_tx"
+      ],
+      "bin_sha256": "034cfcc2c5cc601ddaeb7c868297b9637655141978041557f457312de373ee94",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/systick_polling_uart_tx.c",
+      "old": "team/uart_systick.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=systick_polling_uart_tx"
+      ],
+      "bin_sha256": "ffc8b33d72ce4a68f3aec237d8a4cadba0ce226ec7b721d1da95f56695c3eb12",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/systick_pll_polling_uart_tx.c",
+      "old": "team/uart_systick2.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=systick_pll_polling_uart_tx"
+      ],
+      "bin_sha256": "7a0b124f526e1d8672fa8baade4011ae7cf54565320b7263fb367dbc7de0cbda",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/systick_pll_interrupt_uart_tx.c",
+      "old": "team/uart_systick_excepion.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=systick_pll_interrupt_uart_tx"
+      ],
+      "bin_sha256": "e0d79ddcad51cebfc9c366c30f4da18945635d102a1a69f75a28ac543729b82d",
+      "binary_equal_before": true
+    },
+    {
+      "path": "src/f429zi/register/timer_interrupt_polling_uart_tx.c",
+      "old": "team/uart_tim6.c",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": [
+        "make",
+        "--no-print-directory",
+        "stm32-build",
+        "MCU=f429",
+        "MODE=register",
+        "EXAMPLE=timer_interrupt_polling_uart_tx"
+      ],
+      "bin_sha256": "c30f983c0cdfd3830b6a788ce6cb9c73106ce2f45ab0a17966f804c43b8b63f2",
+      "binary_equal_before": true
+    },
+    {
+      "path": "notes/gpio_pullup_open_drain_notes.c",
+      "old": "team/bit.c",
+      "before": "NOT TESTED",
+      "after": "NOT TESTED",
+      "hardware": "HARDWARE REQUIRED",
+      "diagnostics": [],
+      "command": null
+    },
+    {
+      "path": "src/firmware.rs [f767]",
+      "old": "src/firmware.rs [f767]",
+      "before": "PASS",
+      "after": "PASS",
+      "hardware": "HARDWARE REQUIRED",
+      "command": [
+        "cargo",
+        "f767",
+        "--bin",
+        "stm32",
+        "--offline"
+      ],
+      "diagnostics": []
+    }
+  ]
+}

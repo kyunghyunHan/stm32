@@ -2,17 +2,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "STM32F446RE: Current Rust File",
+      "name": "STM32F446RE: active-f446 (Cargo target)",
       "type": "probe-rs-debug",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "/opt/homebrew/bin/probe-rs",
-      "runtimeArgs": ["dap-server"],
+      "runtimeArgs": [
+        "dap-server"
+      ],
       "chip": "STM32F446RE",
       "wireProtocol": "Swd",
       "speed": 1000,
-      "preLaunchTask": "Rust: build active F446 file",
-      "flashingConfig": { "flashingEnabled": true, "haltAfterReset": true },
+      "preLaunchTask": "Rust: build active F446 target",
+      "flashingConfig": {
+        "flashingEnabled": true,
+        "haltAfterReset": true
+      },
       "coreConfigs": [
         {
           "coreIndex": 0,
@@ -26,12 +31,17 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "/opt/homebrew/bin/probe-rs",
-      "runtimeArgs": ["dap-server"],
+      "runtimeArgs": [
+        "dap-server"
+      ],
       "chip": "STM32F767VI",
       "wireProtocol": "Swd",
       "speed": 1000,
       "preLaunchTask": "Rust: build F767",
-      "flashingConfig": { "flashingEnabled": true, "haltAfterReset": true },
+      "flashingConfig": {
+        "flashingEnabled": true,
+        "haltAfterReset": true
+      },
       "coreConfigs": [
         {
           "coreIndex": 0,
