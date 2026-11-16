@@ -2,62 +2,12 @@
 
 #include <stdint.h>
 
-/*
- * ============================================================
- * STM32F429ZI - TIM6 Polling + Interrupt
- * ============================================================
- *
- * [실습 목표]
- * - TIM6 하나로 500ms 주기 생성
- * - Polling   : 500ms마다 '!' 출력
- * - Interrupt : 500ms마다 '@' 출력
- *
- * [Clock 설정]
- * HSI       : 16MHz
- * SYSCLK    : 16MHz
- * AHB       : /1  → HCLK  = 16MHz
- * APB1      : /1  → PCLK1 = 16MHz
- * APB2      : /1  → PCLK2 = 16MHz
- * TIM6CLK   : 16MHz
- *
- * [TIM6 설정]
- * PSC       : 15999
- * ARR       : 499
- * CNT Clock : 1000Hz (1ms마다 증가)
- * Period    : 500ms
- *
- * [USART3]
- * Baudrate  : 115200bps, 8N1
- * TX        : PD8, AF7, ST-LINK VCP
- *
- * [특징]
- * - HAL 사용 안 함
- * - TIM2 / TIM7 사용 안 함
- * - TIM6 : 16-bit Up Counter
- * - Polling과 Interrupt를 동시에 학습
- *
- * [주의]
- * TIM6_DAC_IRQHandler()가 이 파일 또는 별도의
- * 인터럽트 파일에서 TIM6_UserHandler()를 호출해야 함.
- * ============================================================
- */
-
-
-/* ============================================================
- * 1. Peripheral Base Address
- * ============================================================ */
-
 #define RCC_BASE       0x40023800UL
 #define GPIOD_BASE     0x40020C00UL
 #define USART3_BASE    0x40004800UL
 #define TIM6_BASE      0x40001000UL
 
 #define NVIC_ISER1     (*(volatile uint32_t *)0xE000E104UL)
-
-
-/* ============================================================
- * 2. Register Definitions
- * ============================================================ */
 
 // RCC - Reset and Clock Control
 #define RCC_CR         (*(volatile uint32_t *)(RCC_BASE + 0x00UL))
@@ -87,45 +37,6 @@
 #define TIM6_PSC       (*(volatile uint32_t *)(TIM6_BASE + 0x28UL))
 #define TIM6_ARR       (*(volatile uint32_t *)(TIM6_BASE + 0x2CUL))
 
-
-/* ============================================================
- * 3. Clock Initialization
- * ============================================================
- *
- * [Clock Tree - 현재 코드의 실제 설정]
- *
- *              HSI 16MHz
- *                  |
- *                  v
- *             SYSCLK 16MHz
- *                  |
- *                  v
- *          AHB Prescaler /1
- *                  |
- *                  v
- *              HCLK 16MHz
- *                  |
- *          +-------+-------+
- *          |               |
- *          v               v
- *      APB1 /1          APB2 /1
- *          |               |
- *          v               v
- *     PCLK1 16MHz     PCLK2 16MHz
- *          |
- *     +----+----+
- *     |         |
- *     v         v
- *   USART3     TIM6
- *   16MHz    TIM6CLK 16MHz
- *
- * ※ TIMPRE = 0인 경우:
- *   APB1 /1 → TIM6CLK = PCLK1
- *   APB1 /2 이상 → TIM6CLK = PCLK1 × 2
- *
- * 현재는 APB1 /1이므로 TIM6CLK = 16MHz.
- * ============================================================ */
-
 void Clock_Init(void)
 {
     // 1. HSI 16MHz 활성화
@@ -153,19 +64,6 @@ void Clock_Init(void)
     // 7. APB2 /1 → PCLK2 = 16MHz
     RCC_CFGR &= ~(7U << 13);
 }
-
-
-/* ============================================================
- * 4. USART3 Initialization
- * ============================================================
- *
- * GPIOD : AHB1 Bus
- * USART3: APB1 Bus
- *
- * PD8 → Alternate Function 7 (USART3_TX)
- * PCLK1 = 16MHz
- * Baudrate = 115200bps
- * ============================================================ */
 
 void USART3_Init(void)
 {
@@ -201,15 +99,6 @@ void USART3_Init(void)
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
 
-
-/* ============================================================
- * 5. USART3 Character Transmission
- * ============================================================
- *
- * TXE (Transmit Data Register Empty)
- * = 1이면 데이터 레지스터에 새 데이터 기록 가능
- * ============================================================ */
-
 void USART3_SendChar(char c)
 {
     // TXE(bit7) = 1이 될 때까지 대기
@@ -220,74 +109,6 @@ void USART3_SendChar(char c)
     // 문자 전송 데이터 기록
     USART3_DR = (uint8_t)c;
 }
-
-
-/* ============================================================
- * 6. TIM6 Initialization - 500ms
- * ============================================================
- *
- * [TIM6 Clock]
- *
- * HSI 16MHz
- *     |
- *     v
- * SYSCLK 16MHz
- *     |
- *     v
- * AHB /1 → HCLK 16MHz
- *     |
- *     v
- * APB1 /1 → PCLK1 16MHz
- *     |
- *     v
- * TIM6CLK 16MHz
- *     |
- *     v
- * PSC = 15999
- *     |
- *     v
- * Counter Clock = 1000Hz
- *     |
- *     v
- * CNT가 1ms마다 증가
- *     |
- *     v
- * ARR = 499
- *     |
- *     v
- * 500ms마다 Update Event
- *
- * [공식 1 - Counter Clock]
- *
- * f_CNT = TIM6CLK / (PSC + 1)
- *
- *       = 16,000,000 / (15999 + 1)
- *       = 1000Hz
- *
- * → 1초에 1000카운트
- * → 1카운트 = 1ms
- *
- * [공식 2 - Update Period]
- *
- * T = (PSC + 1) × (ARR + 1) / TIM6CLK
- *
- *   = 16000 × 500 / 16,000,000
- *   = 0.5초
- *   = 500ms
- *
- * [Up Counter]
- *
- * 시간        CNT
- * ----------------
- *   0ms         0
- *   1ms         1
- *   2ms         2
- *   ...
- * 498ms       498
- * 499ms       499
- * 500ms         0  ← Update Event
- *
- * ============================================================ */
 
 void TIM6_Init(void)
 {
@@ -333,35 +154,6 @@ void TIM6_Init(void)
     TIM6_CR1 |= (1U << 0);
 }
 
-
-/* ============================================================
- * 7. TIM6 Update Interrupt
- * ============================================================
- *
- * 500ms 경과
- *     |
- *     v
- * CNT: 499 → 0
- *     |
- *     v
- * Update Event 발생
- *     |
- *     v
- * TIM6_SR.UIF = 1
- *     |
- *     v
- * TIM6_DIER.UIE = 1
- *     |
- *     v
- * NVIC → TIM6_DAC_IRQHandler()
- *     |
- *     v
- * TIM6_UserHandler()
- *     |
- *     v
- * '@' 출력
- * ============================================================ */
-
 void TIM6_UserHandler(void)
 {
     // UIF(bit0) 확인: Update Event 발생 여부
@@ -374,26 +166,6 @@ void TIM6_UserHandler(void)
         USART3_SendChar('@');
     }
 }
-
-
-/* ============================================================
- * 8. Main - TIM6 CNT Polling
- * ============================================================
- *
- * Polling은 TIM6_CNT 레지스터를 반복해서 읽는다.
- *
- * 이전 CNT와 현재 CNT를 비교하여
- * 카운터가 다시 0으로 돌아왔는지 판단한다.
- *
- * previous_cnt = 499
- * current_cnt  = 0
- *
- * 0 < 499 → 참 → '!' 출력
- *
- * 주의:
- * CNT를 충분히 자주 읽어야 하며,
- * 너무 오래 읽지 않으면 주기 완료를 놓칠 수 있다.
- * ============================================================ */
 
 int main(void)
 {

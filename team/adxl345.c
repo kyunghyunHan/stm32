@@ -6,11 +6,6 @@
 /* 이 모듈 내부에서 사용하는 I2C2 핸들 */
 static I2C_HandleTypeDef hi2c2;
 
-/* =====================================
- * I2C2 초기화
- * PB10 = SCL
- * PB11 = SDA
- * ===================================== */
 static uint8_t ADXL345_I2C_Init(void)
 {
     GPIO_InitTypeDef gpio = {0};
@@ -44,9 +39,6 @@ static uint8_t ADXL345_I2C_Init(void)
     return HAL_I2C_Init(&hi2c2) == HAL_OK;
 }
 
-/* =====================================
- * ADXL345 레지스터 쓰기
- * ===================================== */
 static HAL_StatusTypeDef ADXL345_Write(
     uint8_t reg,
     uint8_t value
@@ -63,9 +55,6 @@ static HAL_StatusTypeDef ADXL345_Write(
     );
 }
 
-/* =====================================
- * ADXL345 레지스터 읽기
- * ===================================== */
 static HAL_StatusTypeDef ADXL345_Read(
     uint8_t reg,
     uint8_t *data,
@@ -83,9 +72,6 @@ static HAL_StatusTypeDef ADXL345_Read(
     );
 }
 
-/* =====================================
- * ADXL345 초기화
- * ===================================== */
 uint8_t ADXL345_Init(void)
 {
     uint8_t id = 0;
@@ -164,11 +150,6 @@ uint8_t ADXL345_Init(void)
     return 1;
 }
 
-/* =====================================
- * X/Y/Z 가속도 읽기
- *
- * 0x32부터 6바이트 연속 읽기
- * ===================================== */
 uint8_t ADXL345_ReadXYZ(ADXL345_Axis_t *axis)
 {
     uint8_t data[6];
@@ -203,15 +184,6 @@ uint8_t ADXL345_ReadXYZ(ADXL345_Axis_t *axis)
     return 1;
 }
 
-/* =====================================
- * Roll / Pitch 계산
- *
- * Roll  : X축 중심 회전
- * Pitch : Y축 중심 회전
- *
- * 중력 방향을 이용하므로
- * 정지하거나 천천히 움직일 때 적합
- * ===================================== */
 void ADXL345_CalculateAngle(
     const ADXL345_Axis_t *axis,
     ADXL345_Angle_t *angle
@@ -248,11 +220,6 @@ void ADXL345_CalculateAngle(
         ) * RAD_TO_DEG;
 }
 
-/* =====================================
- * 가속도 읽기 + 각도 계산
- *
- * main.c에서 사용하는 통합 함수
- * ===================================== */
 uint8_t ADXL345_GetAngle(ADXL345_Angle_t *angle)
 {
     ADXL345_Axis_t axis;

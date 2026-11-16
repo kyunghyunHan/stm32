@@ -2,18 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI - EXTI Rising / Falling Edge
- *
- * B1  : PC13, Pressed = HIGH
- * LD2 : PB7,  HIGH = LED ON
- *
- * Rising Edge  : LED ON
- * Falling Edge : LED OFF
- *
- * HAL 사용하지 않음
- */
-
 // 1. Base Address
 
 #define RCC_BASE      0x40023800UL
@@ -119,18 +107,7 @@ void EXTI13_Init(void)
 }
 
 // 10. 인터럽트 핸들러
-/*
-인터럽트	핸들러 이름
-EXTI0	EXTI0_IRQHandler
-EXTI1	EXTI1_IRQHandler
-EXTI5~9	EXTI9_5_IRQHandler
-EXTI10~15	EXTI15_10_IRQHandler
-USART2	USART2_IRQHandler
-USART3	USART3_IRQHandler
-TIM2	TIM2_IRQHandler
-SysTick	SysTick_Handler
-DMA1 Stream 0	DMA1_Stream0_IRQHandler
-*/
+
 //인터럽트 발생 시 CPU가 실행하는 함수
 void EXTI15_10_IRQHandler(void)
 {
@@ -153,31 +130,7 @@ void EXTI15_10_IRQHandler(void)
         }
     }
 }
-/*
-① B1 버튼 누름
-       ↓
-② PC13 상승 에지 발생 (0 → 1)
-       ↓
-③ EXTI_PR의 Bit 13 = 1 (Pending 발생)
-       ↓
-④ NVIC를 통해 CPU에 인터럽트 요청 전달
-       ↓
-⑤ CPU가 EXTI15_10_IRQHandler() 진입
-       ↓
-⑥ if (EXTI_PR & (1U << 13))
-   → EXTI13 Pending이 1인지 확인
-       ↓
-⑦ EXTI_PR = (1U << 13)
-   → Pending을 0으로 클리어
-       ↓
-⑧ GPIOC_IDR 읽기
-   → 버튼이 현재 HIGH인지 LOW인지 확인
-       ↓
-⑨ GPIOB_BSRR 제어
-   → LED ON 또는 OFF
-       ↓
-⑩ ISR 종료 → 이전 코드로 복귀
-*/
+
 // 11. Main
 
 int main(void)

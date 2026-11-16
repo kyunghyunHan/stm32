@@ -5,17 +5,6 @@
 #include <stdarg.h>
 #include <inttypes.h>
 
-/*
- * STM32F429ZI USART3
- * HSI / APB1 = 16MHz
- * Baudrate = 9600, 8N1
- *
- * PD8 = TX (AF7)
- * PD9 = RX (AF7)
- *
- * ST-LINK Virtual COM Port
- */
-
 #define RCC_BASE     0x40023800UL
 #define GPIOD_BASE   0x40020C00UL
 #define USART3_BASE  0x40004800UL
@@ -133,13 +122,6 @@ int main(void)
 
     Uart3_Printf("\r\n===== MEMORY DUMP =====\r\n");
 
-    /*
-     * 원본 코드의 0x20000940 주소를 그대로 사용한다.
-     *
-     * 주의:
-     * 이 주소가 실제 할당된 Heap 영역이라는 보장은 없다.
-     * 아래 루프는 주소 주변의 RAM을 직접 읽는 실험이다.
-     */
     uintptr_t base = 0x20000940UL;
 
     for (int i = -2; i < 14; i++)

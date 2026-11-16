@@ -2,8 +2,6 @@
 
 #include <stdint.h>
 
-
-
 #define REG32(addr) (*(volatile uint32_t *)(addr))
 #define REG8(addr)  (*(volatile uint8_t *)(addr))
 
@@ -54,8 +52,6 @@
 
 volatile uint32_t tim6_done = 0;
 volatile uint32_t tim7_count = 0;
-
-/* ================= INIT ================= */
 
 static void clock_init(void)
 {
@@ -127,8 +123,6 @@ static void nvic_init(void)
     NVIC_ICER1 = TIM7_IRQ_BIT;
 }
 
-/* ================= UART OUTPUT ================= */
-
 // 문자열 전송
 static void uart_print(const char *s)
 {
@@ -164,8 +158,6 @@ static void uart_num(uint32_t n)
         USART3_DR = (uint8_t)buf[--i];
     }
 }
-
-/* ================= INTERRUPT HANDLERS ================= */
 
 void TIM7_IRQHandler(void)
 {
@@ -229,8 +221,6 @@ void TIM6_DAC_IRQHandler(void)
         uart_print("[TIM6 ISR] EXIT\r\n");
     }
 }
-
-/* ================= MAIN ================= */
 
 int main(void)
 {

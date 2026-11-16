@@ -3,24 +3,6 @@
 #include "stm32f4xx_hal.h"
 #include <stdint.h>
 
-/*
- * STM32 NUCLEO-F446RE
- *
- * USART2 : PA2 TX / PA3 RX (AF7)
- * LED1   : PB0 (External)
- * LED2   : PA5 (Onboard LD2)
- * LED3   : PB1 (External)
- * KEY1   : PC13 (Onboard B1)
- *
- * HSI = 16MHz
- * APB1 = 16MHz
- * UART = 9600, 8N1
- *
- * KEY1:
- * Pressed  = HIGH
- * Released = LOW
- */
-
 #define LED1_PIN GPIO_PIN_0
 #define LED2_PIN GPIO_PIN_5
 #define LED3_PIN GPIO_PIN_1
@@ -59,10 +41,6 @@ void print_errors(void);
 void process_command(const char *cmd);
 void Error_Handler(void);
 
-/* ========================================
- * 1. System Clock
- * ======================================== */
-
 void SystemClock_Config(void)
 {
     RCC_OscInitTypeDef osc = {0};
@@ -90,10 +68,6 @@ void SystemClock_Config(void)
         != HAL_OK)
         Error_Handler();
 }
-
-/* ========================================
- * 2. GPIO Initialization
- * ======================================== */
 
 void gpio_init(void)
 {
@@ -136,10 +110,6 @@ void gpio_init(void)
     HAL_GPIO_Init(GPIOC, &gpio);
 }
 
-/* ========================================
- * 3. USART2 Initialization
- * ======================================== */
-
 void uart2_init(void)
 {
     GPIO_InitTypeDef gpio = {0};
@@ -168,10 +138,6 @@ void uart2_init(void)
     if (HAL_UART_Init(&huart2) != HAL_OK)
         Error_Handler();
 }
-
-/* ========================================
- * 4. UART Send
- * ======================================== */
 
 void uart2_send_char(char c)
 {
@@ -215,15 +181,6 @@ void uart2_send_number(uint32_t n)
         uart2_send_char(buf[--i]);
     }
 }
-
-/* ========================================
- * 5. UART Receive (Non-blocking Polling)
- *
- * Return:
- *  1 = valid byte
- *  0 = no byte
- * -1 = UART error
- * ======================================== */
 
 int uart2_receive_checked(char *out)
 {
@@ -270,10 +227,6 @@ int uart2_receive_checked(char *out)
     return 0;
 }
 
-/* ========================================
- * 6. LED Control
- * ======================================== */
-
 void led_control(uint8_t led, uint8_t on)
 {
     GPIO_PinState state =
@@ -302,10 +255,6 @@ void all_led_control(uint8_t on)
     led_control(2, on);
     led_control(3, on);
 }
-
-/* ========================================
- * 7. Button
- * ======================================== */
 
 uint8_t key_read(void)
 {
@@ -360,10 +309,6 @@ void key_scan_1ms(void)
     }
 }
 
-/* ========================================
- * 8. String Compare
- * ======================================== */
-
 int str_equal(const char *a, const char *b)
 {
     while (*a && *b)
@@ -377,10 +322,6 @@ int str_equal(const char *a, const char *b)
 
     return (*a == '\0' && *b == '\0');
 }
-
-/* ========================================
- * 9. Print Status
- * ======================================== */
 
 void print_status(void)
 {
@@ -432,10 +373,6 @@ void print_errors(void)
     uart2_send_number(buffer_error_count);
     uart2_send_string("\r\n");
 }
-
-/* ========================================
- * 10. Command Processing
- * ======================================== */
 
 void process_command(const char *cmd)
 {
@@ -507,10 +444,6 @@ void process_command(const char *cmd)
     uart2_send_string("COMMAND OK\r\n");
     print_status();
 }
-
-/* ========================================
- * 11. Main
- * ======================================== */
 
 int main(void)
 {
@@ -627,10 +560,6 @@ int main(void)
         }
     }
 }
-
-/* ========================================
- * 12. Error Handler
- * ======================================== */
 
 void Error_Handler(void)
 {

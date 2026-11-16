@@ -26,18 +26,6 @@ static void can_init(void)
     while ((CAN1->MSR & (1U << 0)) == 0) {
     }
 
-    /*
-     * 3. 비트 타이밍 + 내부 테스트 모드
-     *
-     * APB1 클럭이 16MHz일 때:
-     * 분주 = 2
-     * BS1 = 13 TQ
-     * BS2 = 2 TQ
-     *
-     * 16MHz / (2 × (1 + 13 + 2)) = 500kbit/s
-     *
-     * 레지스터에는 실제 값보다 1 작은 값을 기록.
-     */
     CAN1->BTR =
           (1U << 31)   // SILM: 외부 버스로 송신하지 않음
         | (1U << 30)   // LBKM: 내부 루프백
@@ -116,11 +104,7 @@ static void can_receive(void)
 
 int main(void)
 {
-    /*
-     * HAL_Init(), SystemClock_Config() 사용 안 함.
-     * 리셋 기본 클럭 설정을 유지한다고 가정:
-     * HSI 16MHz, APB1 분주 1.
-     */
+
     can_init();
     can_send();
     can_receive();

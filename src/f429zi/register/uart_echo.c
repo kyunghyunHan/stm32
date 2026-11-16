@@ -1,27 +1,6 @@
 // UART로 수신한 문자를 그대로 돌려보내는 echo 실습
 #include <stdint.h>
 
-/*
- * STM32F429ZI USART3 UART Echo Back
- *
- * HSI / APB1 = 16MHz
- * Baudrate = 9600, 8N1
- *
- * PD8 = USART3_TX (AF7)
- * PD9 = USART3_RX (AF7)
- *
- * PC에서 'h' 입력 → STM32 수신 → 'h' 재전송
- */
-/*
-레지스터	주소	역할
-USART3_SR	0x40004800	송수신 상태
-USART3_DR	0x40004804	송수신 데이터
-USART3_BRR	0x40004808	Baud Rate
-USART3_CR1	0x4000480C	USART 제어
-USART3_CR2	0x40004810	Stop Bit 등
-USART3_CR3	0x40004814	추가 기능 제어
- */
-
 // Base Address
 #define RCC_BASE     0x40023800UL
 #define GPIOD_BASE   0x40020C00UL
@@ -42,7 +21,6 @@ USART3_CR3	0x40004814	추가 기능 제어
 #define USART3_CR1 (*(volatile uint32_t *)(USART3_BASE + 0x0CUL))
 #define USART3_CR2 (*(volatile uint32_t *)(USART3_BASE + 0x10UL))
 #define USART3_CR3 (*(volatile uint32_t *)(USART3_BASE + 0x14UL))
-
 
 // USART3 초기화
 void uart3_init(void)
@@ -79,7 +57,6 @@ void uart3_init(void)
                  (1U << 2);
 }
 
-
 // 문자 1개 송신
 void uart3_send_char(char c)
 {
@@ -91,7 +68,6 @@ void uart3_send_char(char c)
     USART3_DR = (uint8_t)c;
 }
 
-
 // 문자 1개 수신
 char uart3_receive_char(void)
 {
@@ -102,7 +78,6 @@ char uart3_receive_char(void)
     // 수신 데이터 레지스터 읽기
     return (char)(USART3_DR & 0xFFU);
 }
-
 
 // Main
 int main(void)

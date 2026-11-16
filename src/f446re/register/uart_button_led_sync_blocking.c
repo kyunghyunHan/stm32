@@ -2,26 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F446RE <-> ESP32 UART
- *
- * MCU        : STM32F446RE
- * Clock      : HSI 16MHz
- * USART1     : 9600bps, 8N1
- *
- * PC13       : USER B1 Button
- * PA5        : LD2 Green LED
- * PA9        : USART1 TX -> ESP32 RX
- * PA10       : USART1 RX <- ESP32 TX
- *
- * Protocol:
- * TX '1' : Button pressed
- * TX '0' : Button released
- *
- * RX '1' : LED ON
- * RX '0' : LED OFF
- */
-
 #define RCC_BASE      0x40023800UL
 #define GPIOA_BASE    0x40020000UL
 #define GPIOC_BASE    0x40020800UL
@@ -58,9 +38,6 @@
 /* B1: pressed = LOW */
 #define BUTTON_PRESSED_LEVEL 0U
 
-/* ---------------------------------
- * 1. GPIO Init
- * --------------------------------- */
 void gpio_init(void)
 {
     /* GPIOA, GPIOC clock enable */
@@ -82,9 +59,6 @@ void gpio_init(void)
     GPIOC_PUPDR |=  (1U << 26);
 }
 
-/* ---------------------------------
- * 2. USART1 Init
- * --------------------------------- */
 void uart1_init(void)
 {
     /* GPIOA clock */
@@ -113,9 +87,6 @@ void uart1_init(void)
                  (1U << 2);
 }
 
-/* ---------------------------------
- * 3. UART TX
- * --------------------------------- */
 void uart1_send(char data)
 {
     /* Wait until TX data register empty */
@@ -126,9 +97,6 @@ void uart1_send(char data)
     USART1_DR = (uint8_t)data;
 }
 
-/* ---------------------------------
- * 4. UART RX (Non-blocking)
- * --------------------------------- */
 int uart1_receive(void)
 {
     uint32_t status = USART1_SR;
@@ -151,9 +119,6 @@ int uart1_receive(void)
     return -1;
 }
 
-/* ---------------------------------
- * 5. LED Control
- * --------------------------------- */
 void led_on(void)
 {
     /* PA5 SET */
@@ -166,9 +131,6 @@ void led_off(void)
     GPIOA_BSRR = (1U << 21);
 }
 
-/* ---------------------------------
- * 6. Button Read
- * --------------------------------- */
 uint32_t button_pressed(void)
 {
     uint32_t level = (GPIOC_IDR >> 13) & 1U;
@@ -176,9 +138,6 @@ uint32_t button_pressed(void)
     return level == BUTTON_PRESSED_LEVEL;
 }
 
-/* ---------------------------------
- * 7. SysTick Delay
- * --------------------------------- */
 void delay_ms(uint32_t ms)
 {
     STK_CTRL = 0U;
@@ -198,9 +157,6 @@ void delay_ms(uint32_t ms)
     STK_CTRL = 0U;
 }
 
-/* ---------------------------------
- * 8. Main
- * --------------------------------- */
 int main(void)
 {
     gpio_init();

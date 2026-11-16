@@ -1,10 +1,5 @@
 // 타이머 인터럽트로 LED를 주기적으로 토글하는 실습
-/*  ‣ 목표 : TIM1 을 1 초 주기로 오버플로우시켜 PD3(LED)을 토글한다.
- *  ‣ 시스템 클록 : 216 MHz (Initialize_MCU()로 이미 설정됨)
- *  ‣ TIM1 클록   : 216 MHz  (RCC_DCKCFGR1.TIMPRE = 1 → HCLK 그대로 사용)
- *                  └ prescaler = 21 600-1  → 10 kHz 카운터
- *                    auto-reload = 10 000-1 → 1 s 주기
- */
+
 #include "stm32f7xx.h"
 
 void Initialize_MCU(void) /* initialize STM32F767VGT6 MCU */
@@ -45,7 +40,7 @@ void Initialize_MCU(void) /* initialize STM32F767VGT6 MCU */
     RCC->APB2ENR |= 0x00004000; // 주변장치 클록(SYSCFG = 1)
     SYSCFG->CMPCR = 0x00000001; // enable compensation cell
 }
-/* ───────────────────────── 타이머 1 오버플로우 인터럽트 ───────────────────────── */
+ 
 void TIM1_UP_TIM10_IRQHandler(void)
 {
     if (TIM1->SR & 0x0001)                // UIF(Update Interrupt Flag) 확인
@@ -55,12 +50,10 @@ void TIM1_UP_TIM10_IRQHandler(void)
     }
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────── */
 int main(void)
 {
 /* 0) 시스템 클록·캐시 초기화 (216 MHz) */
     Initialize_MCU();
-
 
 /* 1) GPIOD,GPIOC 클록 활성화  (RCC_AHB1ENR bit3 = 1) */
     RCC->AHB1ENR |= 0x00000008;
@@ -76,10 +69,6 @@ int main(void)
 /* 3) TIM1 클록 활성화 (RCC_APB2ENR bit0 = TIM1EN) */
     RCC->APB2ENR |= 0x00000001;
 
-/* 4) 타이머 기본 설정 ---------------------------------------------------------
- *    PSC  = 21 600-1   → 216 MHz / 21 600 = 10 kHz
- *    ARR  = 10 000-1   → 10 kHz / 10 000 = 1 Hz (1 초)
- * ---------------------------------------------------------------------------*/
     TIM1->PSC = 21600 - 1;                // Prescaler
     TIM1->ARR = 10000 - 1;                // Auto-reload
     TIM1->EGR = 0x0001;                   // UG = 1 (즉시 로드)

@@ -2,52 +2,19 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI
- *
- * TIM2 Polling + USART3 UART
- *
- * TIM2   : 1 second
- * USART3 : 9600bps, 8N1
- * UART TX: PD8 (AF7, ST-LINK VCP)
- *
- * Clock  : HSI 16MHz
- *
- * Output:
- * . . . . . (1 second interval)
- *
- * HAL / SysTick / Interrupt 사용 안 함
- */
-
-// =====================================
-// 1. Base Address
-// =====================================
-
 #define RCC_BASE 0x40023800UL
 #define GPIOD_BASE 0x40020C00UL
 #define TIM2_BASE 0x40000000UL
 #define USART3_BASE 0x40004800UL
-
-// =====================================
-// 2. RCC
-// =====================================
 
 #define RCC_CR (*(volatile uint32_t *)(RCC_BASE + 0x00UL))
 #define RCC_CFGR (*(volatile uint32_t *)(RCC_BASE + 0x08UL))
 #define RCC_AHB1ENR (*(volatile uint32_t *)(RCC_BASE + 0x30UL))
 #define RCC_APB1ENR (*(volatile uint32_t *)(RCC_BASE + 0x40UL))
 
-// =====================================
-// 3. GPIOD
-// =====================================
-
 #define GPIOD_MODER (*(volatile uint32_t *)(GPIOD_BASE + 0x00UL))
 #define GPIOD_OTYPER (*(volatile uint32_t *)(GPIOD_BASE + 0x04UL))
 #define GPIOD_AFRH (*(volatile uint32_t *)(GPIOD_BASE + 0x24UL))
-
-// =====================================
-// 4. TIM2
-// =====================================
 
 #define TIM2_CR1 (*(volatile uint32_t *)(TIM2_BASE + 0x00UL))
 #define TIM2_SR (*(volatile uint32_t *)(TIM2_BASE + 0x10UL))
@@ -56,20 +23,12 @@
 #define TIM2_PSC (*(volatile uint32_t *)(TIM2_BASE + 0x28UL))
 #define TIM2_ARR (*(volatile uint32_t *)(TIM2_BASE + 0x2CUL))
 
-// =====================================
-// 5. USART3
-// =====================================
-
 #define USART3_SR (*(volatile uint32_t *)(USART3_BASE + 0x00UL))
 #define USART3_DR (*(volatile uint32_t *)(USART3_BASE + 0x04UL))
 #define USART3_BRR (*(volatile uint32_t *)(USART3_BASE + 0x08UL))
 #define USART3_CR1 (*(volatile uint32_t *)(USART3_BASE + 0x0CUL))
 #define USART3_CR2 (*(volatile uint32_t *)(USART3_BASE + 0x10UL))
 #define USART3_CR3 (*(volatile uint32_t *)(USART3_BASE + 0x14UL))
-
-// =====================================
-// 6. Clock Initialization
-// =====================================
 
 void Clock_Init(void)
 {
@@ -99,10 +58,6 @@ void Clock_Init(void)
     RCC_CFGR &= ~(7U << 13);
 }
 
-// =====================================
-// 7. TIM2 Initialization
-// =====================================
-
 void TIM2_Init(void)
 {
     // TIM2 Clock Enable
@@ -111,15 +66,6 @@ void TIM2_Init(void)
     // Stop TIM2
     TIM2_CR1 = 0U;
 
-    /*
-     * TIM2 Clock = 16MHz
-     *
-     * PSC = 15999
-     * 16MHz / 16000 = 1000Hz
-     *
-     * ARR = 999
-     * 1000Hz / 1000 = 1Hz
-     */
     TIM2_PSC = 15999U;
     TIM2_ARR = 999U;
 
@@ -136,10 +82,6 @@ void TIM2_Init(void)
     TIM2_CR1 |= 1U;
 }
 
-// =====================================
-// 8. TIM2 Polling
-// =====================================
-
 void TIM2_Wait_1s(void)
 {
     // Wait for Update Flag
@@ -150,10 +92,6 @@ void TIM2_Wait_1s(void)
     // Clear UIF
     TIM2_SR = 0U;
 }
-
-// =====================================
-// 9. USART3 Initialization
-// =====================================
 
 void USART3_Init(void)
 {
@@ -179,16 +117,6 @@ void USART3_Init(void)
     USART3_CR2 = 0U;
     USART3_CR3 = 0U;
 
-    /*
-     * PCLK1 = 16MHz
-     * Baudrate = 9600
-     * Oversampling = 16
-     *
-     * USARTDIV = 16MHz / 9600
-     *           = 1666.666...
-     *
-     * BRR = 0x0683
-     */
     USART3_BRR = 0x008BU;
 
     USART3_CR1 = (1U << 13) | (1U << 3);
@@ -203,10 +131,6 @@ void USART3_SendChar(char c)
 
     USART3_DR = (uint8_t)c;
 }
-
-// =====================================
-// 11. Main
-// =====================================
 
 int main(void)
 {

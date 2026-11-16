@@ -1,42 +1,8 @@
 // 버튼 입력값이 바뀌면 UART로 0 또는 1을 전송하는 실습
 #include <stdint.h>
 
-/*
- * 실습: GPIO 입력값을 UART로 전송하기
- *
- * MCU   : STM32F446RE
- * UART  : USART2
- * Baud  : 9600 bps, 8N1
- * Clock : HSI 16MHz (APB1 = 16MHz 가정)
- *
- * GPIO
- * - PC13 : 버튼 입력 (B1 USER)
- * - PA2  : USART2_TX (AF7)
- *
- * 목표
- * 1. PC13 버튼의 입력값을 읽는다.
- * 2. UART로 '0' 또는 '1'을 전송한다.
- * 3. CoolTerm에서 버튼 상태를 확인한다.
- *
- * 주의
- * - NUCLEO-F446RE의 PC13 버튼은 일반적으로
- *   누름 = HIGH(1), 안 누름 = LOW(0)
- * - PA2는 보드의 ST-LINK Virtual COM Port에 연결된다.
- */
-
 // 3. USART2 레지스터 주소 정의
 
-/*
- * 함수 1: UART 초기화
- *
- * 1. GPIOA 클럭 활성화
- * 2. USART2 클럭 활성화
- * 3. PA2를 Alternate Function 모드(10)로 설정
- * 4. PA2의 Alternate Function을 AF7로 설정
- * 5. USART2_BRR 설정 (9600bps)
- * 6. USART2 송신 활성화 (TE)
- * 7. USART2 활성화 (UE)
- */
 // 레지스터 주소 정의
 #define RCC_BASE 0x40023800UL
 #define RCC_AHB1ENR (*(volatile uint32_t *)(RCC_BASE + 0x30UL))
@@ -78,11 +44,6 @@ void uart_init(void)
     USART2_CR1 |= (1U << 3);
     USART2_CR1 |= (1U << 13);
 }
-
-/*
-
-
-*/
 
 void uart_send_char(char c)
 {

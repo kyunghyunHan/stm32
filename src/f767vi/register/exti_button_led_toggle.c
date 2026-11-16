@@ -1,7 +1,6 @@
 // 외부 버튼 인터럽트로 LED를 토글하는 실습
 #include "stm32f7xx.h"
 
-
 void Initialize_MCU(void) /* initialize STM32F767VGT6 MCU */
 {
     // (1) 명령 캐시 및 데이터 캐시 설정
@@ -41,7 +40,6 @@ void Initialize_MCU(void) /* initialize STM32F767VGT6 MCU */
     SYSCFG->CMPCR = 0x00000001; // enable compensation cell
 }
 
-/* ───── GPIO & EXTI 초기화 ───── */
 void GPIO_EXTI_Init(void)
 {
     /* 1) GPIOD 클록 ON (bit3) */
@@ -56,7 +54,6 @@ void GPIO_EXTI_Init(void)
     GPIOC->OSPEEDR &= ~0x00003000;  // clear bits 13:12
     GPIOC->OSPEEDR |=  0x00001000;  // set bit 12
 
-    /* ── PD4 : 스위치 입력 / EXTI4 ───────────────────── */
     GPIOD->MODER &= ~0x00000300;   // bits9:8 = 00 (Input)
 
     /* 4) SYSCFG 클록 ON (EXTI 라우팅용) */
@@ -75,7 +72,6 @@ void GPIO_EXTI_Init(void)
     NVIC_EnableIRQ(EXTI4_IRQn);
 }
 
-/* ───── EXTI4 인터럽트 서비스 루틴 (개선 필요) ───── */
 // 문제: 인터럽트 핸들러 내에서 긴 지연은 좋지 않음
 void EXTI4_IRQHandler(void)
 {
@@ -87,7 +83,6 @@ void EXTI4_IRQHandler(void)
     }
 }
 
-/* ───── main ───── */
 int main(void)
 {
     Initialize_MCU();  // 216 MHz 클록 설정

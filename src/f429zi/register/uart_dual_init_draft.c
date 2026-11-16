@@ -2,13 +2,6 @@
 
 #include <stdint.h>
 
-
-
-
-// =======================================
-// 10. Main - Bidirectional Bridge
-// =======================================
-
 int main(void)
 {
     uart3_init();

@@ -1,37 +1,8 @@
 // PLL로 시스템 클록을 216MHz로 설정하고 캐시를 초기화하는 코드
-/*
- * STM32F767VGT6 시스템 초기화
- *
- * 외부 클록 HSE 16MHz를 PLL로 증폭하여 시스템 클록을 216MHz로 설정한다.
- * 고속 동작에 필요한 캐시, Flash 접근 지연, 오버드라이브를 설정하고,
- * 주변장치 버스 클록과 I/O 보상 회로를 초기화한다.
- *
- * 초기화 순서
- * 1. 명령어 캐시 및 데이터 캐시 활성화
- * 2. Flash 접근 지연 및 가속 기능 설정
- * 3. HSI로 임시 전환한 뒤 PLL 설정
- * 4. 216MHz 동작을 위한 오버드라이브 활성화
- * 5. 시스템 및 주변장치 클록 설정
- * 6. I/O 보상 회로 활성화
- *
- * 최종 클록 설정 — HSE가 16MHz인 경우
- * - SYSCLK : 216MHz
- * - AHB    : 216MHz
- * - APB1   :  54MHz
- * - APB2   :  54MHz
- * - PLL48CK:  48MHz
- *
- * 주의: 이 함수는 클록 관련 레지스터를 직접 설정하므로,
- *       보드의 HSE 주파수와 전원 조건에 맞게 사용해야 한다.
- */
+
 void Initialize_MCU(void)
 {
     /* 1. Cortex-M7 캐시 활성화 */
-/*
- * CPU는 빠르게 동작하지만 메모리 접근에는 시간이 걸린다.
- * 캐시는 자주 사용하는 명령어와 데이터를 저장하여
- * CPU가 메모리에 접근하는 시간을 줄이는 역할을 한다.
- */
 
 SCB_EnableICache(); // Instruction Cache: 명령어 접근 속도 개선
 SCB_EnableDCache(); // Data Cache: 데이터 접근 속도 개선
@@ -60,14 +31,6 @@ SCB_EnableDCache(); // Data Cache: 데이터 접근 속도 개선
     // PLL 비활성화, HSE 및 HSI 활성화 유지
     RCC->CR = 0x00010001;
 
-    /*
-     * PLL 입력 클록: HSE 16MHz
-     *
-     * PLLM = 8   : 16MHz / 8   =   2MHz
-     * PLLN = 216 :  2MHz × 216 = 432MHz (VCO 출력)
-     * PLLP = 2   : 432MHz / 2  = 216MHz (시스템 클록용)
-     * PLLQ = 9   : 432MHz / 9  =  48MHz (PLL48CK)
-     */
     RCC->PLLCFGR = 0x09403608;
 
     // PLL 활성화, HSE 및 HSI 활성화 유지

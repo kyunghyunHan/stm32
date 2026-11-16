@@ -1,13 +1,6 @@
 // UART 폴링으로 수신한 문자 값에 1을 더해 전송하는 실습
 #include <stdint.h>
 
-/*
- * STM32F446RE USART2
- * HSI / APB1 = 16MHz
- * Baudrate = 9600, 8N1
- * PA2 = TX, PA3 = RX (AF7)
- */
-
 #define RCC_BASE     0x40023800UL
 #define GPIOA_BASE   0x40020000UL
 #define USART2_BASE  0x40004400UL

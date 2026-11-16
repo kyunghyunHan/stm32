@@ -1,27 +1,5 @@
 // 버튼 누른 횟수를 LED 3개에 이진수로 표시하는 실습 변형
-/*
- * NUCLEO-F429ZI / single-file register-level GPIO example
- * No HAL, main.h, key.h, led.h, or stm32f429xx.h required.
- *
- * Original three-file behavior preserved:
- *  1) Onboard B1 (PC13, active HIGH) -> debounce/event queue ->
- *     LD1 PB0, LD2 PB7, LD3 PB14 display count 000...111.
- *  2) External button D2 (PF15, external 10k pull-up, active LOW) ->
- *     external LED D7 (PF13, push-pull, active HIGH):
- *     released => LED ON, pressed => LED OFF.
- *
- * External wiring as described in original main.c:
- *   3.3V --- 10k ---+--- D2/PF15
- *                   |
- *                 button
- *                   |
- *                  GND
- *   D7/PF13 --- 330 ohm --- LED anode (+) / LED cathode (-) --- GND
- *
- * Assumes SYSCLK/HCLK = 16 MHz HSI (default after reset); SysTick polls
- * at 1ms. If clock is configured differently, adjust SYST_RVR value.
- * This file replaces application main.c, not the startup/linker files.
- */
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -70,7 +48,6 @@ static void Tick_Wait1ms(void)
     ++tick_ms;
 }
 
-/* ------------------------- led.c merged ------------------------- */
 static void LED_Init(void)
 {
     RCC_AHB1ENR |= (1U << 1); /* GPIOB */
@@ -101,7 +78,6 @@ static void LED_ShowCount(uint32_t count)
     if (count & 4U) LED_On(14U); else LED_Off(14U);
 }
 
-/* ------------------------- key.c merged ------------------------- */
 static uint32_t raw_prev;
 static bool stable_pressed;
 static uint32_t changed_at;
@@ -171,7 +147,6 @@ static KeyEvent_t Key_GetEvent(void)
     return evt;
 }
 
-/* ---------------------- main.c external GPIO -------------------- */
 static void EXT_GPIO_Init(void)
 {
     RCC_AHB1ENR |= (1U << 5); /* GPIOF */
@@ -210,8 +185,6 @@ int main(void)
             /* KEY_EVT_RELEASED, KEY_EVT_LONG_PRESS are still generated */
         }
 
-        /* Original external LED logic: released (PF15=1) => LED ON,
-           pressed (PF15=0) => LED OFF. */
         if ((GPIO_IDR(GPIOF_BASE) & (1U << 15)) != 0U) {
             GPIO_BSRR(GPIOF_BASE) = 1U << 13;
         } else {

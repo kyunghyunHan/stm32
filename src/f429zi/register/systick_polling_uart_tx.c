@@ -2,26 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI - SysTick Polling (16MHz)
- *
- * HSI     : 16MHz
- * SYSCLK  : 16MHz
- * HCLK    : 16MHz
- * PCLK1   : 16MHz
- * PCLK2   : 16MHz
- *
- * SysTick Clock : HCLK / 8 = 2MHz
- * SysTick       : 1000ms
- *
- * USART3 : 115200bps, 8N1
- * TX     : PD8, AF7, ST-LINK VCP
- *
- * Output : '.' every 1000ms
- *
- * HAL / SysTick Interrupt 사용 안 함
- */
-
 #define RCC_BASE 0x40023800UL
 #define GPIOD_BASE 0x40020C00UL
 #define USART3_BASE 0x40004800UL
@@ -54,10 +34,6 @@
 #define CPU_CLOCK_HZ 16000000UL // 16mHZ CPU_CLOCK_HZ 분주 후
 #define SYSTICK_MS 1000U        // 원하는 시간 1000ms = 1초
 
-// =====================================
-// 1. Clock Initialization
-// =====================================
-
 void Clock_Init(void)
 {
     // HSI 16MHz Enable
@@ -77,12 +53,6 @@ void Clock_Init(void)
     }
     // RCC에서 설정하는 분주비!!
 
-    /*
-    CPU와 주변장치에 공급할 클럭 주파수를 설정하는 것이야.
-- AHB: CPU 및 AHB 버스에 공급하는 HCLK 설정
-- APB1: USART3 등 APB1 주변장치에 공급하는 PCLK1 설정
-- APB2: USART1 등 APB2 주변장치에 공급하는 PCLK2 설정
-    */
     //  AHB /1 -> HCLK = 16MHz  명시적으로 초기화
     RCC_CFGR &= ~(0xFU << 4);
 
@@ -92,10 +62,6 @@ void Clock_Init(void)
     // APB2 /1 -> PCLK2 = 16MHz 명시적으로 초기화
     RCC_CFGR &= ~(7U << 13);
 }
-
-// =====================================
-// 2. USART3 Initialization
-// =====================================
 
 void USART3_Init(void)
 {
@@ -129,10 +95,6 @@ void USART3_Init(void)
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
 
-// =====================================
-// 3. UART Transmit
-// =====================================
-
 void USART3_SendChar(char c)
 {
     // TXE = 1 대기
@@ -143,26 +105,10 @@ void USART3_SendChar(char c)
     USART3_DR = (uint8_t)c;
 }
 
-// =====================================
-// 4. SysTick Initialization
-// =====================================
-
 void SysTick_Init(void)
 {
     // SysTick Disable
     SYST_CSR = 0U;
-
-    /*
-     * HCLK = 16MHz
-     * SysTick Clock = HCLK / 8 = 2MHz
-     *
-     * 500ms  = 1,000,000 clocks
-     * 1000ms = 2,000,000 clocks
-     *
-     * 24-bit Maximum LOAD = 16,777,215
-     *
-     * HCLK = 16MHz라는 뜻은 클럭 신호가 1초에 1,600만 번 반복
-     */
 
     // 기존 500ms 설정
     // SYST_RVR = 1000000U - 1U;
@@ -183,10 +129,6 @@ void SysTick_Init(void)
     // SysTick 클럭 선택: RCC에서 만들어진 HCLK를 받아 SysTick에만 적용
     SYST_CSR = (1U << 0);
 }
-
-// =====================================
-// 5. Main
-// =====================================
 
 int main(void)
 {

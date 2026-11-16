@@ -2,35 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI
- *
- * SysTick Polling   : 1000ms마다 '.'
- * SysTick Exception : 500ms마다 '*'
- *
- * HSI     : 16MHz
- * PLL     : 168MHz
- * SYSCLK  : 168MHz
- * HCLK    : 168MHz
- * PCLK1   : 42MHz
- * PCLK2   : 84MHz
- *
- * SysTick Clock : HCLK / 8 = 21MHz
- * SysTick Tick  : 1ms
- *
- * USART3 : 115200bps, 8N1
- * TX     : PD8, AF7, ST-LINK VCP
- *
- * HAL 함수 사용 안 함
- * TIM2 / TIM6 사용 안 함
- *
- * 3.3V 전원 환경 기준
- */
-
-// =====================================
-// 1. Base Address
-// =====================================
-
 #define RCC_BASE       0x40023800UL
 #define GPIOD_BASE     0x40020C00UL
 #define USART3_BASE    0x40004800UL
@@ -75,11 +46,6 @@
 
 // SysTick Exception에서 1ms마다 증가
 volatile uint32_t systick_ms = 0U;
-
-
-// =====================================
-// 2. Clock Initialization - 168MHz
-// =====================================
 
 void Clock_Init(void)
 {
@@ -167,11 +133,6 @@ void Clock_Init(void)
     }
 }
 
-
-// =====================================
-// 3. USART3 Initialization
-// =====================================
-
 void USART3_Init(void)
 {
     // GPIOD Clock Enable
@@ -204,11 +165,6 @@ void USART3_Init(void)
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
 
-
-// =====================================
-// 4. UART Transmit
-// =====================================
-
 void USART3_SendChar(char c)
 {
     // TXE = 1 대기
@@ -219,28 +175,10 @@ void USART3_SendChar(char c)
     USART3_DR = (uint8_t)c;
 }
 
-
-// =====================================
-// 5. SysTick Initialization
-// =====================================
-
 void SysTick_Init(void)
 {
     // SysTick Disable
     STK_CTRL = 0U;
-
-    /*
-     * HCLK = 168MHz
-     *
-     * CLKSOURCE = 0 : HCLK / 8
-     * 168MHz / 8 = 21MHz
-     *
-     * 21,000,000 / 1000 = 21,000 clocks
-     *
-     * 1ms = 21,000 clocks
-     *
-     * LOAD = 21,000 - 1
-     */
 
     STK_LOAD = (SYSTICK_HZ / 1000U) - 1U;
 
@@ -253,11 +191,6 @@ void SysTick_Init(void)
     STK_CTRL = (1U << 1) |
                (1U << 0);
 }
-
-
-// =====================================
-// 6. SysTick Exception User Handler
-// =====================================
 
 // stm32f4xx_it.c의 SysTick_Handler에서 호출
 void SysTick_UserHandler(void)
@@ -276,11 +209,6 @@ void SysTick_UserHandler(void)
         USART3_SendChar('*');
     }
 }
-
-
-// =====================================
-// 7. Main - Polling
-// =====================================
 
 int main(void)
 {

@@ -2,30 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI - SysTick Polling (168MHz)
- *
- * HSI    : 16MHz
- * PLL    : 168MHz
- * SYSCLK : 168MHz
- * HCLK   : 168MHz
- * PCLK1  : 42MHz
- * PCLK2  : 84MHz
- *
- * SysTick Clock : HCLK / 8 = 21MHz
- * SysTick       : 500ms hardware period
- * Output Period : 1000ms (2 periods)
- *
- * USART3 : 115200bps, 8N1
- * TX     : PD8, AF7, ST-LINK VCP
- *
- * Output : '.' every 1000ms
- *
- * HAL / SysTick Interrupt 사용 안 함
- *
- * 3.3V 전원 환경 기준
- */
-
 #define RCC_BASE       0x40023800UL
 #define GPIOD_BASE     0x40020C00UL
 #define USART3_BASE    0x40004800UL
@@ -67,10 +43,6 @@
 
 #define CPU_CLOCK_HZ   168000000UL
 #define OUTPUT_MS      1000U
-
-// =====================================
-// 1. Clock Initialization
-// =====================================
 
 void Clock_Init(void)
 {
@@ -159,10 +131,6 @@ void Clock_Init(void)
     }
 }
 
-// =====================================
-// 2. USART3 Initialization
-// =====================================
-
 void USART3_Init(void)
 {
     // GPIOD Clock Enable
@@ -195,10 +163,6 @@ void USART3_Init(void)
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
 
-// =====================================
-// 3. UART Transmit
-// =====================================
-
 void USART3_SendChar(char c)
 {
     // TXE = 1 대기
@@ -209,27 +173,10 @@ void USART3_SendChar(char c)
     USART3_DR = (uint8_t)c;
 }
 
-// =====================================
-// 4. SysTick Initialization
-// =====================================
-
 void SysTick_Init(void)
 {
     // SysTick Disable
     SYST_CSR = 0U;
-
-    /*
-     * HCLK = 168MHz
-     * SysTick Clock = HCLK / 8 = 21MHz
-     *
-     * 500ms  = 10,500,000 clocks
-     * 1000ms = 21,000,000 clocks
-     *
-     * 24-bit Maximum LOAD = 16,777,215
-     *
-     * 1000ms 직접 설정 불가능
-     * 따라서 500ms를 2회 누적
-     */
 
     // 기존: 500ms마다 출력하는 설정
     // SYST_RVR = 10500000U - 1U;
@@ -246,10 +193,6 @@ void SysTick_Init(void)
     // ENABLE    = 1 : Counter Enable
     SYST_CSR = (1U << 0);
 }
-
-// =====================================
-// 5. Main
-// =====================================
 
 int main(void)
 {

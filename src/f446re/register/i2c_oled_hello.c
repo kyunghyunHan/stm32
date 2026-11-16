@@ -2,14 +2,6 @@
 
 #include <stdint.h>
 
-/* =========================================
-   STM32F446RE OLED + UART
-   HSI 16MHz, APB1 16MHz
-   I2C1 PB8(SCL), PB9(SDA)
-   USART2 PA2(TX), 9600bps
-   SSD1306 128x64, address 0x3C
-   ========================================= */
-
 #define REG32(a) (*(volatile uint32_t *)(a))
 
 #define RCC_BASE      0x40023800UL
@@ -56,9 +48,6 @@
 #define OLED_ADDR     0x3CU
 #define TIMEOUT       200000UL
 
-/* =========================================
-   1. Delay
-   ========================================= */
 static void delay_ms(uint32_t ms)
 {
     STK_CTRL = 0;
@@ -74,9 +63,6 @@ static void delay_ms(uint32_t ms)
     STK_CTRL = 0;
 }
 
-/* =========================================
-   2. USART2
-   ========================================= */
 static void uart_init(void)
 {
     RCC_AHB1ENR |= (1U << 0);
@@ -111,9 +97,6 @@ static void uart_print(const char *str)
     }
 }
 
-/* =========================================
-   3. I2C1 GPIO + Peripheral
-   ========================================= */
 static void i2c_init(void)
 {
     RCC_AHB1ENR |= (1U << 1);
@@ -152,9 +135,6 @@ static void i2c_init(void)
     I2C1_CR1 = (1U << 0);  // PE
 }
 
-/* =========================================
-   4. I2C status and timeout
-   ========================================= */
 static int i2c_wait(uint32_t flag)
 {
     uint32_t timeout = TIMEOUT;
@@ -233,9 +213,6 @@ error:
     return -1;
 }
 
-/* =========================================
-   5. SSD1306 command
-   ========================================= */
 static int oled_cmd(uint8_t cmd)
 {
     return i2c_write(0x00U, &cmd, 1U);
@@ -275,9 +252,6 @@ static int oled_init(void)
     return 0;
 }
 
-/* =========================================
-   6. OLED page drawing
-   ========================================= */
 static int oled_page(uint8_t page, const uint8_t *data)
 {
     if (oled_cmd(0xB0U | page) != 0) return -1;
@@ -301,10 +275,6 @@ static int oled_clear(void)
     return 0;
 }
 
-/* =========================================
-   7. Minimal 5x7 font
-   Only characters for "HELLO STM32"
-   ========================================= */
 static const uint8_t *glyph(char c)
 {
     static const uint8_t H[5] = {0x7F,0x08,0x08,0x08,0x7F};
@@ -355,9 +325,6 @@ static int oled_hello(void)
     return oled_page(3U, line);
 }
 
-/* =========================================
-   8. MAIN
-   ========================================= */
 int main(void)
 {
     uart_init();

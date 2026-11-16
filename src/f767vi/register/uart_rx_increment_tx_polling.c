@@ -80,7 +80,7 @@ char UART2_ReceiveChar(void)
     while (!(USART2->ISR & USART_ISR_RXNE));
     return (char)(USART2->RDR & 0xFF);
 }
-/* ─────────────────────────────────────────────────────────────────────────────── */
+ 
 uint8_t received_char = 0;
 int main(void)
 {

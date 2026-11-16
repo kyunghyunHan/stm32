@@ -1,70 +1,6 @@
 // 버튼 입력을 직접 읽어 LED를 토글하는 기초 실습
 // #include "stm32f446xx.h"
 
-/*
- * STM32 GPIO 레지스터 제어 흐름
- *
- * 1. RCC_BASE 정의
- *    → RCC 주변장치 시작 주소
- *
- * 2. RCC_AHB1ENR 정의
- *    → GPIO 클럭 활성화 레지스터 주소
- *
- * 3. GPIOx_BASE 정의
- *    → GPIO 포트 시작 주소
- *
- * 4. GPIOx_MODER / IDR / ODR 정의
- *    → GPIO 모드 설정 / 입력 읽기 / 출력 제어 레지스터 주소
- *
- * 5. RCC 클럭 활성화
- *    → GPIOA, GPIOC 사용 가능
- *
- * 6. GPIO 모드 설정 (MODER)
- *    → PC13 : Input  (00)
- *    → PA5  : Output (01)
- *
- * 7. GPIO 입력 읽기 (IDR)
- *    → PC13 버튼 상태 확인
- *    → 누름 = LOW(0), 안 누름 = HIGH(1)
- *
- * 8. GPIO 출력 제어 (ODR)
- *    → PA5 HIGH(1) : LED ON
- *    → PA5 LOW(0)  : LED OFF
- *
- * 9. while(1) 반복
- *    → 버튼 상태 확인 → LED 제어 반복 (Polling)
- *
- * 핵심:
- * RCC → MODER → IDR → ODR
- */
-
-/*
- * MCU 레지스터 기반 주변장치 제어 흐름
- *
- * 1. 주변장치 레지스터 주소 확인
- *    → 데이터시트 / Reference Manual 참고
- *
- * 2. 주변장치 클럭 활성화
- *    → 필요한 경우 클럭 공급
- *
- * 3. 핀 및 주변장치 설정
- *    → GPIO, UART, SPI, I2C, ADC 등
- *
- * 4. 동작 모드 설정
- *    → 입력 / 출력 / 통신 속도 / 인터럽트 등
- *
- * 5. 주변장치 활성화
- *    → 필요한 경우 Enable 비트 설정
- *
- * 6. 데이터 읽기 또는 쓰기
- *    → 입력값 확인 / 출력값 변경
- *
- * 7. 반복 실행 또는 인터럽트 처리
- *    → Polling / Interrupt / DMA
- *
- * 핵심:
- * 주소 확인 → 클럭 → 설정 → 활성화 → 데이터 처리
- */
 #include <stdint.h>
 
 #define RCC_BASE 0x40023800UL
@@ -82,8 +18,6 @@
 #define GPIOA_ODR (*(volatile uint32_t *)(GPIOA_BASE + 0x14UL))
 int main(void)
 {
-    /*B1 USER: the user button is connected to the I/O PC13 (pin 2) of the STM32
- microcontroller */
 
     // GPIOC 활성화
 
@@ -178,80 +112,3 @@ int main(void)
     }
 }
 
-/*
- * GPIO Push-Pull 출력 구조 (STM32)
- *
- *                  VDD (3.3V)
- *                      |
- *                  [ PMOS ]
- *                      |
- *                      +-------- GPIO PA5 ---- 외부 부하
- *                      |
- *                  [ NMOS ]
- *                      |
- *                     GND
- *
- * 1. ODR = 1 (HIGH 출력)
- *
- *    PMOS = ON
- *    NMOS = OFF
- *
- *    VDD → PMOS → GPIO PA5
- *
- *    GPIO 핀이 VDD 쪽으로 연결되어
- *    약 3.3V(HIGH)가 출력된다.
- *
- *
- * 2. ODR = 0 (LOW 출력)
- *
- *    PMOS = OFF
- *    NMOS = ON
- *
- *    GPIO PA5 → NMOS → GND
- *
- *    GPIO 핀이 GND 쪽으로 연결되어
- *    약 0V(LOW)가 출력된다.
- *
- *    NMOS에도 작은 ON 저항이 존재한다.
- *    단, 외부 전류 공급 경로가 없다면
- *    LOW 출력이라고 큰 전류가 흐르지는 않는다.
- *
- *
- * 3. PMOS와 NMOS가 동시에 ON이면?
- *
- *    VDD (3.3V)
- *        |
- *    PMOS ON
- *        |
- *    NMOS ON
- *        |
- *       GND
- *
- *    VDD와 GND 사이에 낮은 저항의 경로가 생겨
- *    과전류(Shoot-through)가 발생할 수 있다.
- *
- *
- * 4. STM32F446RE LD2 회로 (Active-High)
- *
- *    PA5 HIGH
- *        |
- *       LED
- *        |
- *      저항
- *        |
- *       GND
- *
- *    PA5 HIGH → LED ON
- *    PA5 LOW  → LED OFF
- *
- *
- * 핵심:
- *
- * ODR → Output Control → PMOS/NMOS → GPIO Pin
- *
- * PMOS ON → VDD 쪽으로 연결 → HIGH
- * NMOS ON → GND 쪽으로 연결 → LOW
- *
- * MOSFET의 ON/OFF는 스위치 상태이고,
- * GPIO의 HIGH/LOW는 핀의 논리 전압 상태이다.
- */

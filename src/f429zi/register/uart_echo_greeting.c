@@ -1,16 +1,6 @@
 // UART로 인사말을 출력하고 수신 문자를 돌려보내는 echo 실습
 #include <stdint.h>
 
-/*
- * STM32F429ZI USART3
- * HSI / APB1 = 16MHz
- * Baudrate = 9600, 8N1
- * PD8 = TX (AF7)
- * PD9 = RX (AF7)
- *
- * ST-LINK Virtual COM Port
- */
-
 #define RCC_BASE     0x40023800UL
 #define GPIOD_BASE   0x40020C00UL
 #define USART3_BASE  0x40004800UL

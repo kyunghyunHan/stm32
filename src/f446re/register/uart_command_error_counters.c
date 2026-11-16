@@ -2,28 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32 NUCLEO-F446RE
- *
- * USART2 : PA2 TX / PA3 RX (AF7)
- * LED1   : PB0  (External)
- * LED2   : PA5  (Onboard LD2)
- * LED3   : PB1  (External)
- * KEY1   : PC13 (Onboard B1)
- *
- * HSI = 16MHz, APB1 = 16MHz assumed
- * UART = 9600, 8N1
- *
- * KEY1:
- * Pressed  = HIGH
- * Released = LOW
- *
- * UART commands:
- * led1 on/off, led2 on/off, led3 on/off
- * 123 on, 123 off, off
- * key1, status, errors, clear
- */
-
 #define RCC_BASE     0x40023800UL
 #define GPIOA_BASE   0x40020000UL
 #define GPIOB_BASE   0x40020400UL
@@ -93,10 +71,6 @@ static uint8_t key_stable = 0;
 static uint8_t key_candidate = 0;
 static uint32_t key_count = 0;
 
-// =====================================
-// 1. GPIO Initialization
-// =====================================
-
 void gpio_init(void)
 {
     RCC_AHB1ENR |= (1U << 0) |
@@ -118,10 +92,6 @@ void gpio_init(void)
     // PC13 input
     GPIOC_MODER &= ~(3U << 26);
 }
-
-// =====================================
-// 2. USART2 Initialization
-// =====================================
 
 void uart2_init(void)
 {
@@ -149,10 +119,6 @@ void uart2_init(void)
                  (1U << 2);
 }
 
-// =====================================
-// 3. SysTick 1ms Initialization
-// =====================================
-
 void systick_init(void)
 {
     // CPU clock = 16MHz
@@ -165,10 +131,6 @@ void systick_init(void)
     // No SysTick interrupt
     SYST_CSR = (1U << 2) | (1U << 0);
 }
-
-// =====================================
-// 4. UART Send
-// =====================================
 
 void uart2_send_char(char c)
 {
@@ -210,10 +172,6 @@ void uart2_send_number(uint32_t n)
     }
 }
 
-// =====================================
-// 5. UART Receive (Non-blocking)
-// =====================================
-
 //  1 = valid byte
 //  0 = no byte
 // -1 = UART error
@@ -244,10 +202,6 @@ int uart2_receive_checked(char *out)
     return 0;
 }
 
-// =====================================
-// 6. LED Control
-// =====================================
-
 void led_control(uint8_t led, uint8_t on)
 {
     on = on ? 1U : 0U;
@@ -275,10 +229,6 @@ void all_led_control(uint8_t on)
     led_control(2, on);
     led_control(3, on);
 }
-
-// =====================================
-// 7. Button
-// =====================================
 
 uint8_t key_read(void)
 {
@@ -333,10 +283,6 @@ void key_scan_1ms(void)
     }
 }
 
-// =====================================
-// 8. String Compare
-// =====================================
-
 int str_equal(const char *a, const char *b)
 {
     while (*a && *b)
@@ -350,10 +296,6 @@ int str_equal(const char *a, const char *b)
 
     return (*a == '\0' && *b == '\0');
 }
-
-// =====================================
-// 9. Print Status
-// =====================================
 
 void print_status(void)
 {
@@ -399,10 +341,6 @@ void print_errors(void)
     uart2_send_number(buffer_error_count);
     uart2_send_string("\r\n");
 }
-
-// =====================================
-// 10. Command Processing
-// =====================================
 
 void process_command(const char *cmd)
 {
@@ -472,10 +410,6 @@ void process_command(const char *cmd)
     uart2_send_string("COMMAND OK\r\n");
     print_status();
 }
-
-// =====================================
-// 11. Main
-// =====================================
 
 int main(void)
 {

@@ -1,24 +1,6 @@
 // UART로 수신한 0과 1로 외부 LED를 켜고 끄는 실습
 #include <stdint.h>
 
-/*
- * STM32F446RE UART 외부 LED 제어
- *
- * '1' 수신 -> 외부 LED ON
- * '0' 수신 -> 외부 LED OFF
- * 다른 문자 -> LED 상태 유지
- *
- * MCU       : STM32F446RE
- * External LED : PA8 (D7)
- * USART2 TX : PA2 (AF7)
- * USART2 RX : PA3 (AF7)
- *
- * Clock     : HSI 16MHz, APB1 16MHz
- * UART      : 9600bps, 8N1
- *
- * HAL 없이 레지스터 직접 접근
- */
-
 #define RCC_BASE    0x40023800UL
 #define GPIOA_BASE  0x40020000UL
 #define USART2_BASE 0x40004400UL

@@ -2,23 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI - SysTick Exception
- *
- * Clock   : HSI 16MHz
- * USART3  : 115200bps, 8N1
- * TX      : PD8 (AF7, ST-LINK VCP)
- * SysTick : 500ms
- *
- * Output  : '*' every 500ms
- *
- * HAL 함수 사용 안 함
- */
-
-// =====================================
-// 1. Base Address
-// =====================================
-
 #define RCC_BASE       0x40023800UL
 #define GPIOD_BASE     0x40020C00UL
 #define USART3_BASE    0x40004800UL
@@ -51,10 +34,6 @@
 #define CPU_CLOCK_HZ   16000000UL
 #define SYSTICK_MS     500U
 
-// =====================================
-// 2. Clock Initialization
-// =====================================
-
 void Clock_Init(void)
 {
     // HSI Enable
@@ -82,10 +61,6 @@ void Clock_Init(void)
     // APB2 = /1
     RCC_CFGR &= ~(7U << 13);
 }
-
-// =====================================
-// 3. USART3 Initialization
-// =====================================
 
 void USART3_Init(void)
 {
@@ -118,10 +93,6 @@ void USART3_Init(void)
     USART3_CR1 = (1U << 13) | (1U << 3);
 }
 
-// =====================================
-// 4. UART Transmit
-// =====================================
-
 void USART3_SendChar(char c)
 {
     while ((USART3_SR & (1U << 7)) == 0U)
@@ -130,10 +101,6 @@ void USART3_SendChar(char c)
 
     USART3_DR = (uint8_t)c;
 }
-
-// =====================================
-// 5. SysTick Initialization
-// =====================================
 
 void SysTick_Init(void)
 {
@@ -155,19 +122,11 @@ void SysTick_Init(void)
                (1U << 0);
 }
 
-// =====================================
-// 6. SysTick User Handler
-// =====================================
-
 // stm32f4xx_it.c에서 호출하는 함수
 void SysTick_UserHandler(void)
 {
     USART3_SendChar('*');
 }
-
-// =====================================
-// 7. Main
-// =====================================
 
 int main(void)
 {

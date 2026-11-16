@@ -2,14 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F446RE
- * PA5 : LD2 LED
- * CPU Clock : 16MHz
- * SysTick : 1ms Interrupt
- * LED : 3초마다 Toggle
- */
-
 // RCC
 #define RCC_BASE 0x40023800UL
 #define RCC_AHB1ENR (*(volatile uint32_t *)(RCC_BASE + 0x30UL))

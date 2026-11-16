@@ -11,11 +11,7 @@
 // GPIO 레지스터 offset
 
 // MODE 레지스터 :핀을 입력/출력/특수기능/아날로그 중 뭘로 쓸지
-/*
- * moder은 핀당 2bit
- * 01로 만들면 outpuut
- * 00은input
- */
+
 #define GPIO_MODER_OFFSET 0x00UL // 2bit
 // 출력 방식을 Push-Pull / Open-Drain 중 뭘로 할지
 #define GPIO_OTYPER_OFFSET 0x04UL
@@ -62,8 +58,6 @@ typedef struct
 } GPIO_TypeDef;
 
 #define GPIOD ((GPIO_TypeDef *)GPIOD_BASE)
-
-
 
 // *(volatile uint32_t *)0x1000 = 1;
 

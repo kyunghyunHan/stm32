@@ -8,12 +8,6 @@
 /* 이 모듈 내부에서 사용하는 USART3 핸들 */
 static UART_HandleTypeDef huart3;
 
-/* =====================================
- * USART3 초기화
- *
- * PD8: TX
- * PD9: RX
- * ===================================== */
 void UART_Init(void)
 {
     GPIO_InitTypeDef gpio = {0};
@@ -47,9 +41,6 @@ void UART_Init(void)
     }
 }
 
-/* =====================================
- * 문자열 UART 전송
- * ===================================== */
 void UART_Send(const char *str)
 {
     if (str == NULL)
@@ -72,14 +63,6 @@ void UART_Send(const char *str)
     );
 }
 
-/* =====================================
- * Roll/Pitch 데이터 전송
- *
- * Rust에서 읽을 형식:
- * ROLL:12.3,PITCH:-5.4
- *
- * printf의 %f 기능 없이 전송
- * ===================================== */
 void UART_Send_Attitude(
     float roll,
     float pitch

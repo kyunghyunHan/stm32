@@ -1,9 +1,5 @@
 // 버튼 디바운싱을 적용해 LED를 토글하는 실습
-/* STM32F429ZITx, HSI 16 MHz (CMSIS SystemInit default).
- * PA10 -> resistor -> LED -> GND: HIGH turns the LED on.
- * PC13 -> button -> GND: internal pull-up, pressed = LOW.
- * Toggle the LED once per debounced press.
- */
+
 #include "stm32f429xx.h"
 #include <stdint.h>
 

@@ -2,24 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI - LED Morse Code SOS
- *
- * LED   : LD2 (PB7, Active-HIGH)
- * Clock : HSI 16MHz
- * Timer : SysTick 1ms
- * Mode  : Register / Bare-metal
- *
- * SOS = ... --- ...
- *
- * Dot  (.) : 200ms
- * Dash (-) : 600ms
- */
-
-// ===============================
-// 1. Register Address
-// ===============================
-
 #define RCC_BASE       0x40023800UL
 #define GPIOB_BASE     0x40020400UL
 #define SYSTICK_BASE   0xE000E010UL
@@ -40,10 +22,6 @@
 #define LED_PIN        7U
 #define UNIT_MS        200U
 
-// ===============================
-// 2. GPIO Initialization
-// ===============================
-
 void GPIO_Init(void)
 {
     // GPIOB Clock Enable
@@ -60,10 +38,6 @@ void GPIO_Init(void)
     GPIOB_BSRR = (1U << 23);
 }
 
-// ===============================
-// 3. SysTick Initialization
-// ===============================
-
 void SysTick_Init(void)
 {
     // HSI 16MHz / 1000 = 16000
@@ -76,10 +50,6 @@ void SysTick_Init(void)
     SYST_CSR = (1U << 2) | (1U << 0);
 }
 
-// ===============================
-// 4. Delay (ms)
-// ===============================
-
 void delay_ms(uint32_t ms)
 {
     for (uint32_t i = 0; i < ms; i++)
@@ -91,10 +61,6 @@ void delay_ms(uint32_t ms)
     }
 }
 
-// ===============================
-// 5. LED Control
-// ===============================
-
 void LED_ON(void)
 {
     GPIOB_BSRR = (1U << LED_PIN);
@@ -104,10 +70,6 @@ void LED_OFF(void)
 {
     GPIOB_BSRR = (1U << (LED_PIN + 16U));
 }
-
-// ===============================
-// 6. Morse Code
-// ===============================
 
 void dot(void)
 {
@@ -126,10 +88,6 @@ void dash(void)
     LED_OFF();
     delay_ms(UNIT_MS);
 }
-
-// ===============================
-// 7. SOS Pattern
-// ===============================
 
 void SOS(void)
 {
@@ -157,10 +115,6 @@ void SOS(void)
     // Repeat Gap: total 7 units
     delay_ms(UNIT_MS * 6U);
 }
-
-// ===============================
-// 8. Main
-// ===============================
 
 int main(void)
 {

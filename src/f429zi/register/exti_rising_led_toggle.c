@@ -33,7 +33,6 @@
 // NVIC
 #define NVIC_ISER1 (*(volatile uint32_t *)(NVIC_ISER_BASE + 0x04UL))
 
-
 // 인터럽트 핸들러
 void EXTI15_10_IRQHandler(void)
 {

@@ -2,29 +2,6 @@
 
 #include <stdint.h>
 
-/*
- * STM32F429ZI <-> STM32F446RE UART
- *
- * MCU      : STM32F429ZI
- * Clock    : HSI 16MHz
- * HCLK     : 16MHz
- * PCLK2    : 16MHz
- * USART6   : 9600bps, 8N1
- *
- * PC13     : USER B1 Button
- * PB7      : LD2 Blue LED
- *
- * PG14     : USART6 TX (D1) -> F446RE D2 RX
- * PG9      : USART6 RX (D0) <- F446RE D8 TX
- *
- * Protocol:
- * TX '1' : Button pressed
- * TX '0' : Button released
- *
- * RX '1' : LED ON
- * RX '0' : LED OFF
- */
-
 #define RCC_BASE       0x40023800UL
 #define GPIOB_BASE     0x40020400UL
 #define GPIOC_BASE     0x40020800UL
@@ -67,10 +44,6 @@
 /* F429ZI B1: pressed = HIGH */
 #define BUTTON_PRESSED_LEVEL 1U
 
-
-/* ---------------------------------
- * 1. GPIO Init
- * --------------------------------- */
 void gpio_init(void)
 {
     /* GPIOB, GPIOC clocks */
@@ -92,10 +65,6 @@ void gpio_init(void)
     GPIOC_PUPDR |=  (2U << 26);
 }
 
-
-/* ---------------------------------
- * 2. USART6 Init
- * --------------------------------- */
 void uart6_init(void)
 {
     /* GPIOG clock: AHB1 bit 6 */
@@ -104,24 +73,10 @@ void uart6_init(void)
     /* USART6 clock: APB2 bit 5 */
     RCC_APB2ENR |= (1U << 5);
 
-    /*
-     * PG9  = D0 = RX
-     * PG14 = D1 = TX
-     *
-     * MODER = 10 (Alternate Function)
-     */
-
     /* PG9: MODER[19:18] */
     /* PG14: MODER[29:28] */
     GPIOG_MODER &= ~((3U << 18) | (3U << 28));
     GPIOG_MODER |=  ((2U << 18) | (2U << 28));
-
-    /*
-     * USART6 = AF8
-     *
-     * PG9  -> AFRH[7:4]
-     * PG14 -> AFRH[27:24]
-     */
 
     GPIOG_AFRH &= ~((0xFU << 4) | (0xFU << 24));
     GPIOG_AFRH |=  ((8U << 4) | (8U << 24));
@@ -134,20 +89,11 @@ void uart6_init(void)
     /* PCLK2 = 16MHz, Baud = 9600 */
     USART6_BRR = 0x0683U;
 
-    /*
-     * UE = bit 13
-     * TE = bit 3
-     * RE = bit 2
-     */
     USART6_CR1 = (1U << 13) |
                  (1U << 3)  |
                  (1U << 2);
 }
 
-
-/* ---------------------------------
- * 3. UART TX
- * --------------------------------- */
 void uart6_send(char data)
 {
     /* Wait for TXE = 1 */
@@ -158,10 +104,6 @@ void uart6_send(char data)
     USART6_DR = (uint8_t)data;
 }
 
-
-/* ---------------------------------
- * 4. UART RX (Non-blocking)
- * --------------------------------- */
 int uart6_receive(void)
 {
     uint32_t status = USART6_SR;
@@ -184,10 +126,6 @@ int uart6_receive(void)
     return -1;
 }
 
-
-/* ---------------------------------
- * 5. LED Control
- * --------------------------------- */
 void led_on(void)
 {
     /* PB7 SET */
@@ -200,10 +138,6 @@ void led_off(void)
     GPIOB_BSRR = (1U << 23);
 }
 
-
-/* ---------------------------------
- * 6. Button Read
- * --------------------------------- */
 uint32_t button_pressed(void)
 {
     uint32_t level = (GPIOC_IDR >> 13) & 1U;
@@ -211,10 +145,6 @@ uint32_t button_pressed(void)
     return (level == BUTTON_PRESSED_LEVEL);
 }
 
-
-/* ---------------------------------
- * 7. SysTick Delay
- * --------------------------------- */
 void delay_ms(uint32_t ms)
 {
     STK_CTRL = 0U;
@@ -234,10 +164,6 @@ void delay_ms(uint32_t ms)
     STK_CTRL = 0U;
 }
 
-
-/* ---------------------------------
- * 8. Main
- * --------------------------------- */
 int main(void)
 {
     gpio_init();
@@ -250,11 +176,6 @@ int main(void)
 
     while (1)
     {
-        /*
-         * F429ZI Button
-         *       ↓
-         * F446RE Green LED
-         */
 
         uint32_t current = button_pressed();
 
@@ -270,12 +191,6 @@ int main(void)
                 previous = current;
             }
         }
-
-        /*
-         * F446RE Button
-         *       ↓
-         * F429ZI Blue LED
-         */
 
         int received = uart6_receive();
 
