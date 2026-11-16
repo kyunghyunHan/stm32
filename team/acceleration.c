@@ -1,3 +1,4 @@
+// ADXL345의 기울기 각도를 읽어 UART로 전송하는 실습
 
 #include "stm32f4xx_hal.h"
 #include "adxl345.h"

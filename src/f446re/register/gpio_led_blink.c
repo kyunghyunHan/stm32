@@ -1,3 +1,4 @@
+// GPIO로 LED를 주기적으로 깜빡이는 실습
 #include <stdint.h>
 
 /*

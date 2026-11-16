@@ -1,3 +1,4 @@
+// UART로 수신한 문자를 그대로 돌려보내는 echo 실습
 #include <stdint.h>
 
 /*

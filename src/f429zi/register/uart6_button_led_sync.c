@@ -1,3 +1,4 @@
+// UART6로 보드 간 버튼 상태를 주고받아 LED를 제어하는 실습
 
 #include <stdint.h>
 

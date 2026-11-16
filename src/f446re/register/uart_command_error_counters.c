@@ -1,3 +1,4 @@
+// UART 명령 처리와 수신 오류 횟수 집계 실습
 
 #include <stdint.h>
 

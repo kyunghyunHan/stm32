@@ -1,3 +1,4 @@
+// USART1과 USART3을 함께 초기화하는 실습 초안
 
 #include <stdint.h>
 

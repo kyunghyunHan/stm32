@@ -1,3 +1,4 @@
+// 지연 함수로 버튼 디바운싱을 처리하고 UART로 LED를 연동하는 실습
 
 #include <stdint.h>
 

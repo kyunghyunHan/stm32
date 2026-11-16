@@ -1,3 +1,4 @@
+// I2C로 ADXL345 가속도를 읽고 Roll·Pitch를 계산하는 코드
 
 #include "adxl345.h"
 #include <math.h>
@@ -18,7 +19,6 @@ static uint8_t ADXL345_I2C_Init(void)
     __HAL_RCC_I2C2_CLK_ENABLE();
 
     /* I2C 핀: 오픈드레인, AF4 */
-    gpio.Pin = GPIO_PIN_10 | GPIO_PIN_11;
     gpio.Mode = GPIO_MODE_AF_OD;
     gpio.Pull = GPIO_NOPULL;
     gpio.Speed = GPIO_SPEED_FREQ_HIGH;

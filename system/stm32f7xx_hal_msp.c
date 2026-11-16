@@ -1,3 +1,4 @@
+// STM32F7 HAL에서 사용할 주변장치 클록과 ADC 핀을 초기화하는 코드
 #include "stm32f7xx_hal.h"
 
 void HAL_MspInit(void)

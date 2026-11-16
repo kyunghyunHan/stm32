@@ -1,3 +1,4 @@
+// 버튼으로 LED를 제어하고 UART로 버튼 눌림을 알리는 실습
 #include <stdint.h>
 
 #define RCC_BASE    0x40023800UL

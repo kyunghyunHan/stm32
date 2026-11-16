@@ -1,3 +1,4 @@
+// UART 수신 문자로 내장 LED를 켜고 끄는 실습 변형
 
 #include <stdint.h>
 

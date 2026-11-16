@@ -1,3 +1,4 @@
+// 버튼 누른 횟수를 LED 3개에 이진수로 표시하는 실습
 /*
  * NUCLEO-F429ZI / single-file register-level GPIO example
  * No HAL, main.h, key.h, led.h, or stm32f429xx.h required.

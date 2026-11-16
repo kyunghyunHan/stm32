@@ -1,3 +1,4 @@
+// UART로 STM32 두 대와 ESP32의 버튼·LED 상태를 연동하는 실습
 
 #include <stdint.h>
 

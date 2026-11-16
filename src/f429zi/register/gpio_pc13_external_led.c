@@ -1,3 +1,4 @@
+// PC13 버튼 입력에 따라 외부 LED를 켜고 끄는 실습
 #include <stdint.h>
 
 #define RCC_BASE   0x40023800UL

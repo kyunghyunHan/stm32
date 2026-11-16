@@ -1,3 +1,4 @@
+// UART 수신 문자로 LED 3개를 선택하거나 모두 끄는 실습
 #include <stdint.h>
 
 #define RCC_BASE    0x40023800UL

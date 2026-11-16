@@ -1,3 +1,4 @@
+// 힙 메모리를 할당하고 RAM 내용을 UART로 출력하는 실습
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>

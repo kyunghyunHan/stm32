@@ -1,3 +1,4 @@
+// ADC 폴링으로 아날로그 입력을 읽고 전압으로 변환하는 실습
 #include "stm32f7xx.h"
 
 void Initialize_MCU(void);            // 사용자가 제공한 클록 초기화 함수

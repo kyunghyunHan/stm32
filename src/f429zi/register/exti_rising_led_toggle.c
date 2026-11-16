@@ -1,3 +1,4 @@
+// 버튼의 상승 에지 인터럽트로 LED를 토글하는 실습
 
 #include <stdint.h>
 

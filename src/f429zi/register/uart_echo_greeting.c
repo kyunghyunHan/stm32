@@ -1,3 +1,4 @@
+// UART로 인사말을 출력하고 수신 문자를 돌려보내는 echo 실습
 #include <stdint.h>
 
 /*

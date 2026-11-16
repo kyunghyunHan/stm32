@@ -1,3 +1,4 @@
+// I2C LCD 제어에 사용할 주소와 함수 선언을 모아 둔 코드
 
 #ifndef LCD_H
 #define LCD_H

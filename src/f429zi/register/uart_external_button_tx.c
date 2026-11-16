@@ -1,3 +1,4 @@
+// 외부 버튼을 누르면 UART로 메시지를 전송하는 실습
 #include <stdint.h>
 
 #define RCC_BASE    0x40023800UL

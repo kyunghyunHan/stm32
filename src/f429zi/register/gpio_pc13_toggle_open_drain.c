@@ -1,3 +1,4 @@
+// PC13 버튼으로 오픈드레인 LED를 토글하는 실습
 #include <stdint.h>
 
 #define RCC_BASE   0x40023800UL

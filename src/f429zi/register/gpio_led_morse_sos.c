@@ -1,3 +1,4 @@
+// LED로 SOS 모스 부호를 출력하는 실습
 
 #include <stdint.h>
 

@@ -1,3 +1,4 @@
+// CAN 사일런트 루프백 모드로 송수신을 확인하는 실습
 #include "stm32f446xx.h"
 #include <stdint.h>
 

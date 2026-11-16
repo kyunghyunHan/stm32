@@ -1,3 +1,4 @@
+// 타이머 인터럽트로 LED를 주기적으로 토글하는 실습
 /*  ‣ 목표 : TIM1 을 1 초 주기로 오버플로우시켜 PD3(LED)을 토글한다.
  *  ‣ 시스템 클록 : 216 MHz (Initialize_MCU()로 이미 설정됨)
  *  ‣ TIM1 클록   : 216 MHz  (RCC_DCKCFGR1.TIMPRE = 1 → HCLK 그대로 사용)

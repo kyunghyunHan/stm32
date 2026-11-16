@@ -1,3 +1,4 @@
+// CAN 루프백 송수신 결과를 LED로 확인하는 실습
 #include <stdint.h>
 
 #define RCC_BASE        0x40023800UL

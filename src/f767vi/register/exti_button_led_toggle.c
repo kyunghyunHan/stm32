@@ -1,3 +1,4 @@
+// 외부 버튼 인터럽트로 LED를 토글하는 실습
 #include "stm32f7xx.h"
 
 

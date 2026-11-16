@@ -1,3 +1,4 @@
+// USART3을 초기화하고 문자열과 Roll·Pitch를 전송하는 코드
 
 #include "uart.h"
 #include <stdint.h>

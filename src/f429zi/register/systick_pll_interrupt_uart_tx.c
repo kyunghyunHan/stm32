@@ -1,3 +1,4 @@
+// PLL 클록과 SysTick 인터럽트로 UART 문자를 주기적으로 전송하는 실습
 
 #include <stdint.h>
 

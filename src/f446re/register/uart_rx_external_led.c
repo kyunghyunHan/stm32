@@ -1,3 +1,4 @@
+// UART로 수신한 0과 1로 외부 LED를 켜고 끄는 실습
 #include <stdint.h>
 
 /*

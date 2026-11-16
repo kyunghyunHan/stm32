@@ -1,3 +1,4 @@
+// HAL을 사용한 ADC 폴링으로 아날로그 입력을 읽고 전압으로 변환하는 실습
 #include "stm32f7xx_hal.h"
 
 volatile uint16_t adc_raw;

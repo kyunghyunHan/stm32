@@ -1,3 +1,4 @@
+// I2C로 OLED에 HELLO STM32 문구를 표시하는 실습
 
 #include <stdint.h>
 
